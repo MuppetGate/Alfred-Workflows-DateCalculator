@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>muppet.gate.net.DateCalculator</string>
+	<key>category</key>
+	<string>Productivity</string>
+	<key>connections</key>
+	<dict>
+		<key>34421E52-5477-4AD7-A3E6-C227EB04AADA</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>9845CDBF-01A9-469C-9974-FE97A18CE1E0</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C0DB0242-54B1-475E-A327-B61C54C7B668</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>82367634-DAB1-4D69-BC58-77B4F9322402</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>34421E52-5477-4AD7-A3E6-C227EB04AADA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>8F4747B0-FA9D-4FCB-B828-4B37602854B5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>52C696F5-80D3-4235-92F9-6830E819A88D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>B222BD5C-5A0E-4EC1-9D9E-E308621BC7C8</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>8F4747B0-FA9D-4FCB-B828-4B37602854B5</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>MuppetGate</string>
+	<key>description</key>
+	<string>Does simple stuff with dates!</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Date Calculator</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Set week num format</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>52C696F5-80D3-4235-92F9-6830E819A88D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>dcalc settings</string>
+				<key>runningsubtext</key>
+				<string>Loading list . . .</string>
+				<key>script</key>
+				<string>python date_format_list.py</string>
+				<key>subtext</key>
+				<string>Select one of the valid date formats</string>
+				<key>title</key>
+				<string>Set date format</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>B222BD5C-5A0E-4EC1-9D9E-E308621BC7C8</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>python set_date_format.py "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8F4747B0-FA9D-4FCB-B828-4B37602854B5</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.output.largetype</string>
+			<key>uid</key>
+			<string>C0DB0242-54B1-475E-A327-B61C54C7B668</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>dcalc show settings</string>
+				<key>subtext</key>
+				<string>Show current date format</string>
+				<key>text</key>
+				<string>Show date format</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>FC254D99-C731-4315-B760-9452FF77AC53</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>python show_date_format.py</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>dcalc</string>
+				<key>subtext</key>
+				<string>See help for calculator format</string>
+				<key>text</key>
+				<string>Date Calculator</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>82367634-DAB1-4D69-BC58-77B4F9322402</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>python date_calculator.py "{query}"
+</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>34421E52-5477-4AD7-A3E6-C227EB04AADA</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.output.largetype</string>
+			<key>uid</key>
+			<string>9845CDBF-01A9-469C-9974-FE97A18CE1E0</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Date Calculator
+===============
+
+Hello there!
+I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
+Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two very simple questions about dates.
+
+For example, if you enter
+
+dcalc 25.12.14 - 18.01.14
+
+then it will tell you the number of days between those dates:
+
+You could also try
+
+dcalc 25.12.14 - now
+
+for the number of days until Chrismas. (Always seems so far away . . .)
+
+Maybe you don’t want it in days, but would rather it in weeks:
+
+dcalc 25.12.14 - now w
+
+or days and weeks
+
+dcalc 25.12.14 - now wd
+
+or years, months, weeks and days
+
+dcalc 25.12.14 - now ymwd
+
+or
+
+dcalc 25.12.14 - now long
+
+will do the same thing. Personally, I always use the long format because it’s more accurate.
+
+For those who like to look ahead, you can add days to a date
+
+dcalc now + 6d
+
+or weeks
+
+dcalc 18.12.14 + 9w
+
+or combine ‘em
+
+dcalc 18.12.12 + 5y 9d 3w
+
+If you want to know what week number you’re in, then try this:
+
+dcalc ^today
+
+Or for a specific date:
+
+dcalc ^25.12.14
+
+You can also use the today thing in other places too:
+
+dcalc today + 4d
+
+And we have another thing called now because the workflow can handle times too:
+
+dcalc now + 6h 8M
+
+will add 6 hours and 8 minutes to the current time. Note the capital ‘M’ to denote minutes. Odd, I know . . .  sorry, but the workflow has to distinguish between this and a small ‘m’ (for months). I figured make this one a capital because it would see much less use (it has for me).
+
+dcalc 14:35 + 6h
+
+That’s the time 6 hours from now, and for real nerdiness:
+
+dcalc 21.06.14@14:20 - 23.01.12@09:21 long
+
+That about covers it, I think. I haven’t done anything clever with locales, but you can pick a different date format with
+
+dcalc settings
+
+
+Credits
+———————
+
+A list of things that made my first attempt at Python programming possible:
+- Dean Jackson for his more-than-slightly awesome Alfred Workflow framework (https://github.com/deanishe/alfred-workflow). 
+- The folk at Jetbrains (http://www.jetbrains.com), for making programming bearable.
+- Paul McGuire, for writing PyParsing (http://pyparsing.wikispaces.com).
+- And finally, and by no means least – Mr Smirnoff!
+
+License
+———————
+
+Supplied under The MIT License (MIT)
+
+Copyright (c) 2014 MuppetGate Media
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</string>
+	<key>uidata</key>
+	<dict>
+		<key>34421E52-5477-4AD7-A3E6-C227EB04AADA</key>
+		<dict>
+			<key>ypos</key>
+			<real>330</real>
+		</dict>
+		<key>52C696F5-80D3-4235-92F9-6830E819A88D</key>
+		<dict>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+		<key>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</key>
+		<dict>
+			<key>ypos</key>
+			<real>200</real>
+		</dict>
+		<key>82367634-DAB1-4D69-BC58-77B4F9322402</key>
+		<dict>
+			<key>ypos</key>
+			<real>330</real>
+		</dict>
+		<key>8F4747B0-FA9D-4FCB-B828-4B37602854B5</key>
+		<dict>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+		<key>9845CDBF-01A9-469C-9974-FE97A18CE1E0</key>
+		<dict>
+			<key>ypos</key>
+			<real>330</real>
+		</dict>
+		<key>B222BD5C-5A0E-4EC1-9D9E-E308621BC7C8</key>
+		<dict>
+			<key>ypos</key>
+			<real>60</real>
+		</dict>
+		<key>C0DB0242-54B1-475E-A327-B61C54C7B668</key>
+		<dict>
+			<key>ypos</key>
+			<real>200</real>
+		</dict>
+		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
+		<dict>
+			<key>ypos</key>
+			<real>200</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
