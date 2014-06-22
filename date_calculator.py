@@ -1,14 +1,10 @@
 # -*- coding: UTF-8 -*-
 
 
-import sys
-
-from datetime import date, datetime, timedelta
-from dateutil.relativedelta import relativedelta
 from workflow import Workflow
 
 from date_format_mappings import DATE_MAPPINGS, \
-    DEFAULT_DATE_FORMAT, DEFAULT_WORKFLOW_SETTINGS, \
+    DEFAULT_WORKFLOW_SETTINGS, \
     DEFAULT_TIME_EXPR, DEFAULT_TIME_RE
 
 from utils import *
@@ -91,7 +87,7 @@ def get_week_number(command, date_format):
     date_1 = convert_to_date(command.date_1, command.time_1, date_format)
     try:
         return "week number = {week_number}".format(week_number=date_1.strftime("%V"))
-    except:
+    except ValueError:
         return "Invalid date!"
 
 
