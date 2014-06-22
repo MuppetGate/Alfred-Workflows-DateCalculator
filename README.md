@@ -81,6 +81,7 @@ A list of things that made my first attempt at Python programming possible:
 - The folk at [Jetbrains](http://www.jetbrains.com), for making programming, in any language, bearable.
 - Paul McGuire, for writing [PyParsing](http://pyparsing.wikispaces.com).
 - Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil)
+- Peter Odding for [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/)
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### License
@@ -106,5 +107,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-
