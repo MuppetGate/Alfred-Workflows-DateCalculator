@@ -28,9 +28,9 @@ def convert_to_date(date_string, time_string, date_format):
     return converted_datetime
 
 
-def int_or_empty(str):
-    if str:
-        return int(str)
+def int_or_empty(int_or_empty_str):
+    if int_or_empty_str:
+        return int(int_or_empty_str)
     else:
         return 0
 
