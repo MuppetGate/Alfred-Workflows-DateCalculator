@@ -1,12 +1,11 @@
-
 import sys
 
 from datetime import date, datetime
 from workflow import Workflow
 from date_format_mappings import DATE_MAPPINGS, DEFAULT_DATE_FORMAT, DEFAULT_WORKFLOW_SETTINGS
 
-def main (wf):
-    
+
+def main(wf):
     # Get the current setting
     current_setting = wf.settings['date-format']
 
@@ -20,10 +19,11 @@ def main (wf):
 
         # You know what? There's not point letting them set the format to the current format. It's 
         # a waste of effort.
-        wf.add_item(title = title_setting, subtitle = DATE_MAPPINGS[key]['name'], valid = (key != current_setting), arg = key)
+        wf.add_item(title=title_setting, subtitle=DATE_MAPPINGS[key]['name'], valid=(key != current_setting), arg=key)
 
     wf.send_feedback()
 
+
 if __name__ == '__main__':
-    wf = Workflow(default_settings = DEFAULT_WORKFLOW_SETTINGS)
-    sys.exit(wf.run(main))
+    workFlow = Workflow(default_settings=DEFAULT_WORKFLOW_SETTINGS)
+    sys.exit(workFlow.run(main))

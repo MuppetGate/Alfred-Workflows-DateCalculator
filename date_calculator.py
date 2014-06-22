@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 
-from workflow import Workflow
+from workflow import Workflow, ICON_ERROR
 
 from date_format_mappings import DATE_MAPPINGS, \
     DEFAULT_WORKFLOW_SETTINGS, \
@@ -208,26 +208,31 @@ def main(wf):
 
         if command.operator == '+' and (command.date_1 or command.time_1) and not (
                 command.date_2 or command.time_2) and command.options:
-            print do_addition(command, date_mapping['date-format'])
+            output = do_addition(command, date_mapping['date-format'])
 
         elif command.operator == '-' and (command.date_1 or command.time_1) and (
                 command.date_2 or command.time_2) and not command.options:
-            print do_subtraction(command, date_mapping['date-format'])
+            output = do_subtraction(command, date_mapping['date-format'])
 
         elif command.operator == '-' and (command.date_1 or command.time_1) and not (
                 command.date_2 or command.time_2) and command.options:
-            print do_subtraction_with_options(command, date_mapping['date-format'])
+            output = do_subtraction_with_options(command, date_mapping['date-format'])
 
         elif command.operator == '^' and command.date_1:
-            print get_week_number(command, date_mapping['date-format'])
+            output = get_week_number(command, date_mapping['date-format'])
 
         else:
-            print "Invalid expression"
+            output = "Invalid expression"
 
     except ParseException:
-            print "Invalid command"
+            output = "Invalid command"
 
+    if output.startswith("Invalid"):
+        wf.add_item(title=output, subtitle="", valid=False, arg=args[0], icon=ICON_ERROR)
+    else:
+        wf.add_item(title=output, subtitle="Copy to clipboard", valid=True, arg=output)
 
+    wf.send_feedback()
 
 # ## Python calling routine. Will only run this app if it is the main program
 ### Otherwise it won't run because it is an included module -- clever!
