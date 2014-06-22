@@ -17,14 +17,17 @@ def format_substraction(command, date_format, new_date):
         tf = DEFAULT_TIME_EXPR
     else:
         tf = ""
+
     if command.years_to_add or command.months_to_add or command.weeks_to_add or command.days_to_add:
         df = date_format
     else:
         df = ""
+
     if tf and df:
-        separator = " @  "
+        separator = " @ "
     else:
         separator = ""
+
     return "{new_date}".format(new_date=new_date.strftime(df + separator + tf))
 
 
