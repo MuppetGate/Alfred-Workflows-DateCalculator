@@ -67,9 +67,9 @@ def do_subtraction(command, date_format):
     else:
 
         if command.date_1 or command.date_2:
-            return "{days_between}".format(days_between=pluralize(seconds_between / 86400, "day", "days"))
+            return "{days_between}".format(days_between=pluralize(int(math.ceil(seconds_between / 86400)), "day", "days"))
         else:
-            return "{hours_between}".format(hours_between=pluralize(seconds_between / 3600, "hour", "hours"))
+            return "{hours_between}".format(hours_between=pluralize(int(math.ceil(seconds_between / 3600)), "hour", "hours"))
 
 
 def do_subtraction_with_options(command, date_format):
