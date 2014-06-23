@@ -212,6 +212,8 @@
 				<string>Calculating . . .</string>
 				<key>script</key>
 				<string>python date_calculator.py "{query}"</string>
+				<key>subtext</key>
+				<string>See the Workflow's ReadMe section for help.</string>
 				<key>title</key>
 				<string>Date and Time Calculator</string>
 				<key>type</key>
