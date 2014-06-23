@@ -11,6 +11,15 @@ from date_format_mappings import DATE_MAPPINGS, \
 from utils import *
 from humanfriendly import *
 
+
+class FormatException(Exception):
+    """
+    We throw this exception when we detect a problem with the
+    formatting
+    """
+    pass
+
+
 def format_substraction(command, date_format, new_date):
     if command.seconds_to_add or command.minutes_to_add or command.hours_to_add:
         tf = DEFAULT_TIME_EXPR
@@ -73,7 +82,7 @@ def do_subtraction(command, date_format):
     if command.format_expression:
 
         if not valid_format_expression(command.format_expression, VALID_FORMAT_OPTIONS, VALID_WORD_FORMAT_OPTIONS):
-            raise ParseException("Invalid format options")
+            raise FormatException("Invalid format options")
 
         return normalised_days(command, date_1, date_2, seconds_between)
 
@@ -243,6 +252,9 @@ def main(wf):
     except ParseException:
         output = "Invalid command"
 
+    except FormatException:
+        output = "Invalid format"
+
     if output.startswith("Invalid"):
         wf.add_item(title=output, subtitle="", valid=False, arg=args[0], icon=ICON_ERROR)
     else:
@@ -256,3 +268,4 @@ def main(wf):
 if __name__ == '__main__':
     workflow = Workflow(default_settings=DEFAULT_WORKFLOW_SETTINGS)
     sys.exit(workflow.run(main))
+
