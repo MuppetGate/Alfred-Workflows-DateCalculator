@@ -22,6 +22,9 @@ DEFAULT_TIME_RE = r'\d{2}:\d{2}'
 
 DEFAULT_TIME_EXPR = '%H:%M'
 
+VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
+VALID_WORD_FORMAT_OPTIONS = ["long"]
+
 DEFAULT_WORKFLOW_SETTINGS = {
 
     'date-format': DEFAULT_DATE_FORMAT

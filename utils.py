@@ -78,19 +78,8 @@ def get_date_grammar(date_expression, time_expression):
         [years_option, months_option, days_option, weeks_option, days_option, hours_option, minutes_option,
          seconds_option])).setResultsName("options")
 
-    years_format = oneOf("y", caseless=True).setResultsName("years_format")
-    months_format = oneOf("m").setResultsName("months_format")
-    weeks_format = oneOf("w", caseless=True).setResultsName("weeks_format")
-    days_format = oneOf("d", caseless=True).setResultsName("days_format")
-    hours_format = oneOf("h", caseless=True).setResultsName("hours_format")
-    minutes_format = oneOf("M").setResultsName("minutes_format")
-    seconds_format = oneOf("s", caseless=True).setResultsName("seconds_format")
-
-    long_format = oneOf("long", caseless=True).setResultsName("long_format")
-
-    format_options = Each(
-        [Optional(years_format), Optional(months_format), Optional(weeks_format), Optional(days_format),
-         Optional(hours_format), Optional(minutes_format), Optional(seconds_format)])
+    format_options = Word(alphanums, min=1)
+    long_format = Optional("long").setResultsName("long_format")
 
     format_expression = Optional(format_options ^ long_format).setResultsName("format_expression")
 

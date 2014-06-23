@@ -5,14 +5,13 @@ from workflow import Workflow, ICON_ERROR
 
 from date_format_mappings import DATE_MAPPINGS, \
     DEFAULT_WORKFLOW_SETTINGS, \
-    DEFAULT_TIME_EXPR, DEFAULT_TIME_RE
+    DEFAULT_TIME_EXPR, DEFAULT_TIME_RE, \
+    VALID_FORMAT_OPTIONS, VALID_WORD_FORMAT_OPTIONS
 
 from utils import *
 from humanfriendly import *
 
-
 def format_substraction(command, date_format, new_date):
-
     if command.seconds_to_add or command.minutes_to_add or command.hours_to_add:
         tf = DEFAULT_TIME_EXPR
     else:
@@ -47,29 +46,45 @@ def do_addition(command, date_format):
     return format_substraction(command, date_format, new_date)
 
 
-def do_subtraction(command, date_format):
+def valid_format_expression(format_options, valid_options, valid_word_options):
+    """
+    Check to see if expression for formats contains only
+    the correct types.
+    First of all, check that it isn't a whole word we're
+    trying to match.
+    """
+    if format_options in valid_word_options:
+        return True
 
+    for option in format_options:
+
+        if option not in valid_options:
+            return False
+
+    return True
+
+
+def do_subtraction(command, date_format):
     date_1 = convert_to_date(command.date_1, command.time_1, date_format)
     date_2 = convert_to_date(command.date_2, command.time_2, date_format)
 
     seconds_between = abs((date_2 - date_1).total_seconds())
 
-    if (command.years_format or
-            command.months_format or
-            command.weeks_format or
-            command.days_format or
-            command.hours_format or
-            command.minutes_format or
-            command.seconds_format or
-            command.long_format):
+    if command.format_expression:
+
+        if not valid_format_expression(command.format_expression, VALID_FORMAT_OPTIONS, VALID_WORD_FORMAT_OPTIONS):
+            raise ParseException("Invalid format options")
+
         return normalised_days(command, date_1, date_2, seconds_between)
 
     else:
 
         if command.date_1 or command.date_2:
-            return "{days_between}".format(days_between=pluralize(int(math.ceil(seconds_between / 86400)), "day", "days"))
+            return "{days_between}".format(
+                days_between=pluralize(int(math.ceil(seconds_between / 86400)), "day", "days"))
         else:
-            return "{hours_between}".format(hours_between=pluralize(int(math.ceil(seconds_between / 3600)), "hour", "hours"))
+            return "{hours_between}".format(
+                hours_between=pluralize(int(math.ceil(seconds_between / 3600)), "hour", "hours"))
 
 
 def do_subtraction_with_options(command, date_format):
@@ -99,7 +114,8 @@ def get_week_number(command, date_format):
 def normalised_days(command, date_1, date_2, seconds_to_normalise):
     # If the user selected long then he wants the full
     # date, so fill in the format before carrying on.
-    if command.long_format:
+
+    if command.format_expression == "long":
 
         difference = relativedelta(date_1, date_2)
 
@@ -119,7 +135,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
         else:
             time_string = ""
 
-        ## Do we need a separator, only if there is something that needs separating
+        # # Do we need a separator, only if there is something that needs separating
 
         if date_string and time_string:
             separator = ", "
@@ -133,11 +149,11 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
         seconds_left = seconds_to_normalise
         normalised_string = ""
 
-        if command.years_format:
+        if "y" in command.format_expression:
             years, seconds_left = divmod(seconds_left, 365 * 86400)
             normalised_string += pluralize(int(years), "year", "years")
 
-        if command.months_format:
+        if "m" in command.format_expression:
 
             if normalised_string:
                 normalised_string += ", "
@@ -145,7 +161,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
             months, seconds_left = divmod(seconds_left, 30 * 86400)
             normalised_string += pluralize(int(months), "month", "months")
 
-        if command.weeks_format:
+        if "w" in command.format_expression:
 
             if normalised_string:
                 normalised_string += ", "
@@ -153,7 +169,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
             weeks, seconds_left = divmod(seconds_left, 7 * 86400)
             normalised_string += pluralize(int(weeks), "week", "weeks")
 
-        if command.days_format:
+        if "d" in command.format_expression:
 
             if normalised_string:
                 normalised_string += ", "
@@ -161,7 +177,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
             days, seconds_left = divmod(seconds_left, 86400)
             normalised_string += pluralize(int(days), "day", "days")
 
-        if command.hours_format:
+        if "h" in command.format_expression:
 
             if normalised_string:
                 normalised_string += ", "
@@ -169,7 +185,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
             hours, seconds_left = divmod(seconds_left, 3600)
             normalised_string += pluralize(int(hours), "hour", "hours")
 
-        if command.minutes_format:
+        if "M" in command.format_expression:
 
             if normalised_string:
                 normalised_string += ", "
@@ -177,7 +193,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
             minutes, seconds_left = divmod(seconds_left, 60)
             normalised_string += pluralize(int(minutes), "minute", "minutes")
 
-        if command.seconds_format:
+        if "s" in command.format_expression:
 
             if normalised_string:
                 normalised_string += ", "
@@ -204,7 +220,7 @@ def main(wf):
 
         command = grammar.parseString(args[0])
         # # Now comes the processing bit. Keeping it simple, we'll use a switch statement
-        ## Er . . . Python doesn't have one, so no we won't :-)
+        # # Er . . . Python doesn't have one, so no we won't :-)
 
         if command.operator == '+' and (command.date_1 or command.time_1) and not (
                 command.date_2 or command.time_2) and command.options:
@@ -225,7 +241,7 @@ def main(wf):
             output = "Invalid expression"
 
     except ParseException:
-            output = "Invalid command"
+        output = "Invalid command"
 
     if output.startswith("Invalid"):
         wf.add_item(title=output, subtitle="", valid=False, arg=args[0], icon=ICON_ERROR)
@@ -235,7 +251,7 @@ def main(wf):
     wf.send_feedback()
 
 # ## Python calling routine. Will only run this app if it is the main program
-### Otherwise it won't run because it is an included module -- clever!
+# ## Otherwise it won't run because it is an included module -- clever!
 
 if __name__ == '__main__':
     workflow = Workflow(default_settings=DEFAULT_WORKFLOW_SETTINGS)
