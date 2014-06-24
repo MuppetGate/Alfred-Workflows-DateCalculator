@@ -160,7 +160,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
 
         if "y" in command.format_expression:
             years, seconds_left = divmod(seconds_left, 365 * 86400)
-            normalised_string += pluralize(int(years), "year", "years")
+            normalised_string += pluralize(int(math.ceil(years)), "year", "years")
 
         if "m" in command.format_expression:
 
@@ -168,7 +168,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
                 normalised_string += ", "
 
             months, seconds_left = divmod(seconds_left, 30 * 86400)
-            normalised_string += pluralize(int(months), "month", "months")
+            normalised_string += pluralize(int(math.ceil(months)), "month", "months")
 
         if "w" in command.format_expression:
 
@@ -176,7 +176,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
                 normalised_string += ", "
 
             weeks, seconds_left = divmod(seconds_left, 7 * 86400)
-            normalised_string += pluralize(int(weeks), "week", "weeks")
+            normalised_string += pluralize(int(math.ceil(weeks)), "week", "weeks")
 
         if "d" in command.format_expression:
 
@@ -184,7 +184,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
                 normalised_string += ", "
 
             days, seconds_left = divmod(seconds_left, 86400)
-            normalised_string += pluralize(int(days), "day", "days")
+            normalised_string += pluralize(int(math.ceil(days)), "day", "days")
 
         if "h" in command.format_expression:
 
@@ -192,7 +192,7 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
                 normalised_string += ", "
 
             hours, seconds_left = divmod(seconds_left, 3600)
-            normalised_string += pluralize(int(hours), "hour", "hours")
+            normalised_string += pluralize(int(math.ceil(hours)), "hour", "hours")
 
         if "M" in command.format_expression:
 
@@ -200,14 +200,14 @@ def normalised_days(command, date_1, date_2, seconds_to_normalise):
                 normalised_string += ", "
 
             minutes, seconds_left = divmod(seconds_left, 60)
-            normalised_string += pluralize(int(minutes), "minute", "minutes")
+            normalised_string += pluralize(int(math.ceil(minutes)), "minute", "minutes")
 
         if "s" in command.format_expression:
 
             if normalised_string:
                 normalised_string += ", "
 
-            normalised_string += pluralize(int(seconds_left), "second", "seconds")
+            normalised_string += pluralize(int(math.ceil(seconds_left)), "second", "seconds")
 
         return normalised_string
 
