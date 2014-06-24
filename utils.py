@@ -56,7 +56,7 @@ def get_date_grammar(date_expression, time_expression):
 
     plus_operator = oneOf("+").setResultsName("operator")
     minus_operator = oneOf("-").setResultsName("operator")
-    week_operator = oneOf("^").setResultsName("operator")
+    week_operator = oneOf("!").setResultsName("operator")
 
     add_years = Word(nums, min=1).setResultsName("years_to_add")
     add_months = Word(nums, min=1).setResultsName("months_to_add")
@@ -83,10 +83,10 @@ def get_date_grammar(date_expression, time_expression):
 
     format_expression = Optional(format_options ^ long_format).setResultsName("format_expression")
 
-    date_addition = datetime_1 + plus_operator + addition_options
-    date_substraction = datetime_1 + minus_operator + datetime_2 + format_expression
-    date_substraction_by_numbers = datetime_1 + minus_operator + addition_options
-    week_number_command = week_operator + datetime_1
+    date_addition = LineStart() + datetime_1 + plus_operator + addition_options + LineEnd().suppress()
+    date_substraction = LineStart() + datetime_1 + minus_operator + datetime_2 + format_expression + LineEnd().suppress()
+    date_substraction_by_numbers = LineStart() + datetime_1 + minus_operator + addition_options + LineEnd().suppress()
+    week_number_command = LineStart() + week_operator + datetime_1 + LineEnd().suppress()
 
     date_calculation_grammar = date_addition ^ date_substraction ^ date_substraction_by_numbers ^ week_number_command
     return date_calculation_grammar

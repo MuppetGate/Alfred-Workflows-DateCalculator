@@ -243,7 +243,7 @@ def main(wf):
                 command.date_2 or command.time_2) and command.options:
             output = do_subtraction_with_options(command, date_mapping['date-format'])
 
-        elif command.operator == '^' and command.date_1:
+        elif command.operator == '!' and command.date_1:
             output = get_week_number(command, date_mapping['date-format'])
 
         else:
