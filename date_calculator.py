@@ -1,9 +1,11 @@
 from datetime import *
+
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DATE_MAPPINGS, DEFAULT_TIME_EXPR, DAY_MAP
-from dateutil.relativedelta import relativedelta, WE, TH
+from dateutil.relativedelta import relativedelta
 from parser import DateParser
 from workflow import Workflow, ICON_ERROR
 from humanfriendly import *
+
 
 TIME_MAP = {"seconds_in_a_day": 86400,
             "seconds_in_a_week": 604800,
@@ -66,7 +68,7 @@ def convert_date_time(date_time_str, date_format):
 def do_functions(command, date_format):
     date_time, output_format = convert_date_time(command.dateTime1, date_format)
 
-    if command.functionName == "wn":
+    if command.functionName.lower() == "wn" or command.functionName == "!":
         return "{week_number}".format(week_number=date_time.strftime("%V"))
     return None
 

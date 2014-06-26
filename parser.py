@@ -26,6 +26,7 @@ class DateParser:
         time_span_re = re.compile('[ymwdhMs]')
         time_digits_re = re.compile('[0-9]+')
         format_re = re.compile('[ymwdhMs]+|long')
+        functions_re = re.compile('wn|!', re.IGNORECASE)
 
         class Operator(str):
             grammar = operator_re
@@ -39,8 +40,8 @@ class DateParser:
         class OperandList(List):
             grammar = maybe_some(Operand)
 
-        class DateFunction(Keyword):
-            grammar = Enum(K("wn"))
+        class DateFunction(str):
+            grammar = functions_re
 
         class DateTime(str):
             grammar = [date_time_re, date_re, time_re,
