@@ -15,8 +15,12 @@ class DateParser:
         date_re = re.compile(self.date_expression)
         time_re = re.compile('\d{2}:\d{2}')
         date_time_re = re.compile(self.date_expression + '@' + '\d{2}:\d{2}')
-        today_re = re.compile('today')
-        now_re = re.compile('now')
+        date_macro_re = re.compile('date|today', re.IGNORECASE)
+        time_macro_re = re.compile('time', re.IGNORECASE)
+        now_macro_re = re.compile('now', re.IGNORECASE)
+        yesterday_macro_re = re.compile('yesterday', re.IGNORECASE)
+        tomorrow_macro_re = re.compile('tomorrow', re.IGNORECASE)
+        days_of_week_re = re.compile('mon|tue|wed|thu|fri|sat|sun', re.IGNORECASE)
 
         operator_re = re.compile('[+-]')
         time_span_re = re.compile('[ymwdhMs]')
@@ -39,7 +43,9 @@ class DateParser:
             grammar = Enum(K("wn"))
 
         class DateTime(str):
-            grammar = [date_time_re, date_re, time_re, today_re, now_re]
+            grammar = [date_time_re, date_re, time_re,
+                       date_macro_re, time_macro_re, now_macro_re,
+                       yesterday_macro_re, days_of_week_re, tomorrow_macro_re]
 
         class Format(str):
             grammar = optional(format_re)
@@ -55,9 +61,8 @@ if __name__ == '__main__':
 
     command_parser = DateParser("\d{2}\.\d{2}\.\d{2}")
 
-    command = command_parser.parse_command("21.03.13 + 6y 3d 2d - 10w 4h - 3d + 9h")
+    command = command_parser.parse_command("21.03.13 + 1y")
     print(command.dateTime)
     print(command.operandList[0].operator)
     print(command.operandList[0].timeSpans[0].amount)
-    print(command.operandList[0].operator)
-    print(command.operandList[0].timeSpans[1].amount)
+    print(command.operandList[0].timeSpans[0].span)

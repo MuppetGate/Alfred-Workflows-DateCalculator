@@ -1,19 +1,20 @@
 # The date formats array
+from dateutil.relativedelta import relativedelta, TH, MO, TU, WE, FR, SA, SU
 
 DATE_MAPPINGS = {
 
-    'dd-mm-yy': {'name': 'short UK date (-)', 'date-format': '%d-%m-%y', 'regex': r'\d{2}-\d{2}-\d{2}'},
-    'dd-mm-yyyy': {'name': 'long UK date (-)', 'date-format': '%d-%m-%Y', 'regex': r'\d{2}-\d{2}-\d{4}'},
-    'dd/mm/yy': {'name': 'short UK date (/)', 'date-format': '%d/%m/%y', 'regex': r'\d{2}/\d{2}/\d{2}'},
-    'dd/mm/yyyy': {'name': 'long UK date (/)', 'date-format': '%d/%m/%Y', 'regex': r'\d{2}/\d{2}/\d{4}'},
-    'dd.mm.yy': {'name': 'short UK date (.)', 'date-format': '%d.%m.%y', 'regex': r'\d{2}\.\d{2}\.\d{2}'},
-    'dd.mm.yyyy': {'name': 'long UK date (.)', 'date-format': '%d.%m.%Y', 'regex': r'\d{2}\.\d{2}\.\d{4}'},
-    'mm-dd-yy': {'name': 'short US date (-)', 'date-format': '%m-%d-%y', 'regex': r'\d{2}-\d{2}-\d{2}'},
-    'mm-dd-yyyy': {'name': 'long US date (-)', 'date-format': '%m-%d-%Y', 'regex': r'\d{2}-\d{2}-\d{4}'},
-    'mm/dd/yy': {'name': 'short US date (/)', 'date-format': '%m/%d/%y', 'regex': r'\d{2}/\d{2}/\d{2}'},
-    'mm/dd/yyyy': {'name': 'long US date (/)', 'date-format': '%m/%d/%Y', 'regex': r'\d{2}/\d{2}/\d{4}'},
-    'mm.dd.yy': {'name': 'short US date (.)', 'date-format': '%m.%d.%y', 'regex': r'\d{2}\.\d{2}\.\d{2}'},
-    'mm.dd.yyyy': {'name': 'long US date (.)', 'date-format': '%m.%d.%Y', 'regex': r'\d{2}\.\d{2}\.\d{4}'}
+    'dd-mm-yy': {'name': 'short UK date (-)', 'date-format': '%d-%m-%y', 'regex': '\d{2}-\d{2}-\d{2}'},
+    'dd-mm-yyyy': {'name': 'long UK date (-)', 'date-format': '%d-%m-%Y', 'regex': '\d{2}-\d{2}-\d{4}'},
+    'dd/mm/yy': {'name': 'short UK date (/)', 'date-format': '%d/%m/%y', 'regex': '\d{2}/\d{2}/\d{2}'},
+    'dd/mm/yyyy': {'name': 'long UK date (/)', 'date-format': '%d/%m/%Y', 'regex': '\d{2}/\d{2}/\d{4}'},
+    'dd.mm.yy': {'name': 'short UK date (.)', 'date-format': '%d.%m.%y', 'regex': '\d{2}\.\d{2}\.\d{2}'},
+    'dd.mm.yyyy': {'name': 'long UK date (.)', 'date-format': '%d.%m.%Y', 'regex': '\d{2}\.\d{2}\.\d{4}'},
+    'mm-dd-yy': {'name': 'short US date (-)', 'date-format': '%m-%d-%y', 'regex': '\d{2}-\d{2}-\d{2}'},
+    'mm-dd-yyyy': {'name': 'long US date (-)', 'date-format': '%m-%d-%Y', 'regex': '\d{2}-\d{2}-\d{4}'},
+    'mm/dd/yy': {'name': 'short US date (/)', 'date-format': '%m/%d/%y', 'regex': '\d{2}/\d{2}/\d{2}'},
+    'mm/dd/yyyy': {'name': 'long US date (/)', 'date-format': '%m/%d/%Y', 'regex': '\d{2}/\d{2}/\d{4}'},
+    'mm.dd.yy': {'name': 'short US date (.)', 'date-format': '%m.%d.%y', 'regex': '\d{2}\.\d{2}\.\d{2}'},
+    'mm.dd.yyyy': {'name': 'long US date (.)', 'date-format': '%m.%d.%Y', 'regex': '\d{2}\.\d{2}\.\d{4}'}
 }
 
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
@@ -24,6 +25,16 @@ DEFAULT_TIME_EXPR = '%H:%M'
 
 VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]
+
+# The DAY_MAP is specific to relativedelta
+DAY_MAP = {"mon": relativedelta(days=+1, weekday=MO(+1)),
+           "tue": relativedelta(days=+1, weekday=TU(+1)),
+           "wed": relativedelta(days=+1, weekday=WE(+1)),
+           "thu": relativedelta(days=+1, weekday=TH(+1)),
+           "fri": relativedelta(days=+1, weekday=FR(+1)),
+           "sat": relativedelta(days=+1, weekday=SA(+1)),
+           "sun": relativedelta(days=+1, weekday=SU(+1))}
+
 
 DEFAULT_WORKFLOW_SETTINGS = {
 
