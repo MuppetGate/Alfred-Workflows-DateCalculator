@@ -4,67 +4,60 @@ __author__ = 'raymond'
 
 from pypeg2 import *
 
-DATE_RE = re.compile(r'\d{2}\.\d{2}\.\d{2}')
-TIME_RE = re.compile(r'\d{2}:\d{2}')
-DATE_TIME_RE = re.compile(r'\d{2}\.\d{2}\.\d{2}@\d{2}:\d{2}')
-TODAY_RE = re.compile(r'today')
-NOW_RE = re.compile(r'now')
 
-OPERATOR_RE = re.compile(r'[+-]')
-TIMESPAN_RE = re.compile(r'[ymwdhMs]')
-TIME_DIGITS_RE = re.compile(r'[0-9]+')
+class DateParser:
 
+    def __init__(self, date_expr):
+        self.date_expression = date_expr
 
-class Operator(str):
-    grammar = OPERATOR_RE
+    def parse_command(self, command_string):
 
+        date_re = re.compile(self.date_expression)
+        time_re = re.compile('\d{2}:\d{2}')
+        date_time_re = re.compile(self.date_expression + '@' + '\d{2}:\d{2}')
+        today_re = re.compile('today')
+        now_re = re.compile('now')
 
-class TimeSpans(str):
-    grammar = attr("amount", TIME_DIGITS_RE), attr("timeSpan", TIMESPAN_RE)
+        operator_re = re.compile('[+-]')
+        time_span_re = re.compile('[ymwdhMs]')
+        time_digits_re = re.compile('[0-9]+')
+        format_re = re.compile('[ymwdhMs]+|long')
 
+        class Operator(str):
+            grammar = operator_re
 
-class Operand(str):
-    grammar = attr("operator", Operator), attr("timeSpans", some(TimeSpans))
+        class TimeSpans(str):
+            grammar = attr("amount", time_digits_re), attr("span", time_span_re)
 
+        class Operand(str):
+            grammar = attr("operator", Operator), attr("timeSpans", some(TimeSpans))
 
-class OperandList(List):
-    grammar = maybe_some(Operand)
+        class OperandList(List):
+            grammar = maybe_some(Operand)
 
+        class DateFunction(Keyword):
+            grammar = Enum(K("wn"))
 
-class DateFunction(Keyword):
-    grammar = Enum(K("wn"))
+        class DateTime(str):
+            grammar = [date_time_re, date_re, time_re, today_re, now_re]
 
+        class Format(str):
+            grammar = optional(format_re)
 
-class DateTime(str):
-    grammar = [DATE_TIME_RE, DATE_RE, TIME_RE, TODAY_RE, NOW_RE]
+        class Commands(List):
+            grammar = [(attr("functionName", DateFunction), attr("dateTime1", DateTime)),
+                       (attr("dateTime1", DateTime), "-", attr("dateTime2", DateTime), attr("format", Format)),
+                       (attr("dateTime", DateTime), attr("operandList", OperandList))]
 
-
-class FunctionCall(str):
-    grammar = attr("functionName", DateFunction), attr("dateTime", DateTime)
-
-
-class Commands(List):
-    grammar = [(attr("functionName", DateFunction), attr("dateTime", DateTime)),
-               (attr("dateTime1", DateTime), "-", attr("dateTime2", DateTime)),
-               (attr("dateTime", DateTime), attr("operandList", OperandList))]
-
-
-def command_parse(command_str):
-    return parse(command_str, Commands)
-
+        return parse(command_string, Commands)
 
 if __name__ == '__main__':
-    command = parse("wn 11:35", Commands)
 
-    print(command.functionName)
-    print(command.dateTime)
+    command_parser = DateParser("\d{2}\.\d{2}\.\d{2}")
 
-    command = parse("21.03.13@12:15 + 6y 3d 2d - 10w 4h - 3d + 9h", Commands)
+    command = command_parser.parse_command("21.03.13 + 6y 3d 2d - 10w 4h - 3d + 9h")
     print(command.dateTime)
     print(command.operandList[0].operator)
     print(command.operandList[0].timeSpans[0].amount)
     print(command.operandList[0].operator)
     print(command.operandList[0].timeSpans[1].amount)
-
-    command = parse("now - 23.01.14@06:35", Commands)
-    print(command.dateTime1)
