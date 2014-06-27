@@ -19,25 +19,28 @@ def convert_date_time(date_time_str, date_format):
     # We use the longer format if the date contains an ampersand
     # Remember at this point we know that the format is correct.
 
+    current_date = datetime.combine(date.today(), datetime.max.time())
+    current_time = datetime.combine(date.today(), datetime.today().time())
+
     full_format = date_format + "@" + DEFAULT_TIME_EXPR
 
     if date_time_str.lower() == "date" or date_time_str.lower() == "today":
-        return datetime.today(), date_format
+        return current_date, date_format
 
     if date_time_str.lower() == "time":
-        return datetime.today(), DEFAULT_TIME_EXPR
+        return current_time, DEFAULT_TIME_EXPR
 
     if date_time_str.lower() == "now":
-        return datetime.today(), full_format
+        return datetime.now(), full_format
 
     if date_time_str.lower() == "yesterday":
-        return datetime.today() - timedelta(days=1), date_format
+        return current_date - timedelta(days=1), date_format
 
     if date_time_str.lower() == "tomorrow":
-        return datetime.today() + timedelta(days=1), date_format
+        return current_date + timedelta(days=1), date_format
 
     if date_time_str.lower() in DAY_MAP.keys():
-        return datetime.today() + DAY_MAP[date_time_str.lower()], date_format
+        return current_date + DAY_MAP[date_time_str.lower()], date_format
 
     if date_time_str.lower() == "easter":
         return get_easter(), date_format

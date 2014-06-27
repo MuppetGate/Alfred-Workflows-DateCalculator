@@ -56,7 +56,10 @@ class DateParser:
 
         class Commands(List):
             grammar = [(attr("functionName", DateFunction), attr("dateTime1", DateTime)),
-                       (attr("dateTime1", DateTime), "-", attr("dateTime2", DateTime), attr("format", Format)),
+
+                       (attr("dateTime1", DateTime), "-", attr("dateTime2", DateTime),
+                        attr("operandList", OperandList), attr("format", Format)),
+
                        (attr("dateTime", DateTime), attr("operandList", OperandList))]
 
         return parse(command_string, Commands)
