@@ -3,17 +3,19 @@ Hello there!
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
 Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
 
+(img)
+
 For example, if you enter
 
 **dcalc 25.12.14 - 18.01.14**
 
-then it will tell you the number of days between those dates:
+then it will tell you the number of days between those dates. Note that the workflow parses the command as you enter it, so you’ll see _invalid command_, _invalid expression_ and _invalid format_ errors as you type. Once you’ve completed the command then you’ll be given the result.
 
 You could also try
 
 **dcalc 25.12.14 - now**
 
-for the number of days until Chrismas. (Always seems so far away . . .)
+for the number of days until Christmas. (Always seems so far away . . .)
 
 Maybe you don’t want it in days, but would rather it in weeks:
 
@@ -43,31 +45,71 @@ or weeks
 
 or combine ‘em
 
-**dcalc 18.12.12 + 5y 9d 3w**
+**dcalc 18.12.12 + 5y 9d 3w - 2d + 1d 1w**
+
+What does that mess do?
+- Take the date 18.12.12 
+- Add 5 years
+- Add another 9 days
+- Add another 3 weeks
+- Then take off 2 days
+- Add another 1 day
+- And then add another 1 week
 
 If you want to know what week number you’re in, then try this:
 
-**dcalc ^today**
+**dcalc ! today**
 
 Or for a specific date:
 
-**dcalc ^25.12.14**
+**dcalc ! 25.12.14**
 
 You can also use the _today_ thing in other places too:
 
 **dcalc today + 4d**
 
-And we have another thing called _now_ because the workflow can handle times too:
+And we have another thing called _time_ because the workflow can handle times too:
 
-**dcalc now + 6h 8M**
+**dcalc time + 6h 8M**
 
 will add 6 hours and 8 minutes to the current time. Note the capital ‘M’ to denote minutes. Odd, I know . . .  sorry, but the workflow has to distinguish between this and a small ‘m’ (for months). I figured make this one a capital because it would see much less use. (It has for me.)
 
+If you just want the current time, then just enter
+
+**dcalc time**
+
+Here’s another time calculation
 **dcalc 14:35 + 6h**
 
 That’s the time 6 hours from now, and for real nerdiness:
 
 **dcalc 21.06.14@14:20 - 23.01.12@09:21 long**
+
+Probably not all that useful, but some of this other stuff might be. You know all about
+
+** dcalc now**
+
+For giving you the current time and date. Well you can use 
+
+** dcalc tomorrow **
+
+for tomorrow’s date, and as you would expect
+
+** dcalc tomorrow + 1d**
+
+will give you the day after tomorrow.
+
+** dcalc tue**
+
+will give you the date next Tuesday. Or for for Thursday you could enter
+
+**dcalc tue + 2d**
+
+if you’re still a little too inebriated to realise that
+
+**dcalc thu**
+
+will give you the same answer.
 
 That about covers it, I think. I haven’t done anything clever with locales, but you can pick a different date format with
 
@@ -75,17 +117,29 @@ That about covers it, I think. I haven’t done anything clever with locales, bu
 
 If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
+Oh, almost forgot.
+
+**dcalc easter**
+
+Is the date for next Easter Sunday, for no other reason that I can never remember it, and now there’s an easy way to find out how many days until Christmas:
+
+** dcalc today - christmas**
+
 ### Credits
 A list of things that made my first attempt at Python programming possible:
-- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](https://github.com/deanishe/alfred-workflow). 
-- The folk at [Jetbrains](http://www.jetbrains.com), for making programming, in any language, bearable.
-- Paul McGuire, for writing [PyParsing](http://pyparsing.wikispaces.com).
-- Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil)
-- Peter Odding for [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/)
+- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework], and for his ‘parse-as-you-type’ idea.
+- The folk at [Jetbrains], for making programming, in any language, bearable.
+- Paul McGuire, for writing [PyParsing].
+- Peter Odding for writing [HumanFriendly].
+- Gustavo Niemeyer for [Python-DateUtil].
+- Volker Birk for [PyPEG].
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
+### Version History
+Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser, added macros (days of week, christmas and easter) and a general tidy up. The symbol for getting the week number for a particular date has changed from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
+
 ### License
-Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
+Well, I guess the [MIT] one will do. :-)
 
 The MIT License (MIT)
 Copyright (c) 2014 MuppetGate Media
@@ -107,3 +161,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+

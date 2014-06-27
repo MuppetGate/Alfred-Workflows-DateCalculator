@@ -112,6 +112,16 @@ def do_subtraction(command, date_format):
     date_time_1, output_format_1 = convert_date_time(command.dateTime1, date_format)
     date_time_2, output_format_2 = convert_date_time(command.dateTime2, date_format)
 
+    # In a moment of madness, we've decided to allow operands in a date from date
+    # subtraction. It's much easier to process these first.
+    if hasattr(command, "operandList1"):
+        for operand in command.operandList1:
+            date_time_1 = delta_arithmetic(date_time_1, operand)
+
+    if hasattr(command, "operandList2"):
+        for operand in command.operandList2:
+            date_time_2 = delta_arithmetic(date_time_2, operand)
+
     return normalised_days(command, date_time_1, date_time_2)
 
 
