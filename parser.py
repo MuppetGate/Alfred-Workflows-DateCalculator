@@ -21,6 +21,8 @@ class DateParser:
         yesterday_macro_re = re.compile('yesterday', re.IGNORECASE)
         tomorrow_macro_re = re.compile('tomorrow', re.IGNORECASE)
         days_of_week_re = re.compile('mon|tue|wed|thu|fri|sat|sun', re.IGNORECASE)
+        easter_macro_re = re.compile('easter', re.IGNORECASE)
+        christmas_macro_re = re.compile('christmas', re.IGNORECASE)
 
         operator_re = re.compile('[+-]')
         time_span_re = re.compile('[ymwdhMs]')
@@ -46,7 +48,8 @@ class DateParser:
         class DateTime(str):
             grammar = [date_time_re, date_re, time_re,
                        date_macro_re, time_macro_re, now_macro_re,
-                       yesterday_macro_re, days_of_week_re, tomorrow_macro_re]
+                       yesterday_macro_re, days_of_week_re, tomorrow_macro_re,
+                       easter_macro_re, christmas_macro_re]
 
         class Format(str):
             grammar = optional(format_re)

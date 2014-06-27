@@ -1,6 +1,7 @@
 from datetime import *
 
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DATE_MAPPINGS, DEFAULT_TIME_EXPR, DAY_MAP
+from dateutil.easter import easter
 from dateutil.relativedelta import relativedelta
 from parser import DateParser
 from workflow import Workflow, ICON_ERROR
@@ -15,6 +16,27 @@ TIME_MAP = {"seconds_in_a_day": 86400,
             "seconds_in_a_minute": 60}
 
 # We've used the Gregorian average
+
+
+def get_easter(date_format):
+    current_date = datetime.today()
+    this_easter = datetime.combine(easter(current_date.year), datetime.min.time())
+    if current_date < this_easter:
+        return this_easter, date_format
+    else:
+        # We've already had easter this year
+        next_year = datetime(current_date.year + 1, 1, 1)
+        return datetime.combine(easter(next_year.year), datetime.min.time()), date_format
+
+
+def get_christmas(date_format):
+    current_date = datetime.today()
+    this_christmas = datetime(current_date.year, 12, 25)
+    if current_date < this_christmas:
+        return this_christmas, date_format
+    else:
+        # We've already had Crimbo this year
+        return datetime(current_date.year + 1, 12, 25), date_format
 
 
 def convert_date_time(date_time_str, date_format):
@@ -41,6 +63,12 @@ def convert_date_time(date_time_str, date_format):
 
     if date_time_str.lower() in DAY_MAP.keys():
         return datetime.today() + DAY_MAP[date_time_str.lower()], date_format
+
+    if date_time_str.lower() == "easter":
+        return get_easter(date_format)
+
+    if date_time_str.lower() == "christmas":
+        return get_christmas(date_format)
 
     # Now try each in turn to see if we get anything
 
