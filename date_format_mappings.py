@@ -36,6 +36,14 @@ DAY_MAP = {"mon": relativedelta(days=+1, weekday=MO(+1)),
            "sun": relativedelta(days=+1, weekday=SU(+1))}
 
 
+TIME_MAP = {"seconds_in_a_day": 86400,
+            "seconds_in_a_week": 604800,
+            "seconds_in_a_month": 2592000,
+            "seconds_in_a_year": 31556952,
+            "seconds_in_an_hour": 3600,
+            "seconds_in_a_minute": 60}
+
+
 DEFAULT_WORKFLOW_SETTINGS = {
 
     'date-format': DEFAULT_DATE_FORMAT
