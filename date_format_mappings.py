@@ -44,8 +44,14 @@ TIME_MAP = {"seconds_in_a_day": 86400,
             "seconds_in_a_minute": 60}
 
 
+DEFAULT_ANNIVERSARIES = {'christmas': '2014-12-25T00:30:00',
+                         'alfred': '2011-12-08T00:00:00'}
+
 DEFAULT_WORKFLOW_SETTINGS = {
 
-    'date-format': DEFAULT_DATE_FORMAT
+    'date-format': DEFAULT_DATE_FORMAT,
+
+    'anniversaries': DEFAULT_ANNIVERSARIES
 
 }
+

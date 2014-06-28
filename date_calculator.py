@@ -6,15 +6,33 @@ from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DAY_MAP, TIME_MAP
 
 from date_parser import DateParser
+import dateutil.parser
 from dateutil.relativedelta import relativedelta
-from utils import get_easter, get_christmas
+from utils import get_easter, get_anniversary
+from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
 from humanfriendly import *
 
-# We've used the Gregorian average
+
+def process_macros(date_time_str, anniversaries):
+    """
+    This method will look through the settings
+    and return a date for an anniversary, if
+    it finds one.
+    :return:
+    """
+    for anniversary in anniversaries.keys():
+
+        if date_time_str.lower() == anniversary:
+            anniversary_date_str = anniversaries[anniversary]
+            # We're storing in ISO format. How'd you get that back?
+            anniversary_date = dateutil.parser.parse(anniversary_date_str)
+            return get_anniversary(anniversary_date)
+
+    return None
 
 
-def convert_date_time(date_time_str, date_format):
+def convert_date_time(date_time_str, date_format, settings):
     # first of all, what format are we using.
     # We use the longer format if the date contains an ampersand
     # Remember at this point we know that the format is correct.
@@ -45,11 +63,11 @@ def convert_date_time(date_time_str, date_format):
     if date_time_str.lower() == "easter":
         return get_easter(), date_format
 
-    if date_time_str.lower() == "christmas":
-        return get_christmas(), date_format
+    anniversary_date = process_macros(date_time_str.lower(), settings['anniversaries'])
+    if anniversary_date is not None:
+        return anniversary_date, date_format
 
     # Now try each in turn to see if we get anything
-
     try:
 
         date_and_time = datetime.strptime(date_time_str, full_format)
@@ -71,8 +89,8 @@ def convert_date_time(date_time_str, date_format):
             return date_and_time, DEFAULT_TIME_EXPR
 
 
-def do_functions(command, date_format):
-    date_time, output_format = convert_date_time(command.dateTime1, date_format)
+def do_functions(command, date_format, settings):
+    date_time, output_format = convert_date_time(command.dateTime1, date_format, settings)
 
     if command.functionName.lower() == "wn" or command.functionName == "!":
         return "{week_number}".format(week_number=date_time.strftime("%V"))
@@ -99,8 +117,8 @@ def delta_arithmetic(date_time, operand):
     return delta_date_time
 
 
-def do_timespans(command, date_format):
-    date_time, output_format = convert_date_time(command.dateTime, date_format)
+def do_timespans(command, date_format, settings):
+    date_time, output_format = convert_date_time(command.dateTime, date_format, settings)
 
     for operand in command.operandList:
         date_time = delta_arithmetic(date_time, operand)
@@ -108,9 +126,9 @@ def do_timespans(command, date_format):
     return date_time.strftime(output_format)
 
 
-def do_subtraction(command, date_format):
-    date_time_1, output_format_1 = convert_date_time(command.dateTime1, date_format)
-    date_time_2, output_format_2 = convert_date_time(command.dateTime2, date_format)
+def do_subtraction(command, date_format, settings):
+    date_time_1, output_format_1 = convert_date_time(command.dateTime1, date_format, settings)
+    date_time_2, output_format_2 = convert_date_time(command.dateTime2, date_format, settings)
 
     # In a moment of madness, we've decided to allow operands in a date from date
     # subtraction. It's much easier to process these first.
@@ -208,6 +226,8 @@ def normalised_days(command, date_time_1, date_time_2):
 def main(wf):
     # Get the date format from the configuration
 
+    update_settings(wf)
+
     key = wf.settings['date-format']
     args = wf.args
 
@@ -217,16 +237,16 @@ def main(wf):
 
     try:
 
-        command = command_parser.parse_command(args[0])
+        command = command_parser.parse_command(args[0], wf.settings)
 
         if hasattr(command, "functionName"):
-            output = do_functions(command, date_mapping['date-format'])
+            output = do_functions(command, date_mapping['date-format'], wf.settings)
 
         elif hasattr(command, "dateTime"):
-            output = do_timespans(command, date_mapping['date-format'])
+            output = do_timespans(command, date_mapping['date-format'], wf.settings)
 
         elif hasattr(command, "dateTime1") and hasattr(command, "dateTime2"):
-            output = do_subtraction(command, date_mapping['date-format'])
+            output = do_subtraction(command, date_mapping['date-format'], wf.settings)
 
         else:
             output = "Invalid Expression"

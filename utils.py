@@ -17,11 +17,11 @@ def get_easter():
         return datetime.combine(easter(next_year.year), datetime.min.time())
 
 
-def get_christmas():
+def get_anniversary(date_object):
     current_date = datetime.today()
-    this_christmas = datetime(current_date.year, 12, 25)
-    if current_date < this_christmas:
-        return this_christmas
+    this_anniversary = datetime(current_date.year, date_object.month, date_object.day)
+    if current_date < this_anniversary:
+        return this_anniversary
     else:
         # We've already had Crimbo this year
-        return datetime(current_date.year + 1, 12, 25)
+        return datetime(current_date.year + 1, date_object.month, date_object.day)
