@@ -8,6 +8,45 @@ from workflow import Workflow
 from macros_parser import MacrosParser
 
 
+def add_anniversary(anniversaries, command, date_mapping, wf):
+
+    if "%Y" not in date_mapping["date-format"]:
+        return "Four-digit year format needed."
+
+    if command.anniversaryName in anniversaries:
+        output = "{anniversaryName} already exists".format(anniversaryName=command.anniversaryName)
+    else:
+        date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
+        anniversary_date = date_time.isoformat()
+        anniversaries[command.anniversaryName.lower()] = anniversary_date
+        wf.settings["anniversaries"] = anniversaries
+        output = "{anniversaryName} added".format(anniversaryName=command.anniversaryName)
+    return output
+
+
+def change_anniversary(anniversaries, command, date_mapping, wf):
+
+    if "%Y" not in date_mapping["date-format"]:
+        return "Four-digit year format needed."
+
+    if command.anniversaryName not in anniversaries:
+        output = "{anniversaryName} does not exist".format(anniversaryName=command.anniversaryName)
+    else:
+        date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
+        anniversary_date = date_time.isoformat()
+        anniversaries[command.anniversaryName.lower()] = anniversary_date
+        wf.settings["anniversaries"] = anniversaries
+        output = "{anniversaryName} changed".format(anniversaryName=command.anniversaryName)
+    return output
+
+
+def delete_anniversary(anniversaries, command, wf):
+    del anniversaries[command.anniversaryName]
+    wf.settings["anniversaries"] = anniversaries
+    output = "{anniversaryName} deleted".format(anniversaryName=command.anniversaryName)
+    return output
+
+
 def main(wf):
     # Get the date format from the configuration
 
@@ -17,6 +56,10 @@ def main(wf):
     args = wf.args
 
     date_mapping = DATE_MAPPINGS[key]
+
+    # There is no point going any further
+    # unless they are set up for a four-digit date.
+
     anniversaries = wf.settings["anniversaries"]
 
     command_parser = MacrosParser(date_mapping['regex'], wf.settings)
@@ -27,31 +70,15 @@ def main(wf):
 
         if hasattr(command, "anniversaryName") and hasattr(command, "add") and hasattr(command, "dateTime"):
 
-            if command.anniversaryName in anniversaries:
-                output = "{anniversaryName} already exists".format(anniversaryName=command.anniversaryName)
-            else:
-                date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
-                anniversary_date = date_time.isoformat()
-                anniversaries[command.anniversaryName.lower()] = anniversary_date
-                wf.settings["anniversaries"] = anniversaries
-                output = "{anniversaryName} added".format(anniversaryName=command.anniversaryName)
+            output = add_anniversary(anniversaries, command, date_mapping, wf)
 
         elif hasattr(command, "anniversaryName") and hasattr(command, "edit") and hasattr(command, "dateTime"):
 
-            if command.anniversaryName not in anniversaries:
-                output = "{anniversaryName} does not exist".format(anniversaryName=command.anniversaryName)
-            else:
-                date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
-                anniversary_date = date_time.isoformat()
-                anniversaries[command.anniversaryName.lower()] = anniversary_date
-                wf.settings["anniversaries"] = anniversaries
-                output = "{anniversaryName} changed".format(anniversaryName=command.anniversaryName)
+            output = change_anniversary(anniversaries, command, date_mapping, wf)
 
         elif hasattr(command, "anniversaryName") and hasattr(command, "delete") and not hasattr(command, "dateTime"):
 
-            del anniversaries[command.anniversaryName]
-            wf.settings["anniversaries"] = anniversaries
-            output = "{anniversaryName} deleted".format(anniversaryName=command.anniversaryName)
+            output = delete_anniversary(anniversaries, command, wf)
 
         else:
             output = "Invalid expression"
