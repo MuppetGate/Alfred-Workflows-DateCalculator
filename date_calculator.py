@@ -174,8 +174,7 @@ def main(wf):
     except SyntaxError:
         output = "Invalid Command"
 
-    except ValueError:
-        output = "Invalid Date"
+
 
     if output.startswith("Invalid"):
         wf.add_item(title=output, subtitle="", valid=False, arg=args[0], icon=ICON_ERROR)

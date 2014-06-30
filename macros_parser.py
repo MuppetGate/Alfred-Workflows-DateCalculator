@@ -4,8 +4,6 @@ from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS
 from date_parser import DateParser
 from pypeg2 import List, attr, parse, optional
 
-__author__ = 'raymond'
-
 
 class MacrosParser(DateParser):
     def __init__(self, date_expr, settings):

@@ -1,8 +1,6 @@
 from __future__ import unicode_literals, print_function
 from date_format_mappings import DEFAULT_ANNIVERSARIES
 
-__author__ = 'raymond'
-
 
 def update_settings(wf):
     """

@@ -3,8 +3,6 @@ from date_format_mappings import DEFAULT_TIME_EXPR, DAY_MAP
 from dateutil.easter import easter
 import dateutil.parser
 
-__author__ = 'raymond'
-
 # package for general utility stuff
 
 
@@ -20,6 +18,7 @@ def get_easter():
 
 
 def get_anniversary(date_object):
+
     current_date = datetime.today()
     this_anniversary = datetime(current_date.year, date_object.month, date_object.day)
     if current_date < this_anniversary:
@@ -36,13 +35,24 @@ def process_macros(date_time_str, anniversaries):
     it finds one.
     :return:
     """
+
+    absolute = False
+
+    if date_time_str.startswith("^"):
+        date_time_str = date_time_str.lstrip("^")
+        absolute = True
+
     for anniversary in anniversaries.keys():
 
         if date_time_str.lower() == anniversary:
             anniversary_date_str = anniversaries[anniversary]
-            # We're storing in ISO format. How'd you get that back?
+            # We're storing in ISO format. How do you get that back?
             anniversary_date = dateutil.parser.parse(anniversary_date_str)
-            return get_anniversary(anniversary_date)
+
+            if absolute:
+                return anniversary_date
+            else:
+                return get_anniversary(anniversary_date)
 
     return None
 

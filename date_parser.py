@@ -1,8 +1,6 @@
 from __future__ import unicode_literals, print_function
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DEFAULT_TIME_RE
 
-__author__ = 'raymond'
-
 from pypeg2 import *
 
 
@@ -39,7 +37,12 @@ class DateParser:
         """
         # Nothing complicated. We're just creating a | separated string
         # by looping through keys and joining them.
-        return '|'.join(str(x) for x in settings['anniversaries'].keys())
+        # Those funny characters we're prepending to the string are so we
+        # can match an options "^" which we use to denote an absolute macro
+        # invocation:
+        # mybirthday ====> returns the date of my next birthday
+        # ^mybirthday ===> the date I was born
+        return '|'.join('\^?' + str(x) for x in settings['anniversaries'].keys())
 
     def parse_command(self, command_string):
 
