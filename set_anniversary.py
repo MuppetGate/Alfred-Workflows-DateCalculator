@@ -1,22 +1,11 @@
 from __future__ import unicode_literals, print_function
 import sys
 
-from date_format_mappings import DATE_MAPPINGS, DEFAULT_WORKFLOW_SETTINGS, ANN_CACHE
+from date_format_mappings import DATE_MAPPINGS, DEFAULT_WORKFLOW_SETTINGS
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow
 from macros_parser import MacrosParser
-
-
-__author__ = 'raymond'
-
-
-def go_to_step(parameters):
-
-    def send_params():
-            return parameters
-
-    return send_params
 
 
 def main(wf):
@@ -32,33 +21,46 @@ def main(wf):
 
     command_parser = MacrosParser(date_mapping['regex'], wf.settings)
 
-    command = command_parser.parse_command(args[0])
+    try:
 
-    if hasattr(command, "anniversaryName") and hasattr(command, "add") and hasattr(command, "dateTime"):
+        command = command_parser.parse_command(args[0])
 
-        date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
-        anniversary_date = date_time.isoformat()
-        anniversaries[command.anniversaryName.lower()] = anniversary_date
-        wf.settings["anniversaries"] = anniversaries
-        output = "{anniversaryName} added".format(anniversaryName=command.anniversaryName)
+        if hasattr(command, "anniversaryName") and hasattr(command, "add") and hasattr(command, "dateTime"):
 
-    elif hasattr(command, "anniversaryName") and hasattr(command, "edit") and hasattr(command, "dateTime"):
+            if command.anniversaryName in anniversaries:
+                output = "{anniversaryName} already exists".format(anniversaryName=command.anniversaryName)
+            else:
+                date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
+                anniversary_date = date_time.isoformat()
+                anniversaries[command.anniversaryName.lower()] = anniversary_date
+                wf.settings["anniversaries"] = anniversaries
+                output = "{anniversaryName} added".format(anniversaryName=command.anniversaryName)
 
-        date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
-        anniversary_date = date_time.isoformat()
-        anniversaries[command.anniversaryName.lower()] = anniversary_date
-        wf.settings["anniversaries"] = anniversaries
-        output = "{anniversaryName} changed".format(anniversaryName=command.anniversaryName)
+        elif hasattr(command, "anniversaryName") and hasattr(command, "edit") and hasattr(command, "dateTime"):
 
-    elif hasattr(command, "anniversaryName") and hasattr(command, "delete") and not hasattr(command, "dateTime"):
+            if command.anniversaryName not in anniversaries:
+                output = "{anniversaryName} does not exist".format(anniversaryName=command.anniversaryName)
+            else:
+                date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
+                anniversary_date = date_time.isoformat()
+                anniversaries[command.anniversaryName.lower()] = anniversary_date
+                wf.settings["anniversaries"] = anniversaries
+                output = "{anniversaryName} changed".format(anniversaryName=command.anniversaryName)
 
-        del anniversaries[command.anniversaryName]
-        wf.settings["anniversaries"] = anniversaries
-        output = "{anniversaryName} deleted".format(anniversaryName=command.anniversaryName)
+        elif hasattr(command, "anniversaryName") and hasattr(command, "delete") and not hasattr(command, "dateTime"):
 
-    else:
+            del anniversaries[command.anniversaryName]
+            wf.settings["anniversaries"] = anniversaries
+            output = "{anniversaryName} deleted".format(anniversaryName=command.anniversaryName)
 
-        output = "Invalid expression"
+        else:
+            output = "Invalid expression"
+
+    except SyntaxError:
+        output = "Invalid Command"
+
+    except ValueError:
+        output = "Invalid Date"
 
     print(output)
 

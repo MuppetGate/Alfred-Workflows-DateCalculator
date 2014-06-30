@@ -19,6 +19,25 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>6344C161-C077-4BB5-800B-6BCF7A98F450</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>42E3993D-0D36-40CD-89F8-562E443F4BCF</string>
+				<key>modifiers</key>
+				<integer>262144</integer>
+				<key>modifiersubtext</key>
+				<string>Delete entry</string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>9A630331-69C6-40E1-9F7B-7B782D30236E</string>
+				<key>modifiers</key>
+				<integer>524288</integer>
+				<key>modifiersubtext</key>
+				<string>alter entry</string>
+			</dict>
+		</array>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
 		<array>
 			<dict>
@@ -345,6 +364,67 @@
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>dcalcann list</string>
+				<key>runningsubtext</key>
+				<string>Please wait . . .</string>
+				<key>script</key>
+				<string>python anniversary_list.py "{query}"</string>
+				<key>title</key>
+				<string>List of Anniversaries</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>6344C161-C077-4BB5-800B-6BCF7A98F450</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalcann delete {query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>42E3993D-0D36-40CD-89F8-562E443F4BCF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalcann edit {query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>9A630331-69C6-40E1-9F7B-7B782D30236E</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>## Date Calculator Version 1.0
@@ -517,10 +597,20 @@ THE SOFTWARE.</string>
 			<key>ypos</key>
 			<real>530</real>
 		</dict>
+		<key>42E3993D-0D36-40CD-89F8-562E443F4BCF</key>
+		<dict>
+			<key>ypos</key>
+			<real>650</real>
+		</dict>
 		<key>52C696F5-80D3-4235-92F9-6830E819A88D</key>
 		<dict>
 			<key>ypos</key>
 			<real>60</real>
+		</dict>
+		<key>6344C161-C077-4BB5-800B-6BCF7A98F450</key>
+		<dict>
+			<key>ypos</key>
+			<real>650</real>
 		</dict>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
 		<dict>
@@ -546,6 +636,11 @@ THE SOFTWARE.</string>
 		<dict>
 			<key>ypos</key>
 			<real>320</real>
+		</dict>
+		<key>9A630331-69C6-40E1-9F7B-7B782D30236E</key>
+		<dict>
+			<key>ypos</key>
+			<real>770</real>
 		</dict>
 		<key>AC56E0A1-82E8-4C9C-B6CF-2B53EBD02ABF</key>
 		<dict>
