@@ -1,8 +1,7 @@
 import sys
 
-from datetime import date, datetime
 from workflow import Workflow
-from date_format_mappings import DATE_MAPPINGS, DEFAULT_DATE_FORMAT, DEFAULT_WORKFLOW_SETTINGS
+from date_format_mappings import DATE_MAPPINGS, DEFAULT_WORKFLOW_SETTINGS
 
 
 def main(wf):

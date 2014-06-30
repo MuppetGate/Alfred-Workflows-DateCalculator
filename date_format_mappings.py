@@ -19,14 +19,14 @@ DATE_MAPPINGS = {
 
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
 
-DEFAULT_TIME_RE = r'\d{2}:\d{2}'
+DEFAULT_TIME_RE = '\d{2}:\d{2}'
 
 DEFAULT_TIME_EXPR = '%H:%M'
 
 VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]
 
-# The DAY_MAP is specific to relativedelta
+# The DAY_MAP is specific to relative delta
 DAY_MAP = {"mon": relativedelta(days=+1, weekday=MO(+1)),
            "tue": relativedelta(days=+1, weekday=TU(+1)),
            "wed": relativedelta(days=+1, weekday=WE(+1)),
@@ -55,3 +55,5 @@ DEFAULT_WORKFLOW_SETTINGS = {
 
 }
 
+## This is the cache used to operate the anniversaries workflows
+ANN_CACHE = "anniversary_cache"

@@ -8,6 +8,17 @@
 	<string>Productivity</string>
 	<key>connections</key>
 	<dict>
+		<key>308D6AD9-DB3C-4021-9318-F162FF0E4254</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
 		<array>
 			<dict>
@@ -54,6 +65,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>8F4747B0-FA9D-4FCB-B828-4B37602854B5</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7F570625-0CC5-4B6E-A1BF-2F3169943C33</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -110,12 +132,29 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>python set_date_format.py "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8F4747B0-FA9D-4FCB-B828-4B37602854B5</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>keyword</key>
-				<string>dcalc settings</string>
+				<string>dcalcset format</string>
 				<key>runningsubtext</key>
 				<string>Loading list . . .</string>
 				<key>script</key>
@@ -142,14 +181,14 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>python set_date_format.py "{query}"</string>
+				<string>python show_date_format.py</string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>8F4747B0-FA9D-4FCB-B828-4B37602854B5</string>
+			<string>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -167,7 +206,7 @@
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
-				<string>dcalc show settings</string>
+				<string>dcalcshow format</string>
 				<key>subtext</key>
 				<string>Show current date format</string>
 				<key>text</key>
@@ -179,23 +218,6 @@
 			<string>alfred.workflow.input.keyword</string>
 			<key>uid</key>
 			<string>FC254D99-C731-4315-B760-9452FF77AC53</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>escaping</key>
-				<integer>127</integer>
-				<key>script</key>
-				<string>python show_date_format.py</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -257,6 +279,69 @@
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>AC56E0A1-82E8-4C9C-B6CF-2B53EBD02ABF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Dcalc Anniversaries</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>7F570625-0CC5-4B6E-A1BF-2F3169943C33</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>python set_anniversary.py "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>dcalcann</string>
+				<key>subtext</key>
+				<string>Change the anniversary list</string>
+				<key>text</key>
+				<string>Dcalc Anniversaries</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>308D6AD9-DB3C-4021-9318-F162FF0E4254</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -427,6 +512,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.</string>
 	<key>uidata</key>
 	<dict>
+		<key>308D6AD9-DB3C-4021-9318-F162FF0E4254</key>
+		<dict>
+			<key>ypos</key>
+			<real>530</real>
+		</dict>
 		<key>52C696F5-80D3-4235-92F9-6830E819A88D</key>
 		<dict>
 			<key>ypos</key>
@@ -441,6 +531,11 @@ THE SOFTWARE.</string>
 		<dict>
 			<key>ypos</key>
 			<real>200</real>
+		</dict>
+		<key>7F570625-0CC5-4B6E-A1BF-2F3169943C33</key>
+		<dict>
+			<key>ypos</key>
+			<real>530</real>
 		</dict>
 		<key>8F4747B0-FA9D-4FCB-B828-4B37602854B5</key>
 		<dict>
@@ -466,6 +561,11 @@ THE SOFTWARE.</string>
 		<dict>
 			<key>ypos</key>
 			<real>200</real>
+		</dict>
+		<key>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</key>
+		<dict>
+			<key>ypos</key>
+			<real>530</real>
 		</dict>
 		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
 		<dict>

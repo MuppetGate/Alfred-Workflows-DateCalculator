@@ -12,6 +12,6 @@ def update_settings(wf):
     file, but this might be much easier
     :return:
     """
-    if not hasattr(wf.settings, "anniversaries"):
+    if "anniversaries" not in wf.settings:
         wf.settings['anniversaries'] = DEFAULT_ANNIVERSARIES
 
