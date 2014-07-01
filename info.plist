@@ -41,9 +41,9 @@
 				<key>destinationuid</key>
 				<string>52DA2602-1085-48CD-BDA1-8BF4F5005B57</string>
 				<key>modifiers</key>
-				<integer>0</integer>
+				<integer>1048576</integer>
 				<key>modifiersubtext</key>
-				<string></string>
+				<string>Calculate with this date</string>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -52,6 +52,14 @@
 				<integer>131072</integer>
 				<key>modifiersubtext</key>
 				<string>Absolute date</string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
 			</dict>
 		</array>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
@@ -384,7 +392,7 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>2</integer>
+				<integer>1</integer>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>keyword</key>
@@ -398,7 +406,7 @@
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<false/>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
@@ -413,7 +421,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalcann delete {query}"</string>
+				<string>tell application "Alfred 2" to search "dcalcset list delete {query}"</string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -430,7 +438,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalcann edit {query}"</string>
+				<string>tell application "Alfred 2" to search "dcalset list edit {query}"</string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -472,6 +480,23 @@
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalcshow list {query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -721,6 +746,11 @@ THE SOFTWARE.</string>
 		<dict>
 			<key>ypos</key>
 			<real>530</real>
+		</dict>
+		<key>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</key>
+		<dict>
+			<key>ypos</key>
+			<real>1160</real>
 		</dict>
 		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
 		<dict>
