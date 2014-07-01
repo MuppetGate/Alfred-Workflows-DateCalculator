@@ -1,3 +1,5 @@
+# -- coding: utf-8 --
+
 from __future__ import unicode_literals, print_function
 import sys
 
@@ -13,16 +15,15 @@ def main(wf):
     update_settings(wf)
 
     key = wf.settings['date-format']
-    args = wf.args
 
     date_mapping = DATE_MAPPINGS[key]
     anniversaries = wf.settings["anniversaries"]
 
-    for anniversary in anniversaries.keys():
+    for anniversary in sorted(anniversaries.keys()):
         anniversary_date_str = anniversaries[anniversary]
         date_object = parser.parse(anniversary_date_str)
-        entry = "{anniversary} ===> {date}".format(anniversary=anniversary,
-                                                   date=date_object.strftime(date_mapping['date-format']))
+        entry = "{anniversary} ➤ {date}".format(anniversary=anniversary,
+                                                 date=date_object.strftime(date_mapping['date-format']))
 
         wf.add_item(title=entry, subtitle="Press alt to change, ctrl to delete", arg=anniversary, valid=True)
 

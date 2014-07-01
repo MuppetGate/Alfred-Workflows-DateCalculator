@@ -37,6 +37,22 @@
 				<key>modifiersubtext</key>
 				<string>alter entry</string>
 			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>52DA2602-1085-48CD-BDA1-8BF4F5005B57</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</string>
+				<key>modifiers</key>
+				<integer>131072</integer>
+				<key>modifiersubtext</key>
+				<string>Absolute date</string>
+			</dict>
 		</array>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
 		<array>
@@ -349,11 +365,11 @@
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>keyword</key>
-				<string>dcalcann</string>
+				<string>dcalcset list</string>
 				<key>subtext</key>
-				<string>Change the anniversary list</string>
+				<string>Add, delete or edit entries in the anniversaries list</string>
 				<key>text</key>
-				<string>Dcalc Anniversaries</string>
+				<string>Change anniversaries list</string>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -372,13 +388,13 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>keyword</key>
-				<string>dcalcann list</string>
+				<string>dcalcshow list</string>
 				<key>runningsubtext</key>
 				<string>Please wait . . .</string>
 				<key>script</key>
 				<string>python anniversary_list.py "{query}"</string>
 				<key>title</key>
-				<string>List of Anniversaries</string>
+				<string>Show anniversaries list</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -422,6 +438,40 @@
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
 			<string>9A630331-69C6-40E1-9F7B-7B782D30236E</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalc {query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>52DA2602-1085-48CD-BDA1-8BF4F5005B57</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalc ^{query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -602,10 +652,20 @@ THE SOFTWARE.</string>
 			<key>ypos</key>
 			<real>650</real>
 		</dict>
+		<key>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</key>
+		<dict>
+			<key>ypos</key>
+			<real>1040</real>
+		</dict>
 		<key>52C696F5-80D3-4235-92F9-6830E819A88D</key>
 		<dict>
 			<key>ypos</key>
 			<real>60</real>
+		</dict>
+		<key>52DA2602-1085-48CD-BDA1-8BF4F5005B57</key>
+		<dict>
+			<key>ypos</key>
+			<real>920</real>
 		</dict>
 		<key>6344C161-C077-4BB5-800B-6BCF7A98F450</key>
 		<dict>

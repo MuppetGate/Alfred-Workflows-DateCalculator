@@ -108,7 +108,14 @@ def convert_date_time(date_time_str, date_format, settings):
 
         except ValueError:
 
-            # Should throw an error all on its own.
-            process_time = datetime.strptime(date_time_str, DEFAULT_TIME_EXPR).time()
-            date_and_time = datetime.combine(datetime.today(), process_time)
-            return date_and_time, DEFAULT_TIME_EXPR
+            try:
+
+                # Should throw an error all on its own.
+                process_time = datetime.strptime(date_time_str, DEFAULT_TIME_EXPR).time()
+                date_and_time = datetime.combine(datetime.today(), process_time)
+                return date_and_time, DEFAULT_TIME_EXPR
+
+            except:
+
+                raise ValueError
+

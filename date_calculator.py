@@ -178,7 +178,7 @@ def main(wf):
         output = "Invalid Date"
 
     if output.startswith("Invalid"):
-        wf.add_item(title=output, subtitle="", valid=False, arg=args[0], icon=ICON_ERROR)
+        wf.add_item(title=". . .", subtitle=output, valid=False, arg=args[0], icon=ICON_ERROR)
     else:
         wf.add_item(title=output, subtitle="Copy to clipboard", valid=True, arg=output)
 
