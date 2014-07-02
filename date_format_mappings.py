@@ -46,7 +46,8 @@ TIME_MAP = {"seconds_in_a_day": 86400,
 
 
 DEFAULT_ANNIVERSARIES = {'christmas': '1900-12-25T00:30:00',
-                         'alfred': '2010-02-28T00:00:00'}
+                         'alfred': '2010-02-28T00:00:00',
+                         'leap': '2012-02-29T00:00:00'}
 
 DEFAULT_WORKFLOW_SETTINGS = {
 
