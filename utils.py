@@ -20,7 +20,7 @@ def get_easter():
 
 def get_anniversary(date_object):
 
-    anniversary_rule = rrule(bymonthday=date_object.day, bymonth=date_object.month, freq=YEARLY)
+    anniversary_rule = rrule(bymonthday=date_object.day, bymonth=date_object.month, freq=YEARLY, dtstart=date_object)
     current_date = datetime.today()
     anniversary_date = anniversary_rule.after(current_date, inc=False)
     return datetime.combine(anniversary_date, datetime.min.time())
