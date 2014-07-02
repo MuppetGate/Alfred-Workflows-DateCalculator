@@ -502,20 +502,22 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>## Date Calculator Version 1.1
+	<string>## Date Calculator Version 1.2
 
-## Date Calculator
+## [Date Calculator](http://www.packal.org/workflow/date-calculator)
+
 Hello there!
+
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
 Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
 
-![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)
+[![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)](http://www.packal.org/workflow/date-calculator)
 
 For example, if you enter
 
 **dcalc 25.12.14 - 18.01.14**
 
-then it will tell you the number of days between those dates. Note that the workflow parses the command as you enter it, so you’ll see _invalid command_, _invalid expression_ and _invalid format_ errors as you type. Once you’ve completed the command then you’ll be given the result.
+then it will tell you the number of days between those dates. Note that the workflow parses the command as you enter it, so you’ll see _invalid command_, _invalid expression_, _invalid date_ and _invalid format_ errors as you type. Once you’ve completed the command then you’ll be given the result.
 
 You could also try
 
@@ -621,7 +623,7 @@ That about covers it, I think. I haven’t done anything clever with locales, bu
 
 **dcalcset format**
 
-If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
+If you’re ever puzzled by _invalid command_, _invalid date_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
 Oh, almost forgot.
 
@@ -636,16 +638,17 @@ That’s very true, but it can remember if you add your birthday as an entry to 
 
 **dcalcset list add alfred 28.02.2010**
 
-will add an entry called _alfred_ to the list along with his date of birth. Now,  you have your own shortcut to use in date calculations.
+will add an entry called _alfred_ to the list along with his date of birth. Now,  you have your own shortcut to use in date calculations. Now, the next bit is ver important, so it’s in bold:
+**You must set your date format to one that supports four-digit dates** in order to add or change items in the list. It’s a bit of a pig, I know, but we don’t want to guess whether 20.01.68 is referring to a date in 1968 or 2068. Once you’re done, you can change it back again. Okay, so where were we? Right, you can use the macros in your date calculations, like so: 
 
-** dcalc alfred**
+**dcalc alfred**
 
-will return _28.02.2015_
+which will return _28.02.2015_
 
 Whut?
 Nope, not his date of birth, but the date of his next birthday, so that
 
-** dcalc alfred - today**
+**dcalc alfred - today**
 
 will tell you how long until you have to buy him a pressie. If you want to know how long he’s actually been alive, then adding a ‘^’ in front of the shortcut will give you his original date of birth:
 
@@ -667,6 +670,7 @@ as a command, and you can delete an entry with:
 
 Yeah, I know it’s a long command, but I wanted to give you plenty of time to change your mind . . . :-)
 
+
 ### Credits
 A list of things that made my first attempt at Python programming possible:
 - Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](https://github.com/deanishe/alfred-workflow), and for his ‘parse-as-you-type’ idea.
@@ -678,6 +682,9 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+
+Last release (Version 1.1) was on the 01.07.2014. This included a new anniversary list function, and the addition of the international date format (yyyy-mm-dd).
+
 Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser, added macros (days of week, christmas and easter) and a general tidy up. The symbol for getting the week number for a particular date has changed from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
@@ -698,7 +705,7 @@ all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
