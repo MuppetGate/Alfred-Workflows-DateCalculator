@@ -7,6 +7,47 @@ from versioning import update_settings
 from workflow import Workflow
 from macros_parser import MacrosParser
 
+FOUR_DIGIT_DATE_ERROR = "Please ensure that you have set your date format to one that supports 4-digit years"
+
+
+def add_anniversary(anniversaries, command, date_mapping, wf):
+
+    if "%Y" not in date_mapping["date-format"]:
+        return FOUR_DIGIT_DATE_ERROR
+
+    if command.anniversaryName in anniversaries:
+        output = "{anniversaryName} already exists".format(anniversaryName=command.anniversaryName)
+    else:
+        date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
+        anniversary_date = date_time.isoformat()
+        anniversaries[command.anniversaryName.lower()] = anniversary_date
+        wf.settings["anniversaries"] = anniversaries
+        output = "{anniversaryName} added".format(anniversaryName=command.anniversaryName)
+    return output
+
+
+def change_anniversary(anniversaries, command, date_mapping, wf):
+
+    if "%Y" not in date_mapping["date-format"]:
+        return FOUR_DIGIT_DATE_ERROR
+
+    if command.anniversaryName not in anniversaries:
+        output = "{anniversaryName} does not exist".format(anniversaryName=command.anniversaryName)
+    else:
+        date_time, output_format = convert_date_time(command.dateTime, date_mapping['date-format'], wf.settings)
+        anniversary_date = date_time.isoformat()
+        anniversaries[command.anniversaryName.lower()] = anniversary_date
+        wf.settings["anniversaries"] = anniversaries
+        output = "{anniversaryName} changed".format(anniversaryName=command.anniversaryName)
+    return output
+
+
+def delete_anniversary(anniversaries, command, wf):
+    del anniversaries[command.anniversaryName]
+    wf.settings["anniversaries"] = anniversaries
+    output = "{anniversaryName} deleted".format(anniversaryName=command.anniversaryName)
+    return output
+
 
 def add_anniversary(anniversaries, command, date_mapping, wf):
 

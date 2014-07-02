@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, date
+from dateutil.rrule import rrule, YEARLY
 from date_format_mappings import DEFAULT_TIME_EXPR, DAY_MAP
 from dateutil.easter import easter
 import dateutil.parser
@@ -19,13 +20,10 @@ def get_easter():
 
 def get_anniversary(date_object):
 
+    anniversary_rule = rrule(bymonthday=date_object.day, bymonth=date_object.month, freq=YEARLY, dtstart=date_object)
     current_date = datetime.today()
-    this_anniversary = datetime(current_date.year, date_object.month, date_object.day)
-    if current_date < this_anniversary:
-        return this_anniversary
-    else:
-        # We've already had Crimbo this year
-        return datetime(current_date.year + 1, date_object.month, date_object.day)
+    anniversary_date = anniversary_rule.after(current_date, inc=False)
+    return datetime.combine(anniversary_date, datetime.min.time())
 
 
 def process_macros(date_time_str, anniversaries):
