@@ -37,6 +37,30 @@
 				<key>modifiersubtext</key>
 				<string>alter entry</string>
 			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>52DA2602-1085-48CD-BDA1-8BF4F5005B57</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Calculate with this date</string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</string>
+				<key>modifiers</key>
+				<integer>131072</integer>
+				<key>modifiersubtext</key>
+				<string>Absolute date</string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
 		</array>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
 		<array>
@@ -349,11 +373,11 @@
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>keyword</key>
-				<string>dcalcann</string>
+				<string>dcalcset list</string>
 				<key>subtext</key>
-				<string>Change the anniversary list</string>
+				<string>Add, delete or edit entries in the anniversaries list</string>
 				<key>text</key>
-				<string>Dcalc Anniversaries</string>
+				<string>Change anniversaries list</string>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -368,21 +392,21 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>2</integer>
+				<integer>1</integer>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>keyword</key>
-				<string>dcalcann list</string>
+				<string>dcalcshow list</string>
 				<key>runningsubtext</key>
 				<string>Please wait . . .</string>
 				<key>script</key>
 				<string>python anniversary_list.py "{query}"</string>
 				<key>title</key>
-				<string>List of Anniversaries</string>
+				<string>Show anniversaries list</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<false/>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
@@ -397,7 +421,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalcann delete {query}"</string>
+				<string>tell application "Alfred 2" to search "dcalcset list delete {query}"</string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -414,7 +438,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalcann edit {query}"</string>
+				<string>tell application "Alfred 2" to search "dcalset list edit {query}"</string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -425,14 +449,67 @@
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalc {query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>52DA2602-1085-48CD-BDA1-8BF4F5005B57</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalc ^{query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>tell application "Alfred 2" to search "dcalcshow list {query}"</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
-	<string>## Date Calculator Version 1.0
+	<string>## Date Calculator Version 1.1
+
+## Date Calculator
 Hello there!
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
 Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
 
-(img)
+![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)
 
 For example, if you enter
 
@@ -516,19 +593,19 @@ That’s the time 6 hours from now, and for real nerdiness:
 
 Probably not all that useful, but some of this other stuff might be. You know all about
 
-** dcalc now**
+** dcalc now**
 
 For giving you the current time and date. Well you can use 
 
-** dcalc tomorrow **
+** dcalc tomorrow **
 
 for tomorrow’s date, and as you would expect
 
-** dcalc tomorrow + 1d**
+** dcalc tomorrow + 1d**
 
 will give you the day after tomorrow.
 
-** dcalc tue**
+** dcalc tue**
 
 will give you the date next Tuesday. Or for for Thursday you could enter
 
@@ -542,7 +619,7 @@ will give you the same answer.
 
 That about covers it, I think. I haven’t done anything clever with locales, but you can pick a different date format with
 
-**dcalc settings**
+**dcalcset format**
 
 If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
@@ -552,23 +629,59 @@ Oh, almost forgot.
 
 Is the date for next Easter Sunday, for no other reason that I can never remember it, and now there’s an easy way to find out how many days until Christmas:
 
-** dcalc today - christmas**
+**dcalc today - christmas**
+
+### But it doesn’t know my birthday!
+That’s very true, but it can remember if you add your birthday as an entry to the anniversary list.
+
+**dcalcset list add alfred 28.02.2010**
+
+will add an entry called _alfred_ to the list along with his date of birth. Now,  you have your own shortcut to use in date calculations.
+
+** dcalc alfred**
+
+will return _28.02.2015_
+
+Whut?
+Nope, not his date of birth, but the date of his next birthday, so that
+
+** dcalc alfred - today**
+
+will tell you how long until you have to buy him a pressie. If you want to know how long he’s actually been alive, then adding a ‘^’ in front of the shortcut will give you his original date of birth:
+
+**dcalc ^alfred**
+
+and 
+
+**dcalc ^alfred - today**
+
+will tell you how old he is.
+
+You can get a list of all your shortcuts by typing:
+
+**dcalcshow list**
+
+as a command, and you can delete an entry with:
+
+**dcalcset list delete alfred**
+
+Yeah, I know it’s a long command, but I wanted to give you plenty of time to change your mind . . . :-)
 
 ### Credits
 A list of things that made my first attempt at Python programming possible:
-- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework], and for his ‘parse-as-you-type’ idea.
-- The folk at [Jetbrains], for making programming, in any language, bearable.
-- Paul McGuire, for writing [PyParsing].
-- Peter Odding for writing [HumanFriendly].
-- Gustavo Niemeyer for [Python-DateUtil].
-- Volker Birk for [PyPEG].
+- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](https://github.com/deanishe/alfred-workflow), and for his ‘parse-as-you-type’ idea.
+- The folk at [Jetbrains](http://www.jetbrains.com), for making programming, in any language, bearable.
+- Paul McGuire, for writing [PyParsing](http://pyparsing.wikispaces.com).
+- Peter Odding for writing [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/).
+- Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
+- Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
 Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser, added macros (days of week, christmas and easter) and a general tidy up. The symbol for getting the week number for a particular date has changed from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
-Well, I guess the [MIT] one will do. :-)
+Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
 
 The MIT License (MIT)
 Copyright (c) 2014 MuppetGate Media
@@ -602,10 +715,20 @@ THE SOFTWARE.</string>
 			<key>ypos</key>
 			<real>650</real>
 		</dict>
+		<key>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</key>
+		<dict>
+			<key>ypos</key>
+			<real>1040</real>
+		</dict>
 		<key>52C696F5-80D3-4235-92F9-6830E819A88D</key>
 		<dict>
 			<key>ypos</key>
 			<real>60</real>
+		</dict>
+		<key>52DA2602-1085-48CD-BDA1-8BF4F5005B57</key>
+		<dict>
+			<key>ypos</key>
+			<real>920</real>
 		</dict>
 		<key>6344C161-C077-4BB5-800B-6BCF7A98F450</key>
 		<dict>
@@ -661,6 +784,11 @@ THE SOFTWARE.</string>
 		<dict>
 			<key>ypos</key>
 			<real>530</real>
+		</dict>
+		<key>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</key>
+		<dict>
+			<key>ypos</key>
+			<real>1160</real>
 		</dict>
 		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
 		<dict>

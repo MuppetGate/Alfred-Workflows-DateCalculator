@@ -14,7 +14,8 @@ DATE_MAPPINGS = {
     'mm/dd/yy': {'name': 'short US date (/)', 'date-format': '%m/%d/%y', 'regex': '\d{2}/\d{2}/\d{2}'},
     'mm/dd/yyyy': {'name': 'long US date (/)', 'date-format': '%m/%d/%Y', 'regex': '\d{2}/\d{2}/\d{4}'},
     'mm.dd.yy': {'name': 'short US date (.)', 'date-format': '%m.%d.%y', 'regex': '\d{2}\.\d{2}\.\d{2}'},
-    'mm.dd.yyyy': {'name': 'long US date (.)', 'date-format': '%m.%d.%Y', 'regex': '\d{2}\.\d{2}\.\d{4}'}
+    'mm.dd.yyyy': {'name': 'long US date (.)', 'date-format': '%m.%d.%Y', 'regex': '\d{2}\.\d{2}\.\d{4}'},
+    'yyyy-mm-dd': {'name': 'international (-)', 'date-format': '%Y-%m-%d', 'regex': '\d{4}-\d{2}-\d{2}'}
 }
 
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
@@ -44,8 +45,8 @@ TIME_MAP = {"seconds_in_a_day": 86400,
             "seconds_in_a_minute": 60}
 
 
-DEFAULT_ANNIVERSARIES = {'christmas': '2014-12-25T00:30:00',
-                         'alfred': '2011-12-08T00:00:00'}
+DEFAULT_ANNIVERSARIES = {'christmas': '1900-12-25T00:30:00',
+                         'alfred': '2010-02-28T00:00:00'}
 
 DEFAULT_WORKFLOW_SETTINGS = {
 
@@ -55,5 +56,3 @@ DEFAULT_WORKFLOW_SETTINGS = {
 
 }
 
-## This is the cache used to operate the anniversaries workflows
-ANN_CACHE = "anniversary_cache"
