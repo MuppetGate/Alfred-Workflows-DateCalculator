@@ -22,13 +22,13 @@ class FormatError(Exception):
 
 def do_functions(command, date_format, settings):
 
-    date_time, output_format = convert_date_time(command.dateTime1, date_format, settings)
+    date_time, output_format = convert_date_time(command.dateTime, date_format, settings)
 
     if command.functionName.lower() in DATE_FUNCTION_MAP:
         # noinspection PyCallingNonCallable
         return DATE_FUNCTION_MAP[command.functionName.lower()](date_time)
     else:
-        return "Invalid function . . ."
+        return "Invalid function . . . "
 
 
 def delta_arithmetic(date_time, operand):
@@ -194,11 +194,13 @@ def main(wf):
 
         command = command_parser.parse_command(args[0])
 
-        if hasattr(command, "functionName"):
-            output = do_functions(command, date_mapping['date-format'], wf.settings)
-
-        elif hasattr(command, "dateTime"):
+        if hasattr(command, "dateTime"):
             output = do_timespans(command, date_mapping['date-format'], wf.settings)
+
+            if hasattr(command, "functionName"):
+                setattr(command, "dateTime", output)
+                # and run it through the functions function
+                output = do_functions(command, date_mapping['date-format'], wf.settings)
 
         elif hasattr(command, "dateTime1") and hasattr(command, "dateTime2"):
             output = do_subtraction(command, date_mapping['date-format'], wf.settings)

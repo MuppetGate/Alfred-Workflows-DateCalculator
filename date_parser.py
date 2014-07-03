@@ -83,7 +83,9 @@ class DateParser:
 
         class Commands(List):
             grammar = [
-                (attr("functionName", DateFunction), attr("dateTime1", DateTime)),
+                (attr("dateTime", DateTime), attr("operandList", OperandList), attr("functionName", DateFunction)),
+
+                (attr("dateTime", DateTime), attr("functionName", DateFunction)),
 
                 (attr("dateTime1", DateTime), attr("operandList1", OperandList), "-", attr("dateTime2", DateTime),
                  attr("operandList2", OperandList), attr("format", Format)),
@@ -97,7 +99,7 @@ class DateParser:
 if __name__ == '__main__':
 
     command_parser = DateParser("\d{2}\.\d{2}\.\d{2}", DEFAULT_WORKFLOW_SETTINGS)
-    command = command_parser.parse_command("wdi 27.01.14")
+    command = command_parser.parse_command("wd 27.01.14 + 1d")
     print(command.dateTime)
     print(command.operandList[0].operator)
     print(command.operandList[0].timeSpans[0].amount)
