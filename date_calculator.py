@@ -1,6 +1,7 @@
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DATE_MAPPINGS, \
     TIME_MAP
+from date_functions import DATE_FUNCTION_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
 from utils import convert_date_time
@@ -10,12 +11,13 @@ from humanfriendly import *
 
 
 def do_functions(command, date_format, settings):
+
     date_time, output_format = convert_date_time(command.dateTime1, date_format, settings)
 
-    if command.functionName.lower() == "wn" or command.functionName == "!":
-        return "{week_number}".format(week_number=date_time.strftime("%V"))
-    return None
-
+    if command.functionName.lower() in DATE_FUNCTION_MAP:
+        return DATE_FUNCTION_MAP[command.functionName.lower()](date_time)
+    else:
+        return "Invalid function . . ."
 
 def delta_arithmetic(date_time, operand):
     delta_date_time = date_time
