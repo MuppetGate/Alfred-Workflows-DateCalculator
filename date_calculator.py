@@ -1,3 +1,4 @@
+from collections import Counter
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DATE_MAPPINGS, \
     TIME_MAP
@@ -10,14 +11,25 @@ from workflow import Workflow, ICON_ERROR
 from humanfriendly import *
 
 
+class FormatError(Exception):
+    """
+    Throw this when there are
+    repeated characters in the
+    format field.
+    """
+    pass
+
+
 def do_functions(command, date_format, settings):
 
-    date_time, output_format = convert_date_time(command.dateTime1, date_format, settings)
+    date_time, output_format = convert_date_time(command.dateTime, date_format, settings)
 
     if command.functionName.lower() in DATE_FUNCTION_MAP:
+        # noinspection PyCallingNonCallable
         return DATE_FUNCTION_MAP[command.functionName.lower()](date_time)
     else:
-        return "Invalid function . . ."
+        return "Invalid function . . . "
+
 
 def delta_arithmetic(date_time, operand):
     delta_date_time = date_time
@@ -65,9 +77,30 @@ def do_subtraction(command, date_format, settings):
     return normalised_days(command, date_time_1, date_time_2)
 
 
+def valid_command_format(format):
+    """
+    This returns true if the format option entered
+    by the user is valid. The parser will take care
+    of most of the validation except for repeated
+    characters, which is what we're testing for here.
+    :param format:
+    :return: true if valid
+    """
+    repeats_search = Counter(format)
+    repeated_items = filter(lambda x: x > 1, repeats_search.values())
+
+    if len(repeated_items) == 0:
+        return True
+    else:
+        return False
+
+
 def normalised_days(command, date_time_1, date_time_2):
     # If the user selected long then he wants the full
     # date, so fill in the format before carrying on.
+
+    if not valid_command_format(command.format):
+        raise FormatError
 
     if command.format == "long":
 
@@ -161,11 +194,13 @@ def main(wf):
 
         command = command_parser.parse_command(args[0])
 
-        if hasattr(command, "functionName"):
-            output = do_functions(command, date_mapping['date-format'], wf.settings)
-
-        elif hasattr(command, "dateTime"):
+        if hasattr(command, "dateTime"):
             output = do_timespans(command, date_mapping['date-format'], wf.settings)
+
+            if hasattr(command, "functionName"):
+                setattr(command, "dateTime", output)
+                # and run it through the functions function
+                output = do_functions(command, date_mapping['date-format'], wf.settings)
 
         elif hasattr(command, "dateTime1") and hasattr(command, "dateTime2"):
             output = do_subtraction(command, date_mapping['date-format'], wf.settings)
@@ -178,6 +213,9 @@ def main(wf):
 
     except ValueError:
         output = "Invalid Date"
+
+    except FormatError:
+        output = "Invalid format"
 
     if output.startswith("Invalid"):
         wf.add_item(title=". . .", subtitle=output, valid=False, arg=args[0], icon=ICON_ERROR)

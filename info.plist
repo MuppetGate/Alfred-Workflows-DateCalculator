@@ -502,7 +502,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>## Date Calculator Version 1.2
+	<string>## Date Calculator Version 1.3
 
 ## [Date Calculator](http://www.packal.org/workflow/date-calculator)
 
@@ -566,15 +566,19 @@ What does that mess do?
 
 If you want to know what week number you’re in, then try this:
 
-**dcalc ! today**
+**dcalc today !**
 
 Or for a specific date:
 
-**dcalc ! 25.12.14**
+**dcalc 25.12.14 !**
+
+You can get the day of week like this:
+
+**dcalc tomorrow wd**
 
 You can also use the _today_ thing in other places too:
 
-**dcalc today + 4d**
+**dcalc today + 4d wd**
 
 And we have another thing called _time_ because the workflow can handle times too:
 
@@ -682,6 +686,10 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+
+Last release (Version 1.3) Adds extra formatting functions (day of week) and bug fixes.
+
+Last release (Version 1.2) was an improvement to add user-defined macros.
 
 Last release (Version 1.1) was on the 01.07.2014. This included a new anniversary list function, and the addition of the international date format (yyyy-mm-dd).
 
