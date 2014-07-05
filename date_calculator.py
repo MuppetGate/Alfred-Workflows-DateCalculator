@@ -77,16 +77,16 @@ def do_subtraction(command, date_format, settings):
     return normalised_days(command, date_time_1, date_time_2)
 
 
-def valid_command_format(format):
+def valid_command_format(command_format):
     """
     This returns true if the format option entered
     by the user is valid. The parser will take care
     of most of the validation except for repeated
     characters, which is what we're testing for here.
-    :param format:
+    :param command_format:
     :return: true if valid
     """
-    repeats_search = Counter(format)
+    repeats_search = Counter(command_format)
     repeated_items = filter(lambda x: x > 1, repeats_search.values())
 
     if len(repeated_items) == 0:
@@ -230,4 +230,3 @@ def main(wf):
 if __name__ == '__main__':
     workflow = Workflow(default_settings=DEFAULT_WORKFLOW_SETTINGS)
     sys.exit(workflow.run(main))
-

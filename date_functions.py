@@ -1,3 +1,4 @@
+
 DAYS_OF_WEEK = {
     1: "MON",
     2: "TUE",
@@ -7,6 +8,9 @@ DAYS_OF_WEEK = {
     6: "SAT",
     7: "SUN"
 }
+
+## The functions must all take a datetime object and they must all
+## return a string
 
 
 def week_number(date_time):
