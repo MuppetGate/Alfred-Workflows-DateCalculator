@@ -2,7 +2,7 @@ from collections import Counter
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DATE_MAPPINGS, \
     TIME_MAP
-from date_functions import DATE_FUNCTION_MAP
+from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
 from utils import convert_date_time
@@ -24,9 +24,9 @@ def do_functions(command, date_format, settings):
 
     date_time, output_format = convert_date_time(command.dateTime, date_format, settings)
 
-    if command.functionName.lower() in DATE_FUNCTION_MAP:
+    if command.functionName.lower() in DATE_FORMATTERS_MAP:
         # noinspection PyCallingNonCallable
-        return DATE_FUNCTION_MAP[command.functionName.lower()](date_time)
+        return DATE_FORMATTERS_MAP[command.functionName.lower()](date_time)
     else:
         return "Invalid function . . . "
 

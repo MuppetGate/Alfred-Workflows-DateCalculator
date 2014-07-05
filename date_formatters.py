@@ -31,7 +31,7 @@ def week_day_in_isoformat(date_time):
 # so they are matched first. In this case we have put
 # 'wdi' in front of 'wd'. If you don't then the wrong
 # function might get matched by mistake.
-DATE_FUNCTION_MAP = {
+DATE_FORMATTERS_MAP = {
 
     "wdi": week_day_in_isoformat,
     "wn": week_number,

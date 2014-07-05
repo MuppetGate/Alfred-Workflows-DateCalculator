@@ -1,6 +1,6 @@
 from __future__ import unicode_literals, print_function
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DEFAULT_TIME_RE
-from date_functions import DATE_FUNCTION_MAP
+from date_formatters import DATE_FORMATTERS_MAP
 
 from pypeg2 import *
 
@@ -25,7 +25,7 @@ class DateParser:
         self.time_span_re = re.compile('[ymwdhMs]')
         self.time_digits_re = re.compile('[0-9]+')
         self.format_re = re.compile('[ymwdhMs]+|long')
-        self.functions_re = re.compile(self._get_date_functions(), re.IGNORECASE)
+        self.functions_re = re.compile(self._get_date_formatters(), re.IGNORECASE)
 
     @staticmethod
     def _get_anniversaries(settings):
@@ -46,14 +46,14 @@ class DateParser:
         return '|'.join('\^?' + str(x) for x in settings['anniversaries'].keys())
 
     @staticmethod
-    def _get_date_functions():
+    def _get_date_formatters():
         """
         This method will get the list of defnined functions and build
         a regular expression from them so that they can be interpreted
         later on
         :return: a regex string of allowable function names
         """
-        return '|'.join(str(x) for x in DATE_FUNCTION_MAP.keys())
+        return '|'.join(str(x) for x in DATE_FORMATTERS_MAP.keys())
 
     def parse_command(self, command_string):
 
