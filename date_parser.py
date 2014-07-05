@@ -1,6 +1,7 @@
 from __future__ import unicode_literals, print_function
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DEFAULT_TIME_RE
 from date_formatters import DATE_FORMATTERS_MAP
+from date_functions import DATE_FUNCTION_MAP
 
 from pypeg2 import *
 
@@ -13,19 +14,13 @@ class DateParser:
         self.date_re = re.compile(self.date_expression)
         self.time_re = re.compile(DEFAULT_TIME_RE)
         self.date_time_re = re.compile(self.date_expression + '@' + DEFAULT_TIME_RE)
-        self.date_macro_re = re.compile('date|today', re.IGNORECASE)
-        self.time_macro_re = re.compile('time', re.IGNORECASE)
-        self.now_macro_re = re.compile('now', re.IGNORECASE)
-        self.yesterday_macro_re = re.compile('yesterday', re.IGNORECASE)
-        self.tomorrow_macro_re = re.compile('tomorrow', re.IGNORECASE)
-        self.days_of_week_re = re.compile('mon|tue|wed|thu|fri|sat|sun', re.IGNORECASE)
-        self.easter_macro_re = re.compile('easter', re.IGNORECASE)
+        self.date_functions_re = re.compile(self._get_date_functions(), re.IGNORECASE)
         self.user_macros_re = re.compile(self._get_anniversaries(self.settings), re.IGNORECASE)
         self.operator_re = re.compile('[+-]')
         self.time_span_re = re.compile('[ymwdhMs]')
         self.time_digits_re = re.compile('[0-9]+')
         self.format_re = re.compile('[ymwdhMs]+|long')
-        self.functions_re = re.compile(self._get_date_formatters(), re.IGNORECASE)
+        self.date_formatters_re = re.compile(self._get_date_formatters(), re.IGNORECASE)
 
     @staticmethod
     def _get_anniversaries(settings):
@@ -55,6 +50,10 @@ class DateParser:
         """
         return '|'.join(str(x) for x in DATE_FORMATTERS_MAP.keys())
 
+    @staticmethod
+    def _get_date_functions():
+        return '|'.join(str(x) for x in DATE_FUNCTION_MAP.keys())
+
     def parse_command(self, command_string):
 
         class Operator(str):
@@ -70,13 +69,10 @@ class DateParser:
             grammar = maybe_some(Operand)
 
         class DateFunction(str):
-            grammar = self.functions_re
+            grammar = self.date_formatters_re
 
         class DateTime(str):
-            grammar = [self.date_time_re, self.date_re, self.time_re,
-                       self.date_macro_re, self.time_macro_re, self.now_macro_re,
-                       self.yesterday_macro_re, self.days_of_week_re, self.tomorrow_macro_re,
-                       self.easter_macro_re, self.user_macros_re]
+            grammar = [self.date_time_re, self.date_re, self.time_re, self.date_functions_re, self.user_macros_re]
 
         class Format(str):
             grammar = optional(self.format_re)

@@ -19,10 +19,7 @@ class MacrosParser(DateParser):
     def parse_command(self, command_string=None):
 
         class DateTime(str):
-            grammar = optional([self.date_time_re, self.date_re, self.time_re,
-                                self.date_macro_re, self.time_macro_re, self.now_macro_re,
-                                self.yesterday_macro_re, self.days_of_week_re, self.tomorrow_macro_re,
-                                self.easter_macro_re, self.user_macros_re])
+            grammar = optional([self.date_time_re, self.date_re, self.time_re, self.date_functions_re, self.user_macros_re])
 
         class AnniversaryName(str):
             grammar = self.anniversary_name_re

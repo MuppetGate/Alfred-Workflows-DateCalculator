@@ -1,5 +1,4 @@
 # The date formats array
-from dateutil.relativedelta import relativedelta, TH, MO, TU, WE, FR, SA, SU
 
 DATE_MAPPINGS = {
 
@@ -26,15 +25,6 @@ DEFAULT_TIME_EXPR = '%H:%M'
 
 VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]
-
-# The DAY_MAP is specific to relative delta
-DAY_MAP = {"mon": relativedelta(days=+1, weekday=MO(+1)),
-           "tue": relativedelta(days=+1, weekday=TU(+1)),
-           "wed": relativedelta(days=+1, weekday=WE(+1)),
-           "thu": relativedelta(days=+1, weekday=TH(+1)),
-           "fri": relativedelta(days=+1, weekday=FR(+1)),
-           "sat": relativedelta(days=+1, weekday=SA(+1)),
-           "sun": relativedelta(days=+1, weekday=SU(+1))}
 
 
 TIME_MAP = {"seconds_in_a_day": 86400,
