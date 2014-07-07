@@ -62,7 +62,7 @@ def weekday(day_of_week_str):
     return _weekday
 
 
-def get_easter():
+def _easter():
     this_date = _get_current_date()
     this_easter = datetime.combine(easter(this_date.year), datetime.min.time())
     if this_date < this_easter:
@@ -74,7 +74,7 @@ def get_easter():
 
 
 def next_easter(date_format):
-    return get_easter(), date_format
+    return _easter(), date_format
 
 
 def bst(month_number):
