@@ -6,6 +6,7 @@ from dateutil.easter import easter
 
 # The DAY_MAP is specific to relative delta
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
+from dateutil.rrule import rrule, YEARLY
 
 DAY_MAP = {"mon": relativedelta(days=+1, weekday=MO(+1)),
            "tue": relativedelta(days=+1, weekday=TU(+1)),
@@ -76,6 +77,21 @@ def next_easter(date_format):
     return get_easter(), date_format
 
 
+def bst(month_number):
+    """
+    Use the rather clever dateutils functions
+    to give us the last Sunday in March/October
+    And currying rocks!
+    :param date_format:
+    :return:
+    """
+    def _bst(date_format):
+        bst_rule = rrule(freq=YEARLY, bymonth=month_number, byweekday=SU(-1))
+        return bst_rule.after(_get_current_date(), inc=False), date_format
+
+    return _bst
+
+
 DATE_FUNCTION_MAP = {
 
     "date": current_date,
@@ -91,7 +107,9 @@ DATE_FUNCTION_MAP = {
     "thu": weekday('thu'),
     "fri": weekday('fri'),
     "sat": weekday('sat'),
-    "sun": weekday('sun')
+    "sun": weekday('sun'),
+    "start_bst": bst(3),
+    "end_bst": bst(10)
 }
 
 
