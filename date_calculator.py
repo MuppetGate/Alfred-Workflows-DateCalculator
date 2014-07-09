@@ -1,7 +1,7 @@
 from collections import Counter
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DATE_MAPPINGS, \
-    TIME_MAP
+    TIME_CALCULATION, VALID_FORMAT_OPTIONS
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
@@ -21,7 +21,6 @@ class FormatError(Exception):
 
 
 def do_functions(command, date_format, settings):
-
     date_time, output_format = convert_date_time(command.dateTime, date_format, settings)
 
     if command.functionName.lower() in DATE_FORMATTERS_MAP:
@@ -120,62 +119,25 @@ def normalised_days(command, date_time_1, date_time_2):
         seconds_left = abs((date_time_2 - date_time_1).total_seconds())
 
         if not command.format:
-            return pluralize(int(seconds_left / TIME_MAP["seconds_in_a_day"]), "day", "days")
+            return pluralize(int(seconds_left / TIME_CALCULATION['d']['seconds']),
+                             TIME_CALCULATION['d']['singular'], TIME_CALCULATION['d']['plural'])
 
-        normalised_string = ""
+        normalised_elements = []
 
-        if "y" in command.format:
-            years, seconds_left = divmod(seconds_left, TIME_MAP["seconds_in_a_year"])
-            normalised_string += pluralize(int(years), "year", "years")
+        # Python gotcha. They keys in the map are not guaranteed
+        # to come out in the same order you put then; so we have
+        # to scan them specifically in the order we want them to
+        # appear in the calculation. If they're out of sequence
+        # then the calculation will return the wrong result.
+        for x in VALID_FORMAT_OPTIONS:
 
-        if "m" in command.format:
-
-            if normalised_string:
-                normalised_string += ", "
-
-            months, seconds_left = divmod(seconds_left, TIME_MAP["seconds_in_a_month"])
-            normalised_string += pluralize(int(months), "month", "months")
-
-        if "w" in command.format:
-
-            if normalised_string:
-                normalised_string += ", "
-
-            weeks, seconds_left = divmod(seconds_left, TIME_MAP["seconds_in_a_week"])
-            normalised_string += pluralize(int(weeks), "week", "weeks")
-
-        if "d" in command.format:
-
-            if normalised_string:
-                normalised_string += ", "
-
-            days, seconds_left = divmod(seconds_left, TIME_MAP["seconds_in_a_day"])
-            normalised_string += pluralize(int(days), "day", "days")
-
-        if "h" in command.format:
-
-            if normalised_string:
-                normalised_string += ", "
-
-            hours, seconds_left = divmod(seconds_left, TIME_MAP["seconds_in_an_hour"])
-            normalised_string += pluralize(int(hours), "hour", "hours")
-
-        if "M" in command.format:
-
-            if normalised_string:
-                normalised_string += ", "
-
-            minutes, seconds_left = divmod(seconds_left, TIME_MAP["seconds_in_a_minute"])
-            normalised_string += pluralize(int(minutes), "minute", "minutes")
-
-        if "s" in command.format:
-
-            if normalised_string:
-                normalised_string += ", "
-
-            normalised_string += pluralize(int(seconds_left), "second", "seconds")
-
-        return normalised_string
+            if x in command.format.lower():
+                time_span, seconds_left = divmod(seconds_left, TIME_CALCULATION[x]['seconds'])
+                normalised_elements.append(pluralize(int(time_span),
+                                                     TIME_CALCULATION[x]['singular'], TIME_CALCULATION[x]['plural']))
+        # We put each part of the calculation in a list
+        # so that Python can handle comma-separating them later on
+        return ', '.join(normalised_elements)
 
 
 def main(wf):

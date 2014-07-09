@@ -1,4 +1,5 @@
 # The date formats array
+from collections import OrderedDict
 
 DATE_MAPPINGS = {
 
@@ -27,12 +28,17 @@ VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]
 
 
-TIME_MAP = {"seconds_in_a_day": 86400,
-            "seconds_in_a_week": 604800,
-            "seconds_in_a_month": 2592000,
-            "seconds_in_a_year": 31556952,
-            "seconds_in_an_hour": 3600,
-            "seconds_in_a_minute": 60}
+TIME_CALCULATION = {
+
+    'y': {'seconds': 31556952, 'singular': 'year', 'plural': 'years'},
+    'm': {'seconds': 2592000, 'singular': 'month', 'plural': 'months'},
+    'w': {'seconds': 604800, 'singular': 'week', 'plural': 'weeks'},
+    'd': {'seconds': 86400, 'singular': 'day', 'plural': 'days'},
+    'h': {'seconds': 3600, 'singular': 'hour', 'plural': 'hour'},
+    'M': {'seconds': 60, 'singular': 'minute', 'plural': 'hour'},
+    's': {'seconds': 1, 'singular': 'second', 'plural': 'second'}
+
+}
 
 
 DEFAULT_ANNIVERSARIES = {'christmas': '1900-12-25T00:30:00',
