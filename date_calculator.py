@@ -131,7 +131,7 @@ def normalised_days(command, date_time_1, date_time_2):
         # then the calculation will return the wrong result.
         for x in VALID_FORMAT_OPTIONS:
 
-            if x in command.format.lower():
+            if x in command.format:
                 time_span, seconds_left = divmod(seconds_left, TIME_CALCULATION[x]['seconds'])
                 normalised_elements.append(pluralize(int(time_span),
                                                      TIME_CALCULATION[x]['singular'], TIME_CALCULATION[x]['plural']))

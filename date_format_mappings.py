@@ -34,9 +34,9 @@ TIME_CALCULATION = {
     'm': {'seconds': 2592000, 'singular': 'month', 'plural': 'months'},
     'w': {'seconds': 604800, 'singular': 'week', 'plural': 'weeks'},
     'd': {'seconds': 86400, 'singular': 'day', 'plural': 'days'},
-    'h': {'seconds': 3600, 'singular': 'hour', 'plural': 'hour'},
-    'M': {'seconds': 60, 'singular': 'minute', 'plural': 'hour'},
-    's': {'seconds': 1, 'singular': 'second', 'plural': 'second'}
+    'h': {'seconds': 3600, 'singular': 'hour', 'plural': 'hours'},
+    'M': {'seconds': 60, 'singular': 'minute', 'plural': 'minutes'},
+    's': {'seconds': 1, 'singular': 'second', 'plural': 'seconds'}
 
 }
 
