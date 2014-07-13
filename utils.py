@@ -71,7 +71,7 @@ def convert_date_time(date_time_str, date_format, settings):
         try:
 
             process_date = datetime.strptime(date_time_str, date_format)
-            date_and_time = datetime.combine(process_date, datetime.now().time())
+            date_and_time = datetime.combine(process_date, datetime.min.time())
             return date_and_time, date_format
 
         except ValueError:

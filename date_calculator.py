@@ -21,7 +21,7 @@ class FormatError(Exception):
 
 
 def do_functions(command, date_format, settings):
-    date_time, output_format = convert_date_time(command.dateTime, date_format, settings)
+    date_time, _ = convert_date_time(command.dateTime, date_format, settings)
 
     if command.functionName.lower() in DATE_FORMATTERS_MAP:
         # noinspection PyCallingNonCallable

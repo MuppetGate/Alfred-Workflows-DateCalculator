@@ -30,8 +30,8 @@ VALID_WORD_FORMAT_OPTIONS = ["long"]
 
 TIME_CALCULATION = {
 
-    'y': {'seconds': 31556952, 'singular': 'year', 'plural': 'years'},
-    'm': {'seconds': 2592000, 'singular': 'month', 'plural': 'months'},
+    'y': {'seconds': 31540000, 'singular': 'year', 'plural': 'years'},
+    'm': {'seconds': 2628000, 'singular': 'month', 'plural': 'months'},
     'w': {'seconds': 604800, 'singular': 'week', 'plural': 'weeks'},
     'd': {'seconds': 86400, 'singular': 'day', 'plural': 'days'},
     'h': {'seconds': 3600, 'singular': 'hour', 'plural': 'hours'},
