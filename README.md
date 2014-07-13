@@ -136,7 +136,20 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
-Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser, added macros (days of week, christmas and easter) and a general tidy up. The symbol for getting the week number for a particular date has changed from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
+Last release (Version 1.4) Fixed bug that caused inaccuracies when calculating anniversaries. 
+Refactored code to make it easier to add new date functions and date formatters. General tidy-up
+
+Last release (Version 1.3) Adds extra formatting functions (day of week) and bug fixes.
+
+Last release (Version 1.2) was an improvement to add user-defined macros.
+
+Last release (Version 1.1) was on the 01.07.2014. This included a new anniversary list function, 
+and the addition of the international date format (yyyy-mm-dd).
+
+Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser, 
+added macros (days of week, christmas and easter) and a general tidy up. 
+The symbol for getting the week number for a particular date has changed 
+from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
 Well, I guess the [MIT] one will do. :-)
