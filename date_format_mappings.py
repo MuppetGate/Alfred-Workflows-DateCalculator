@@ -1,5 +1,6 @@
 # The date formats array
 from collections import OrderedDict
+from dateutil.rrule import YEARLY, MONTHLY, WEEKLY, DAILY, HOURLY, MINUTELY, SECONDLY
 
 DATE_MAPPINGS = {
 
@@ -30,13 +31,13 @@ VALID_WORD_FORMAT_OPTIONS = ["long"]
 
 TIME_CALCULATION = {
 
-    'y': {'seconds': 31540000, 'singular': 'year', 'plural': 'years'},
-    'm': {'seconds': 2628000, 'singular': 'month', 'plural': 'months'},
-    'w': {'seconds': 604800, 'singular': 'week', 'plural': 'weeks'},
-    'd': {'seconds': 86400, 'singular': 'day', 'plural': 'days'},
-    'h': {'seconds': 3600, 'singular': 'hour', 'plural': 'hours'},
-    'M': {'seconds': 60, 'singular': 'minute', 'plural': 'minutes'},
-    's': {'seconds': 1, 'singular': 'second', 'plural': 'seconds'}
+    'y': {'interval': YEARLY, 'singular': 'year', 'plural': 'years'},
+    'm': {'interval': MONTHLY, 'singular': 'month', 'plural': 'months'},
+    'w': {'interval': WEEKLY, 'singular': 'week', 'plural': 'weeks'},
+    'd': {'interval': DAILY, 'singular': 'day', 'plural': 'days'},
+    'h': {'interval': HOURLY, 'singular': 'hour', 'plural': 'hours'},
+    'M': {'interval': MINUTELY, 'singular': 'minute', 'plural': 'minutes'},
+    's': {'interval': SECONDLY, 'singular': 'second', 'plural': 'seconds'}
 
 }
 
@@ -49,7 +50,6 @@ DEFAULT_ANNIVERSARIES = {'christmas': '1900-12-25T00:30:00',
 DEFAULT_WORKFLOW_SETTINGS = {
 
     'date-format': DEFAULT_DATE_FORMAT,
-
     'anniversaries': DEFAULT_ANNIVERSARIES
 
 }

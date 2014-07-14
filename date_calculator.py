@@ -5,6 +5,7 @@ from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
+from dateutil.rrule import rrule, DAILY
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
@@ -94,12 +95,59 @@ def valid_command_format(command_format):
         return False
 
 
+def calculate_time_interval(interval, start_datetime, end_datetime):
+    """
+    So how does this work. Well, as it turns out, trying use division by seconds to get
+    the intervals is the wrong way to do it. The problem is the uneven months and leapyears
+    leads to inaccuracies. So this is the new way of doing it.
+    Use the rrule to get a list of all the dates that fall inside the given range. If you count
+    the dates (whether the frequency is YEARLY, MONTHLY, WEEKLY etc.) then the count will tell
+    you how many intervals fall inside the range. Here's the clever bit: the last date inside
+    the range is kind of your remainder. Set that to the start date for the next calculation and
+    you pick up at the starting poing where the last count ended!
+    Note. We knock one of the count because rrule includes the date you're counting from in the list,
+    which you don't really want.
+    :param interval: YEARLY, MONTHLY, WEEKLY, DAILY, HOURLY, MINUTELY or SECONDLY
+    :param start_datetime: When you're counting from
+    :param end_datetime:  When you're counting to.
+    :return:
+    """
+    datetime_list = list(rrule(freq=interval, dtstart=start_datetime, until=end_datetime))
+    return len(datetime_list) - 1, datetime_list[-1]
+
+
+def later_date_first(date_time_1, date_time_2):
+    """
+    The rrule is fussy about the order of the dates: the lower one
+    has to go first. But we don't force our users to always put the
+    higher date first, so this method will flip them if expression
+    is entered incorrectly.
+    :param date_time_1:
+    :param date_time_2:
+    :return:
+    """
+    if date_time_1 < date_time_2:
+        start_date_time = date_time_1
+        end_date_time = date_time_2
+    else:
+        start_date_time = date_time_2
+        end_date_time = date_time_1
+    return end_date_time, start_date_time
+
+
 def normalised_days(command, date_time_1, date_time_2):
     # If the user selected long then he wants the full
     # date, so fill in the format before carrying on.
 
     if not valid_command_format(command.format):
         raise FormatError
+
+    if not command.format:
+        # default to days
+        end_date_time, start_date_time = later_date_first(date_time_1, date_time_2)
+        count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'], start_date_time, end_date_time)
+        return "{days}".format(days=pluralize(count, TIME_CALCULATION['d']['singular'],
+                                              TIME_CALCULATION['d']['plural']))
 
     if command.format == "long":
 
@@ -111,33 +159,30 @@ def normalised_days(command, date_time_1, date_time_2):
             days=pluralize(abs(difference.days), "day", "days"),
             hours=pluralize(abs(difference.hours), "hour", "hours"),
             minutes=pluralize(abs(difference.minutes), "minute", "minutes"),
-            seconds=pluralize(abs(difference.seconds), "second", "seconds")
-        )
+            seconds=pluralize(abs(difference.seconds), "second", "seconds"))
 
-    else:
+    # Python gotcha. They keys in the map are not guaranteed
+    # to come out in the same order you put then; so we have
+    # to scan them specifically in the order we want them to
+    # appear in the calculation. If they're out of sequence
+    # then the calculation will return the wrong result.
 
-        seconds_left = abs((date_time_2 - date_time_1).total_seconds())
+    # This time it does matter which way around the dates go.
 
-        if not command.format:
-            return pluralize(int(seconds_left / TIME_CALCULATION['d']['seconds']),
-                             TIME_CALCULATION['d']['singular'], TIME_CALCULATION['d']['plural'])
+    end_date_time, start_date_time = later_date_first(date_time_1, date_time_2)
 
-        normalised_elements = []
+    normalised_elements = []
 
-        # Python gotcha. They keys in the map are not guaranteed
-        # to come out in the same order you put then; so we have
-        # to scan them specifically in the order we want them to
-        # appear in the calculation. If they're out of sequence
-        # then the calculation will return the wrong result.
-        for x in VALID_FORMAT_OPTIONS:
+    for x in VALID_FORMAT_OPTIONS:
 
-            if x in command.format:
-                time_span, seconds_left = divmod(seconds_left, TIME_CALCULATION[x]['seconds'])
-                normalised_elements.append(pluralize(int(time_span),
-                                                     TIME_CALCULATION[x]['singular'], TIME_CALCULATION[x]['plural']))
-        # We put each part of the calculation in a list
-        # so that Python can handle comma-separating them later on
-        return ', '.join(normalised_elements)
+        if x in command.format:
+            count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
+                                                             start_date_time, end_date_time)
+            normalised_elements.append(pluralize(count,
+                                                 TIME_CALCULATION[x]['singular'], TIME_CALCULATION[x]['plural']))
+    # We put each part of the calculation in a list
+    # so that Python can handle comma-separating them later on
+    return ', '.join(normalised_elements)
 
 
 def main(wf):
