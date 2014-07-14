@@ -136,6 +136,10 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+
+Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic. 
+Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
+
 Last release (Version 1.4) Fixed bug that caused inaccuracies when calculating anniversaries. 
 Refactored code to make it easier to add new date functions and date formatters. General tidy-up
 
