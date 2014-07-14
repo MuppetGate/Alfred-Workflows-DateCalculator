@@ -154,12 +154,12 @@ def normalised_days(command, date_time_1, date_time_2):
         difference = relativedelta(date_time_1, date_time_2)
 
         return "{years}, {months}, {days}, {hours}, {minutes}, {seconds}".format(
-            years=pluralize(abs(difference.years), "year", "years"),
-            months=pluralize(abs(difference.months), "month", "months"),
-            days=pluralize(abs(difference.days), "day", "days"),
-            hours=pluralize(abs(difference.hours), "hour", "hours"),
-            minutes=pluralize(abs(difference.minutes), "minute", "minutes"),
-            seconds=pluralize(abs(difference.seconds), "second", "seconds"))
+            years=pluralize(abs(difference.years), TIME_CALCULATION['y']['singular'], TIME_CALCULATION['y']['plural']),
+            months=pluralize(abs(difference.months), TIME_CALCULATION['m']['singular'], TIME_CALCULATION['m']['plural']),
+            days=pluralize(abs(difference.days), TIME_CALCULATION['d']['singular'], TIME_CALCULATION['d']['plural']),
+            hours=pluralize(abs(difference.hours), TIME_CALCULATION['h']['singular'], TIME_CALCULATION['h']['plural']),
+            minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'], TIME_CALCULATION['M']['plural']),
+            seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'], TIME_CALCULATION['s']['plural']))
 
     # Python gotcha. They keys in the map are not guaranteed
     # to come out in the same order you put then; so we have
