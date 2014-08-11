@@ -1,4 +1,5 @@
 from __future__ import unicode_literals, print_function
+from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DEFAULT_TIME_RE
 from date_formatters import DATE_FORMATTERS_MAP
 from date_functions import DATE_FUNCTION_MAP
@@ -21,6 +22,10 @@ class DateParser:
         self.time_digits_re = re.compile('[0-9]+')
         self.format_re = re.compile('[ymwdhMs]+|long')
         self.date_formatters_re = re.compile(self._get_date_formatters(), re.IGNORECASE)
+
+        # Exclusions from date subtraction calculations.
+        self.exclusion_keyword_re = re.compile('exclude|ex|x', re.IGNORECASE)
+        self.exclusion_macros_re = re.compile(self._get_exclusion_macros(), re.IGNORECASE)
 
     @staticmethod
     def _get_anniversaries(settings):
@@ -54,6 +59,10 @@ class DateParser:
     def _get_date_functions():
         return '|'.join(str(x) for x in DATE_FUNCTION_MAP.keys())
 
+    @staticmethod
+    def _get_exclusion_macros():
+        return '|'.join(str(x) for x in DATE_EXCLUSION_RULES_MAP.keys())
+
     def parse_command(self, command_string):
 
         class Operator(str):
@@ -77,6 +86,21 @@ class DateParser:
         class Format(str):
             grammar = optional(self.format_re)
 
+        class ExclusionKeyword(str):
+            grammar = self.exclusion_keyword_re
+
+        class ExclusionType(List):
+            grammar = [attr("exclusionDateTime", DateTime), attr("exclusionMacro", self.exclusion_macros_re)]
+
+        class ExclusionList(List):
+            grammar = some(ExclusionType)
+
+        class ExclusionCommand(str):
+            grammar = attr("exclusionKeyword", ExclusionKeyword), attr("exclusionList", ExclusionList)
+
+        class ExclusionCommands(List):
+            grammar = maybe_some(ExclusionCommand)
+
         class Commands(List):
             grammar = [
                 (attr("dateTime", DateTime), attr("operandList", OperandList), attr("functionName", DateFunction)),
@@ -84,7 +108,8 @@ class DateParser:
                 (attr("dateTime", DateTime), attr("functionName", DateFunction)),
 
                 (attr("dateTime1", DateTime), attr("operandList1", OperandList), "-", attr("dateTime2", DateTime),
-                 attr("operandList2", OperandList), attr("format", Format)),
+                 attr("operandList2", OperandList),
+                 attr("exclusionCommands", ExclusionCommands), attr("format", Format)),
 
                 (attr("dateTime", DateTime), attr("operandList", OperandList))
             ]

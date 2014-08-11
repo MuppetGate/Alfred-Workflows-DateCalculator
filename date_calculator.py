@@ -5,7 +5,7 @@ from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, DAILY
+from dateutil.rrule import rrule, DAILY, rruleset
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
@@ -112,7 +112,9 @@ def calculate_time_interval(interval, start_datetime, end_datetime):
     :param end_datetime:  When you're counting to.
     :return:
     """
-    datetime_list = list(rrule(freq=interval, dtstart=start_datetime, until=end_datetime))
+    rules = rruleset()
+    rules.rrule(rrule(freq=interval, dtstart=start_datetime, until=end_datetime))
+    datetime_list = list(rules)
     return len(datetime_list) - 1, datetime_list[-1]
 
 
