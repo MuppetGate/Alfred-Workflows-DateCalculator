@@ -1,8 +1,12 @@
-from dateutil.rrule import DAILY, rrule, SA, SU, MO, TU, WE, TH, FR
+from dateutil.rrule import DAILY, rrule, SA, SU, MO, TU, WE, TH, FR, YEARLY
 
 DATE_EXCLUSION_RULES_MAP = {
 
-    "weekends": rrule(freq=DAILY, byweekday=(SA, SU)),
-    "weekdays": rrule(freq=DAILY, byweekday=(MO, TU, WE, TH, FR))
+    "weekends": {"exclude": (SA, SU)},
+    "weekdays": {"exclude": (MO, TU, WE, TH, FR)}
 
 }
+
+
+
+

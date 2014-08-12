@@ -26,6 +26,7 @@ class DateParser:
         # Exclusions from date subtraction calculations.
         self.exclusion_keyword_re = re.compile('exclude|ex|x', re.IGNORECASE)
         self.exclusion_macros_re = re.compile(self._get_exclusion_macros(), re.IGNORECASE)
+        self.exclusion_range_operator_re = re.compile('to|until', re.IGNORECASE)
 
     @staticmethod
     def _get_anniversaries(settings):
@@ -89,8 +90,12 @@ class DateParser:
         class ExclusionKeyword(str):
             grammar = self.exclusion_keyword_re
 
+        class ExclusionRange(str):
+            grammar = attr("fromDateTime", DateTime), self.exclusion_range_operator_re, attr("toDateTime", DateTime)
+
         class ExclusionType(List):
-            grammar = [attr("exclusionDateTime", DateTime), attr("exclusionMacro", self.exclusion_macros_re)]
+            grammar = [attr("exclusionRange", ExclusionRange),
+                       attr("exclusionDateTime", DateTime), attr("exclusionMacro", self.exclusion_macros_re)]
 
         class ExclusionList(List):
             grammar = some(ExclusionType)
@@ -101,7 +106,7 @@ class DateParser:
         class ExclusionCommands(List):
             grammar = maybe_some(ExclusionCommand)
 
-        class Commands(List):
+        class Commands(str):
             grammar = [
                 (attr("dateTime", DateTime), attr("operandList", OperandList), attr("functionName", DateFunction)),
 
@@ -120,7 +125,7 @@ class DateParser:
 if __name__ == '__main__':
 
     command_parser = DateParser("\d{2}\.\d{2}\.\d{2}", DEFAULT_WORKFLOW_SETTINGS)
-    command = command_parser.parse_command("wd 27.01.14 + 1d")
+    command = command_parser.parse_command("27.01.14 - 01.01.14 + 1d")
     print(command.dateTime)
     print(command.operandList[0].operator)
     print(command.operandList[0].timeSpans[0].amount)

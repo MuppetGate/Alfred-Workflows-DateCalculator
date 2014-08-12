@@ -1,11 +1,13 @@
+from StdSuites.Standard_Suite import ends_with
 from collections import Counter
+from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DATE_MAPPINGS, \
     TIME_CALCULATION, VALID_FORMAT_OPTIONS
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, DAILY, rruleset
+from dateutil.rrule import rrule, DAILY, rruleset, YEARLY, SA, SU
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
@@ -74,7 +76,9 @@ def do_subtraction(command, date_format, settings):
         for operand in command.operandList2:
             date_time_2 = delta_arithmetic(date_time_2, operand)
 
-    return normalised_days(command, date_time_1, date_time_2)
+    exclusion_rules = build_exclusion_list(command, date_time_1, date_time_2, date_format, settings)
+
+    return normalised_days(command, date_time_1, date_time_2, exclusion_rules)
 
 
 def valid_command_format(command_format):
@@ -95,7 +99,7 @@ def valid_command_format(command_format):
         return False
 
 
-def calculate_time_interval(interval, start_datetime, end_datetime):
+def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
     """
     So how does this work. Well, as it turns out, trying use division by seconds to get
     the intervals is the wrong way to do it. The problem is the uneven months and leapyears
@@ -114,6 +118,10 @@ def calculate_time_interval(interval, start_datetime, end_datetime):
     """
     rules = rruleset()
     rules.rrule(rrule(freq=interval, dtstart=start_datetime, until=end_datetime))
+
+    for exclusion_rule in exclusions:
+        rules.exrule(exclusion_rule)
+
     datetime_list = list(rules)
     return len(datetime_list) - 1, datetime_list[-1]
 
@@ -134,20 +142,56 @@ def later_date_first(date_time_1, date_time_2):
     else:
         start_date_time = date_time_2
         end_date_time = date_time_1
-    return end_date_time, start_date_time
+
+    return start_date_time, end_date_time
 
 
-def normalised_days(command, date_time_1, date_time_2):
+def build_exclusion_list(command, date_time_1, date_time_2, date_format, settings):
+    """
+    If the user has build an exclusion list then we process it here
+    :param command:
+    :return: a set of rules that denote the exclusion
+    """
+    exclusion_rules = []
+
+    if hasattr(command, "exclusionCommands"):
+
+        for exclusion_command in command.exclusionCommands:
+
+            #process the exclusion list
+            for exclusion_item in exclusion_command.exclusionList:
+
+                if hasattr(exclusion_item, "exclusionMacro"):
+
+                    #Date fussy
+                    start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+
+                    new_rule = rrule(freq=DAILY, dtstart=start_date_time, until=end_date_time,
+                                     byweekday=DATE_EXCLUSION_RULES_MAP[exclusion_item.exclusionMacro]["exclude"])
+
+                elif hasattr(exclusion_item, "exclusionDateTime"):
+                    date_time, _ = convert_date_time(exclusion_item.exclusionDateTime, date_format, settings)
+                    new_rule = rrule(freq=DAILY, dtstart=date_time, until=date_time)
+
+                exclusion_rules.append(new_rule)
+
+        return exclusion_rules
+
+
+def normalised_days(command, date_time_1, date_time_2, exclusions):
     # If the user selected long then he wants the full
     # date, so fill in the format before carrying on.
 
+    # First off, do we have any exclusions to worry about?
     if not valid_command_format(command.format):
         raise FormatError
 
     if not command.format:
         # default to days
-        end_date_time, start_date_time = later_date_first(date_time_1, date_time_2)
-        count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'], start_date_time, end_date_time)
+        start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+        count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
+                                           start_date_time, end_date_time, exclusions)
+
         return "{days}".format(days=pluralize(count, TIME_CALCULATION['d']['singular'],
                                               TIME_CALCULATION['d']['plural']))
 
@@ -179,7 +223,7 @@ def normalised_days(command, date_time_1, date_time_2):
 
         if x in command.format:
             count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
-                                                             start_date_time, end_date_time)
+                                                             start_date_time, end_date_time, exclusions)
             normalised_elements.append(pluralize(count,
                                                  TIME_CALCULATION[x]['singular'], TIME_CALCULATION[x]['plural']))
     # We put each part of the calculation in a list
