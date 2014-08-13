@@ -1,5 +1,6 @@
 from StdSuites.Standard_Suite import ends_with
 from collections import Counter
+from datetime import datetime
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DATE_MAPPINGS, \
@@ -99,6 +100,10 @@ def valid_command_format(command_format):
         return False
 
 
+def tack_on_time(date_time):
+    return datetime.combine(date_time, datetime.max.time())
+
+
 def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
     """
     So how does this work. Well, as it turns out, trying use division by seconds to get
@@ -117,12 +122,27 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
     :return:
     """
     rules = rruleset()
+    exclusion_rules = rruleset()
+
     rules.rrule(rrule(freq=interval, dtstart=start_datetime, until=end_datetime))
 
     for exclusion_rule in exclusions:
-        rules.exrule(exclusion_rule)
+        exclusion_rules.rrule(exclusion_rule)
+
+    exclusion_list = list(exclusion_rules)
 
     datetime_list = list(rules)
+
+    # You want to delete everything from the found
+    # list of dates that is part of the exclusion list
+    # of dates. There's bound to be an easier way
+    # to do this in Python.
+    for exclude_date in exclusion_list:
+
+        for index, value in enumerate(datetime_list):
+
+            if exclude_date.date() == value.date():
+                del datetime_list[index]
 
     if datetime_list:
         return len(datetime_list) - 1, datetime_list[-1]
