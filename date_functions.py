@@ -91,15 +91,15 @@ DATE_FUNCTION_MAP = {
     "yesterday": yesterday,
     "tomorrow": tomorrow,
     "easter": next_easter,
-    "mon": weekday('mon'),
-    "tue": weekday('tue'),
-    "wed": weekday('wed'),
-    "thu": weekday('thu'),
-    "fri": weekday('fri'),
-    "sat": weekday('sat'),
-    "sun": weekday('sun'),
-    "start_bst": bst(3),
-    "end_bst": bst(10)
+    "next mon": weekday('mon'),
+    "next tue": weekday('tue'),
+    "next wed": weekday('wed'),
+    "next thu": weekday('thu'),
+    "next fri": weekday('fri'),
+    "next sat": weekday('sat'),
+    "next sun": weekday('sun'),
+    "start bst": bst(3),
+    "end bst": bst(10)
 }
 
 

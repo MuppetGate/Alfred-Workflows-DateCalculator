@@ -123,7 +123,11 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
         rules.exrule(exclusion_rule)
 
     datetime_list = list(rules)
-    return len(datetime_list) - 1, datetime_list[-1]
+
+    if datetime_list:
+        return len(datetime_list) - 1, datetime_list[-1]
+    else:
+        return 0, end_datetime
 
 
 def later_date_first(date_time_1, date_time_2):
@@ -153,6 +157,7 @@ def build_exclusion_list(command, date_time_1, date_time_2, date_format, setting
     :return: a set of rules that denote the exclusion
     """
     exclusion_rules = []
+    new_rule = None
 
     if hasattr(command, "exclusionCommands"):
 
@@ -163,15 +168,30 @@ def build_exclusion_list(command, date_time_1, date_time_2, date_format, setting
 
                 if hasattr(exclusion_item, "exclusionMacro"):
 
-                    #Date fussy
                     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
 
                     new_rule = rrule(freq=DAILY, dtstart=start_date_time, until=end_date_time,
                                      byweekday=DATE_EXCLUSION_RULES_MAP[exclusion_item.exclusionMacro]["exclude"])
 
                 elif hasattr(exclusion_item, "exclusionDateTime"):
+
                     date_time, _ = convert_date_time(exclusion_item.exclusionDateTime, date_format, settings)
+
                     new_rule = rrule(freq=DAILY, dtstart=date_time, until=date_time)
+
+                elif hasattr(exclusion_item, "exclusionRange"):
+                    exclusion_date_1, _ = convert_date_time(exclusion_item.exclusionRange.fromDateTime,
+                                                            date_format, settings)
+
+                    exclusion_date_2, _ = convert_date_time(exclusion_item.exclusionRange.toDateTime,
+                                                            date_format, settings)
+
+                    date_1, date_2 = later_date_first(exclusion_date_1, exclusion_date_2)
+
+                    new_rule = rrule(freq=DAILY, dtstart=date_1, until=date_2)
+
+                else:
+                    pass
 
                 exclusion_rules.append(new_rule)
 
