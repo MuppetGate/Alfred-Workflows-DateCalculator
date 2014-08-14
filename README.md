@@ -3,7 +3,7 @@ Hello there!
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
 Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
 
-(img)
+![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)
 
 For example, if you enter
 
@@ -87,23 +87,23 @@ That’s the time 6 hours from now, and for real nerdiness:
 
 Probably not all that useful, but some of this other stuff might be. You know all about
 
-** dcalc now**
+**dcalc now**
 
 For giving you the current time and date. Well you can use 
 
-** dcalc tomorrow **
+**dcalc tomorrow**
 
 for tomorrow’s date, and as you would expect
 
-** dcalc tomorrow + 1d**
+**dcalc tomorrow + 1d**
 
 will give you the day after tomorrow.
 
-** dcalc tue**
+**dcalc next tue**
 
 will give you the date next Tuesday. Or for for Thursday you could enter
 
-**dcalc tue + 2d**
+**dcalc next tue + 2d**
 
 if you’re still a little too inebriated to realise that
 
@@ -123,19 +123,42 @@ Oh, almost forgot.
 
 Is the date for next Easter Sunday, for no other reason that I can never remember it, and now there’s an easy way to find out how many days until Christmas:
 
-** dcalc today - christmas**
+**dcalc today - christmas**
+
+## Exclusions
+Added at the request of a friend, though I'm not sure there's a lot of call for it. Okay, say you need to know how long you have to complete a project:
+
+**dcalc today - christmas**
+
+Not a problem, but hang on a mo – you don't like to work on weekends, so you'd better exclude them:
+
+**dcalc today - christmas exclude weekends**
+
+That'll exclude weekends from the calculations. Fantastic! But hang on, the wife's birthday! You won't be working on that day if you know what's good for you:
+
+**dcalc today - christmas exclude weekends 26.09.2014**
+
+Nicely saved, my friend; but there is still that small break you were planning in October:
+
+**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014**
+
+Crap! You're also having a wisdom tooth removed next wednesday
+
+**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014 next wed**
+
+Though I think you'll need more than a day to get over that.
 
 ### Credits
 A list of things that made my first attempt at Python programming possible:
-- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework], and for his ‘parse-as-you-type’ idea.
-- The folk at [Jetbrains], for making programming, in any language, bearable.
-- Paul McGuire, for writing [PyParsing].
-- Peter Odding for writing [HumanFriendly].
-- Gustavo Niemeyer for [Python-DateUtil].
-- Volker Birk for [PyPEG].
+- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](#), and for his ‘parse-as-you-type’ idea.
+- The folk at [Jetbrains](#), for making programming, in any language, bearable.
+- Peter Odding for writing [HumanFriendly](#).
+- Gustavo Niemeyer for [Python-DateUtil](#).
+- Volker Birk for [PyPEG](#).
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for **year\_start** and **year\_end**. Changed the calls for days of the week: You now need to enter **next mon** to get the date for next Monday, but you can also now type **prev mon** to get the date for last Monday. Huzzah!
 
 Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic. 
 Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
@@ -156,7 +179,7 @@ The symbol for getting the week number for a particular date has changed
 from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
-Well, I guess the [MIT] one will do. :-)
+Well, I guess the [MIT](#) one will do. :-)
 
 The MIT License (MIT)
 Copyright (c) 2014 MuppetGate Media
@@ -173,7 +196,7 @@ all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN

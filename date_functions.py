@@ -26,6 +26,7 @@ DAY_MAP = {
     "prev sun": relativedelta(days=-1, weekday=SU(-1)),
 }
 
+
 def _get_current_date():
     return datetime.combine(date.today(), datetime.max.time())
 
