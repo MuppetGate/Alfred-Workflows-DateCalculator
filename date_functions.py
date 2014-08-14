@@ -6,16 +6,25 @@ from dateutil.easter import easter
 
 # The DAY_MAP is specific to relative delta
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
-from dateutil.rrule import rrule, YEARLY
+from dateutil.rrule import rrule, YEARLY, DAILY
 
-DAY_MAP = {"mon": relativedelta(days=+1, weekday=MO(+1)),
-           "tue": relativedelta(days=+1, weekday=TU(+1)),
-           "wed": relativedelta(days=+1, weekday=WE(+1)),
-           "thu": relativedelta(days=+1, weekday=TH(+1)),
-           "fri": relativedelta(days=+1, weekday=FR(+1)),
-           "sat": relativedelta(days=+1, weekday=SA(+1)),
-           "sun": relativedelta(days=+1, weekday=SU(+1))}
+DAY_MAP = {
+    "mon": relativedelta(days=+1, weekday=MO(+1)),
+    "tue": relativedelta(days=+1, weekday=TU(+1)),
+    "wed": relativedelta(days=+1, weekday=WE(+1)),
+    "thu": relativedelta(days=+1, weekday=TH(+1)),
+    "fri": relativedelta(days=+1, weekday=FR(+1)),
+    "sat": relativedelta(days=+1, weekday=SA(+1)),
+    "sun": relativedelta(days=+1, weekday=SU(+1)),
 
+    "prev mon": relativedelta(days=-1, weekday=MO(-1)),
+    "prev tue": relativedelta(days=-1, weekday=TU(-1)),
+    "prev wed": relativedelta(days=-1, weekday=WE(-1)),
+    "prev thu": relativedelta(days=-1, weekday=TH(-1)),
+    "prev fri": relativedelta(days=-1, weekday=FR(-1)),
+    "prev sat": relativedelta(days=-1, weekday=SA(-1)),
+    "prev sun": relativedelta(days=-1, weekday=SU(-1)),
+}
 
 def _get_current_date():
     return datetime.combine(date.today(), datetime.max.time())
@@ -67,6 +76,13 @@ def next_easter(date_format):
     return easter_rule.after(_get_current_date(), inc=False), date_format
 
 
+def start_of_year(date_format):
+    return datetime(year=_get_current_date().year, day=1, month=1), date_format
+
+
+def end_of_year(date_format):
+    return datetime(year=_get_current_date().year, day=31, month=12), date_format
+
 def bst(month_number):
     """
     Use the rather clever dateutils functions
@@ -98,8 +114,17 @@ DATE_FUNCTION_MAP = {
     "next fri": weekday('fri'),
     "next sat": weekday('sat'),
     "next sun": weekday('sun'),
+    "prev mon": weekday('prev mon'),
+    "prev tue": weekday('prev tue'),
+    "prev wed": weekday('prev wed'),
+    "prev thu": weekday('prev thu'),
+    "prev fri": weekday('prev fri'),
+    "prev sat": weekday('prev sat'),
+    "prev sun": weekday('prev sun'),
     "start bst": bst(3),
-    "end bst": bst(10)
+    "end bst": bst(10),
+    "start_year": start_of_year,
+    "end_year": end_of_year
 }
 
 

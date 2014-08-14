@@ -190,8 +190,9 @@ def build_exclusion_list(command, date_time_1, date_time_2, date_format, setting
 
                     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
 
-                    new_rule = rrule(freq=DAILY, dtstart=start_date_time, until=end_date_time,
-                                     byweekday=DATE_EXCLUSION_RULES_MAP[exclusion_item.exclusionMacro]["exclude"])
+                    # noinspection PyCallingNonCallable
+                    new_rule = DATE_EXCLUSION_RULES_MAP[exclusion_item.exclusionMacro](start=start_date_time,
+                                                                                       end=end_date_time)
 
                 elif hasattr(exclusion_item, "exclusionDateTime"):
 
