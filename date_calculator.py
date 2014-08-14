@@ -121,10 +121,10 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
     :param end_datetime:  When you're counting to.
     :return:
     """
-    rules = rruleset()
+
     exclusion_rules = rruleset()
 
-    rules.rrule(rrule(freq=interval, dtstart=start_datetime, until=end_datetime))
+    rules = rrule(freq=interval, dtstart=start_datetime, until=end_datetime)
 
     for exclusion_rule in exclusions:
         exclusion_rules.rrule(exclusion_rule)
@@ -256,13 +256,14 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
 
     # This time it does matter which way around the dates go.
 
-    end_date_time, start_date_time = later_date_first(date_time_1, date_time_2)
+    start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
 
     normalised_elements = []
 
     for x in VALID_FORMAT_OPTIONS:
 
         if x in command.format:
+
             count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
                                                              start_date_time, end_date_time, exclusions)
             normalised_elements.append(pluralize(count,
