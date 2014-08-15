@@ -24,6 +24,14 @@ class FormatError(Exception):
     pass
 
 
+class IncompatibleFunctionError(Exception):
+    """
+    Throw this bad boy when someone atttempts
+    to use the exclusions with the formatting.
+    """
+    pass
+
+
 def do_functions(command, date_format, settings):
     date_time, _ = convert_date_time(command.dateTime, date_format, settings)
 
@@ -289,6 +297,9 @@ def main(wf):
 
         command = command_parser.parse_command(args[0])
 
+        if getattr(command, "exclusionCommands", "") and getattr(command, "format", ""):
+            raise IncompatibleFunctionError
+
         if hasattr(command, "dateTime"):
             output = do_timespans(command, date_mapping['date-format'], wf.settings)
 
@@ -311,6 +322,9 @@ def main(wf):
 
     except FormatError:
         output = "Invalid format"
+
+    except IncompatibleFunctionError:
+        output = "Invalid command - Don't use exclusions and formats together."
 
     if output.startswith("Invalid"):
         wf.add_item(title=". . .", subtitle=output, valid=False, arg=args[0], icon=ICON_ERROR)
