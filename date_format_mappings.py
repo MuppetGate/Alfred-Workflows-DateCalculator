@@ -31,13 +31,13 @@ VALID_WORD_FORMAT_OPTIONS = ["long"]
 
 TIME_CALCULATION = {
 
-    'y': {'interval': YEARLY, 'singular': 'year', 'plural': 'years'},
-    'm': {'interval': MONTHLY, 'singular': 'month', 'plural': 'months'},
-    'w': {'interval': WEEKLY, 'singular': 'week', 'plural': 'weeks'},
-    'd': {'interval': DAILY, 'singular': 'day', 'plural': 'days'},
-    'h': {'interval': HOURLY, 'singular': 'hour', 'plural': 'hours'},
-    'M': {'interval': MINUTELY, 'singular': 'minute', 'plural': 'minutes'},
-    's': {'interval': SECONDLY, 'singular': 'second', 'plural': 'seconds'}
+    'y': {'interval': YEARLY, 'singular': 'year', 'plural': 'years', 'seconds': 1 * 60 * 60 * 24 * 7 * 4 * 12},
+    'm': {'interval': MONTHLY, 'singular': 'month', 'plural': 'months', 'seconds': 1 * 60 * 60 * 24 * 7 * 4},
+    'w': {'interval': WEEKLY, 'singular': 'week', 'plural': 'weeks', 'seconds': 1 * 60 * 60 * 24 * 7},
+    'd': {'interval': DAILY, 'singular': 'day', 'plural': 'days', 'seconds': 1 * 60 * 60 * 24},
+    'h': {'interval': HOURLY, 'singular': 'hour', 'plural': 'hours', 'seconds': 1 * 60 * 60},
+    'M': {'interval': MINUTELY, 'singular': 'minute', 'plural': 'minutes', 'seconds': 1 * 60},
+    's': {'interval': SECONDLY, 'singular': 'second', 'plural': 'seconds', 'seconds': 1}
 
 }
 

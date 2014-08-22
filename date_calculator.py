@@ -1,4 +1,3 @@
-from StdSuites.Standard_Suite import ends_with
 from collections import Counter
 from datetime import datetime
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
@@ -8,7 +7,7 @@ from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, DAILY, rruleset, YEARLY, SA, SU
+from dateutil.rrule import rrule, DAILY, rruleset
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
@@ -26,11 +25,18 @@ class FormatError(Exception):
 
 class IncompatibleFunctionError(Exception):
     """
-    Throw this bad boy when someone atttempts
+    Throw this bad boy when someone attempts
     to use the exclusions with the formatting.
     """
     pass
 
+
+class UnknownExclusionTypeError(Exception):
+    """
+    This exception is thrown when we encounter an exclusion type that
+    somehow makes it through the checking list. Shouldn't occur really,
+    but if it does then we want to know about it.
+    """
 
 def do_functions(command, date_format, settings):
     date_time, _ = convert_date_time(command.dateTime, date_format, settings)
@@ -185,7 +191,6 @@ def build_exclusion_list(command, date_time_1, date_time_2, date_format, setting
     :return: a set of rules that denote the exclusion
     """
     exclusion_rules = []
-    new_rule = None
 
     if hasattr(command, "exclusionCommands"):
 
@@ -220,7 +225,7 @@ def build_exclusion_list(command, date_time_1, date_time_2, date_format, setting
                     new_rule = rrule(freq=DAILY, dtstart=date_1, until=date_2)
 
                 else:
-                    pass
+                    raise UnknownExclusionTypeError
 
                 exclusion_rules.append(new_rule)
 
@@ -256,26 +261,32 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
             minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'], TIME_CALCULATION['M']['plural']),
             seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'], TIME_CALCULATION['s']['plural']))
 
-    # Python gotcha. They keys in the map are not guaranteed
+    # Python gotcha. The keys in the map are not guaranteed
     # to come out in the same order you put then; so we have
     # to scan them specifically in the order we want them to
     # appear in the calculation. If they're out of sequence
     # then the calculation will return the wrong result.
-
-    # This time it does matter which way around the dates go.
-
+    #And it does matter which way round the dates go.
     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+
+    ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
 
     normalised_elements = []
 
-    for x in VALID_FORMAT_OPTIONS:
+    for x in ordered_format_options:
 
-        if x in command.format:
-
+        if x == ordered_format_options[-1]:
+            count = (end_date_time - start_date_time).total_seconds()
+            # Should format it. Make it much easier to read.
+            normalised_elements.append(pluralize("{:.3f}".format(count / TIME_CALCULATION[x]['seconds']),
+                                                 TIME_CALCULATION[x]['singular'],
+                                                 TIME_CALCULATION[x]['plural']))
+        else:
             count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
                                                              start_date_time, end_date_time, exclusions)
-            normalised_elements.append(pluralize(count,
-                                                 TIME_CALCULATION[x]['singular'], TIME_CALCULATION[x]['plural']))
+            normalised_elements.append(pluralize(count, TIME_CALCULATION[x]['singular'],
+                                                 TIME_CALCULATION[x]['plural']))
+
     # We put each part of the calculation in a list
     # so that Python can handle comma-separating them later on
     return ', '.join(normalised_elements)
@@ -325,6 +336,9 @@ def main(wf):
 
     except IncompatibleFunctionError:
         output = "Invalid command - Don't use exclusions and formats together."
+
+    except UnknownExclusionTypeError:
+        output = "Invalid exclusion - Try again."
 
     if output.startswith("Invalid"):
         wf.add_item(title=". . .", subtitle=output, valid=False, arg=args[0], icon=ICON_ERROR)
