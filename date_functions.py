@@ -2,13 +2,13 @@
 # uses for specialised dates.
 from datetime import datetime, date, timedelta
 from date_format_mappings import DEFAULT_TIME_EXPR
-from dateutil.easter import easter
 
 # The DAY_MAP is specific to relative delta
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
-from dateutil.rrule import rrule, YEARLY, DAILY
+from dateutil.rrule import rrule, YEARLY
 
 DAY_MAP = {
+
     "mon": relativedelta(days=+1, weekday=MO(+1)),
     "tue": relativedelta(days=+1, weekday=TU(+1)),
     "wed": relativedelta(days=+1, weekday=WE(+1)),
@@ -61,9 +61,8 @@ def weekday(day_of_week_str):
     This one one is a little bit trickier. We don't want a separate
     function for each day of the week, so we need to use a bit of
     currying to return a function that can handle the mapping.
-    :param day: The day of the week as a string, which we will use to map into a table for the
+    :param day_of_week_str: The day of the week as a string, which we will use to map into a table for the
     calculation.
-    :param date_map: the format of the result
     :return: a function that will calculate the day of week and return it along with the format
     """
     def _weekday(date_format):
@@ -84,12 +83,17 @@ def start_of_year(date_format):
 def end_of_year(date_format):
     return datetime(year=_get_current_date().year, day=31, month=12), date_format
 
+
+def next_month(date_format):
+    return datetime(year=_get_current_date().year, day=1, month=_get_current_date().month + 1), date_format
+
+
 def bst(month_number):
     """
     Use the rather clever dateutils functions
     to give us the last Sunday in March/October
     And currying rocks!
-    :param date_format:
+    :param month_number:
     :return:
     """
     def _bst(date_format):
@@ -124,8 +128,9 @@ DATE_FUNCTION_MAP = {
     "prev sun": weekday('prev sun'),
     "start bst": bst(3),
     "end bst": bst(10),
-    "start_year": start_of_year,
-    "end_year": end_of_year
+    "start year": start_of_year,
+    "end year": end_of_year,
+    "next month": next_month
 }
 
 
