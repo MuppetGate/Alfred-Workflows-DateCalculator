@@ -58,11 +58,11 @@ What does that mess do?
 
 If you want to know what week number you’re in, then try this:
 
-**dcalc ! today**
+**dcalc today wn**
 
 Or for a specific date:
 
-**dcalc ! 25.12.14**
+**dcalc 25.12.14 wn**
 
 You can also use the _today_ thing in other places too:
 
@@ -89,7 +89,7 @@ Probably not all that useful, but some of this other stuff might be. You know al
 
 **dcalc now**
 
-For giving you the current time and date. Well you can use 
+For giving you the current time and date. While you can use 
 
 **dcalc tomorrow**
 
@@ -107,7 +107,7 @@ will give you the date next Tuesday. Or for for Thursday you could enter
 
 if you’re still a little too inebriated to realise that
 
-**dcalc thu**
+**dcalc next thu**
 
 will give you the same answer.
 
@@ -146,19 +146,27 @@ Crap! You're also having a wisdom tooth removed next wednesday
 
 **dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014 next wed**
 
-Though I think you'll need more than a day to get over that.
+Though I think you'll need more than a day to get over that. The _exclude_ keyword is a little verbose for the lightning typists, so you can also use _x_ instead:
+
+**dcalc today - christmas x weekends tuesdays**
+
+As you might have guessed, this will work out the number of days between now and Christmas, not counting weekends and Tuesdays. We also have a very wordy variation which excludes every day except the one specified:
+
+** dcalc today - easter x all except tuesdays**
+
 
 ### Credits
 A list of things that made my first attempt at Python programming possible:
-- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](#), and for his ‘parse-as-you-type’ idea.
-- The folk at [Jetbrains](#), for making programming, in any language, bearable.
-- Peter Odding for writing [HumanFriendly](#).
-- Gustavo Niemeyer for [Python-DateUtil](#).
-- Volker Birk for [PyPEG](#).
+- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](http://www.deanishe.net/alfred-workflow/), and for his ‘parse-as-you-type’ idea.
+- The folk at [Jetbrains](http://www.jetbrains.com/pycharm/), for making programming, in any language, bearable.
+- Peter Odding for writing [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/).
+- Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
+- Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
-Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for **year\_start** and **year\_end**. Changed the calls for days of the week: You now need to enter **next mon** to get the date for next Monday, but you can also now type **prev mon** to get the date for last Monday. Huzzah!
+Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
+Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
 
 Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic. 
 Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
@@ -179,7 +187,7 @@ The symbol for getting the week number for a particular date has changed
 from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
-Well, I guess the [MIT](#) one will do. :-)
+Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
 
 The MIT License (MIT)
 Copyright (c) 2014 MuppetGate Media
