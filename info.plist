@@ -551,22 +551,20 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>## Date Calculator Version 1.5
+	<string>## Date Calculator Version 1.6
 
-## [Date Calculator](http://www.packal.org/workflow/date-calculator)
-
+## Date Calculator
 Hello there!
-
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
 Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
 
-[![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)](http://www.packal.org/workflow/date-calculator)
+![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)
 
 For example, if you enter
 
 **dcalc 25.12.14 - 18.01.14**
 
-then it will tell you the number of days between those dates. Note that the workflow parses the command as you enter it, so you’ll see _invalid command_, _invalid expression_, _invalid date_ and _invalid format_ errors as you type. Once you’ve completed the command then you’ll be given the result.
+then it will tell you the number of days between those dates. Note that the workflow parses the command as you enter it, so you’ll see _invalid command_, _invalid expression_ and _invalid format_ errors as you type. Once you’ve completed the command then you’ll be given the result.
 
 You could also try
 
@@ -615,19 +613,15 @@ What does that mess do?
 
 If you want to know what week number you’re in, then try this:
 
-**dcalc today !**
+**dcalc today wn**
 
 Or for a specific date:
 
-**dcalc 25.12.14 !**
-
-You can get the day of week like this:
-
-**dcalc tomorrow wd**
+**dcalc 25.12.14 wn**
 
 You can also use the _today_ thing in other places too:
 
-**dcalc today + 4d wd**
+**dcalc today + 4d**
 
 And we have another thing called _time_ because the workflow can handle times too:
 
@@ -648,35 +642,35 @@ That’s the time 6 hours from now, and for real nerdiness:
 
 Probably not all that useful, but some of this other stuff might be. You know all about
 
-** dcalc now**
+**dcalc now**
 
-For giving you the current time and date. Well you can use 
+For giving you the current time and date. While you can use 
 
-** dcalc tomorrow **
+**dcalc tomorrow**
 
 for tomorrow’s date, and as you would expect
 
-** dcalc tomorrow + 1d**
+**dcalc tomorrow + 1d**
 
 will give you the day after tomorrow.
 
-** dcalc tue**
+**dcalc next tue**
 
 will give you the date next Tuesday. Or for for Thursday you could enter
 
-**dcalc tue + 2d**
+**dcalc next tue + 2d**
 
 if you’re still a little too inebriated to realise that
 
-**dcalc thu**
+**dcalc next thu**
 
 will give you the same answer.
 
 That about covers it, I think. I haven’t done anything clever with locales, but you can pick a different date format with
 
-**dcalcset format**
+**dcalc settings**
 
-If you’re ever puzzled by _invalid command_, _invalid date_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
+If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
 Oh, almost forgot.
 
@@ -686,58 +680,51 @@ Is the date for next Easter Sunday, for no other reason that I can never remembe
 
 **dcalc today - christmas**
 
-### But it doesn’t know my birthday!
-That’s very true, but it can remember if you add your birthday as an entry to the anniversary list.
+## Exclusions
+Added at the request of a friend, though I'm not sure there's a lot of call for it. Okay, say you need to know how long you have to complete a project:
 
-**dcalcset list add alfred 28.02.2010**
+**dcalc today - christmas**
 
-will add an entry called _alfred_ to the list along with his date of birth. Now,  you have your own shortcut to use in date calculations. Now, the next bit is ver important, so it’s in bold:
-**You must set your date format to one that supports four-digit dates** in order to add or change items in the list. It’s a bit of a pig, I know, but we don’t want to guess whether 20.01.68 is referring to a date in 1968 or 2068. Once you’re done, you can change it back again. Okay, so where were we? Right, you can use the macros in your date calculations, like so: 
+Not a problem, but hang on a mo – you don't like to work on weekends, so you'd better exclude them:
 
-**dcalc alfred**
+**dcalc today - christmas exclude weekends**
 
-which will return _28.02.2015_
+That'll exclude weekends from the calculations. Fantastic! But hang on, the wife's birthday! You won't be working on that day if you know what's good for you:
 
-Whut?
-Nope, not his date of birth, but the date of his next birthday, so that
+**dcalc today - christmas exclude weekends 26.09.2014**
 
-**dcalc alfred - today**
+Nicely saved, my friend; but there is still that small break you were planning in October:
 
-will tell you how long until you have to buy him a pressie. If you want to know how long he’s actually been alive, then adding a ‘^’ in front of the shortcut will give you his original date of birth:
+**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014**
 
-**dcalc ^alfred**
+Crap! You're also having a wisdom tooth removed next wednesday
 
-and 
+**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014 next wed**
 
-**dcalc ^alfred - today**
+Though I think you'll need more than a day to get over that. The _exclude_ keyword is a little verbose for the lightning typists, so you can also use _x_ instead:
 
-will tell you how old he is.
+**dcalc today - christmas x weekends tuesdays**
 
-You can get a list of all your shortcuts by typing:
+As you might have guessed, this will work out the number of days between now and Christmas, not counting weekends and Tuesdays. We also have a very wordy variation which excludes every day except the one specified:
 
-**dcalcshow list**
-
-as a command, and you can delete an entry with:
-
-**dcalcset list delete alfred**
-
-Yeah, I know it’s a long command, but I wanted to give you plenty of time to change your mind . . . :-)
+** dcalc today - easter x all except tuesdays**
 
 
 ### Credits
 A list of things that made my first attempt at Python programming possible:
-- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](https://github.com/deanishe/alfred-workflow), and for his ‘parse-as-you-type’ idea.
-- The folk at [Jetbrains](http://www.jetbrains.com), for making programming, in any language, bearable.
-- Paul McGuire, for writing [PyParsing](http://pyparsing.wikispaces.com).
+- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](http://www.deanishe.net/alfred-workflow/), and for his ‘parse-as-you-type’ idea.
+- The folk at [Jetbrains](http://www.jetbrains.com/pycharm/), for making programming, in any language, bearable.
 - Peter Odding for writing [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/).
 - Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
 - Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
+Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
 
-
-Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic. Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes
+Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic. 
+Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
 
 Last release (Version 1.4) Fixed bug that caused inaccuracies when calculating anniversaries. 
 Refactored code to make it easier to add new date functions and date formatters. General tidy-up
