@@ -159,7 +159,7 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
                 del datetime_list[index]
 
     if datetime_list:
-        return len(datetime_list) - 1, datetime_list[-1]
+        return len(datetime_list), datetime_list[-1]
     else:
         return 0, end_datetime
 

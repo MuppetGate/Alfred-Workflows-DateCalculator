@@ -15,6 +15,49 @@ You probably only want to use the :class:`Workflow` class directly.
 The :class:`Item` and :class:`Settings` classes are supporting classes,
 which are meant to be accessed via :class:`Workflow` instances.
 
+Classes :class:`SerializerManager`, :class:`JSONSerializer`,
+:class:`CPickleSerializer` and :class:`PickleSerializer` are part of
+the data/cache serialization features of :class:`Workflow`, accessible
+by the module-level ``manager`` object.
+
+To register a new serializer, do:
+
+.. code-block:: python
+   :linenos:
+
+    from workflow import Workflow, manager
+
+
+    class MySerializer(object):
+
+        @classmethod
+        def load(cls, file_obj):
+            # load data from file_obj
+
+        @classmethod
+        def dump(cls, data, file_obj):
+            # write data to file_obj
+
+    manager.register('myformat', MySerializer())
+
+
+The name under which you register your serializer will be used as the
+file extension of any saved files.
+
+To set the default serializer for cached data,
+set :attr:`Workflow.cache_serializer`, and to set the default
+serializer for stored data, set :attr:`Workflow.data_serializer`.
+
+Cached data is stored in the Workflow's cache directory, which is intended
+for temporary and easily regenerated data.
+
+Stored data is stored in the Workflow's data directory, which is intended
+for data that is user-generated or not easily recreated.
+
+The default serializer for both cached and stored data is ``cpickle``.
+
+For more information, please see :ref:`Persistent data <persistent-data>`.
+
 """
 
 from __future__ import print_function, unicode_literals
@@ -28,6 +71,7 @@ import subprocess
 import unicodedata
 import shutil
 import json
+import cPickle
 import pickle
 import time
 import logging
@@ -39,46 +83,40 @@ except ImportError:  # pragma: no cover
 
 
 ####################################################################
-# Some standard system icons
+# Standard system icons
 ####################################################################
 
-# Shown when a workflow throws an error
-ICON_ACCOUNT = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-                '/Resources/Accounts.icns')
-ICON_BURN = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-             '/Resources/BurningIcon.icns')
-ICON_COLOR = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-              '/Resources/ProfileBackgroundColor.icns')
+# These icons are default OS X icons. They are super-high quality, and
+# will be familiar to users.
+# This library uses `ICON_ERROR` when a workflow dies in flames, so
+# in my own workflows, I use `ICON_WARNING` for less fatal errors
+# (e.g. bad user input, no results etc.)
+
+# The system icons are all in this directory. There are many more than
+# are listed here
+
+ICON_ROOT = '/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources'
+
+ICON_ACCOUNT = os.path.join(ICON_ROOT, 'Accounts.icns')
+ICON_BURN = os.path.join(ICON_ROOT, 'BurningIcon.icns')
+ICON_COLOR = os.path.join(ICON_ROOT, 'ProfileBackgroundColor.icns')
 ICON_COLOUR = ICON_COLOR  # Queen's English, if you please
-ICON_ERROR = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-              '/Resources/AlertStopIcon.icns')
-ICON_FAVORITE = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-                 '/Resources/ToolbarFavoritesIcon.icns')
+# Shown when a workflow throws an error
+ICON_ERROR = os.path.join(ICON_ROOT, 'AlertStopIcon.icns')
+ICON_FAVORITE = os.path.join(ICON_ROOT, 'ToolbarFavoritesIcon.icns')
 ICON_FAVOURITE = ICON_FAVORITE
-ICON_GROUP = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-              '/Resources/GroupIcon.icns')
-ICON_HELP = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-             '/Resources/HelpIcon.icns')
-ICON_INFO = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-             '/Resources/ToolbarInfo.icns')
-ICON_MUSIC = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-              '/Resources/ToolbarMusicFolderIcon.icns')
-ICON_NETWORK = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-                '/Resources/GenericNetworkIcon.icns')
-ICON_NOTE = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-             '/Resources/AlertNoteIcon.icns')
-ICON_SETTINGS = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-                 '/Resources/ToolbarAdvanced.icns')
-ICON_SYNC = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-             '/Resources/Sync.icns')
-ICON_TRASH = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-              '/Resources/TrashIcon.icns')
-ICON_USER = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-             '/Resources/UserIcon.icns')
-ICON_WARNING = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-                '/Resources/AlertCautionIcon.icns')
-ICON_WEB = ('/System/Library/CoreServices/CoreTypes.bundle/Contents'
-            '/Resources/BookmarkIcon.icns')
+ICON_GROUP = os.path.join(ICON_ROOT, 'GroupIcon.icns')
+ICON_HELP = os.path.join(ICON_ROOT, 'HelpIcon.icns')
+ICON_INFO = os.path.join(ICON_ROOT, 'ToolbarInfo.icns')
+ICON_MUSIC = os.path.join(ICON_ROOT, 'ToolbarMusicFolderIcon.icns')
+ICON_NETWORK = os.path.join(ICON_ROOT, 'GenericNetworkIcon.icns')
+ICON_NOTE = os.path.join(ICON_ROOT, 'AlertNoteIcon.icns')
+ICON_SETTINGS = os.path.join(ICON_ROOT, 'ToolbarAdvanced.icns')
+ICON_SYNC = os.path.join(ICON_ROOT, 'Sync.icns')
+ICON_TRASH = os.path.join(ICON_ROOT, 'TrashIcon.icns')
+ICON_USER = os.path.join(ICON_ROOT, 'UserIcon.icns')
+ICON_WARNING = os.path.join(ICON_ROOT, 'AlertCautionIcon.icns')
+ICON_WEB = os.path.join(ICON_ROOT, 'BookmarkIcon.icns')
 
 ####################################################################
 # non-ASCII to ASCII diacritic folding.
@@ -447,6 +485,170 @@ def isascii(text):
 # Implementation classes
 ####################################################################
 
+class SerializerManager(object):
+    """Contains registered serializers.
+
+    .. versionadded:: 1.8
+
+    A configured instance of this class is available at ``workflow.manager``.
+
+    Use :meth:`register()` to register new (or replace
+    existing) serializers, which you can specify by name when calling
+    :class:`Workflow` data storage methods.
+
+    A ``serializer`` object must have ``load()`` and ``dump()`` methods
+    that work the same way as in the built-in :mod:`json` and
+    :mod:`pickle` libraries, i.e.:
+
+    .. code-block:: python
+        :linenos:
+
+        # Reading
+        data = serializer.load(open('filename', 'rb'))
+        # Writing
+        serializer.dump(data, open('filename', 'wb'))
+
+    There are 3 pre-configured serializers: ``json``, ``pickle``
+    and ``cpickle``. The default is ``cpickle``, as it is very fast and
+    can handle most Python objects.
+
+    If you need custom pickling, use the ``pickle`` serializer instead.
+
+    Be careful using ``json``: JSON only supports a subset of Python's
+    native data types (e.g., no ``tuple`` or :class:`set`) and
+    doesn't, for example, support ``dict`` keys that aren't strings.
+
+    See the built-in :mod:`cPickle`, :mod:`pickle` and :mod:`json`
+    libraries for more information on the serialization formats.
+
+    """
+
+    def __init__(self):
+        self._serializers = {}
+
+    def register(self, name, serializer):
+        """Register ``serializer`` object under ``name``.
+
+        Raises :class:`AttributeError` if ``serializer`` in invalid.
+
+        **Note:** ``name`` will be used as the file extension of the
+        saved files.
+
+        :param name: Name to register ``serializer`` under
+        :type name: ``unicode`` or ``str``
+        :param serializer: object with ``load()`` and ``dump()``
+            methods
+
+        """
+
+        # Basic validation
+        getattr(serializer, 'load')
+        getattr(serializer, 'dump')
+
+        self._serializers[name] = serializer
+
+    def serializer(self, name):
+        """Return serializer object for ``name`` or ``None`` if no such
+        serializer is registered
+
+        :param name: Name of serializer to return
+        :type name: ``unicode`` or ``str``
+        :returns: serializer object or ``None``
+
+        """
+
+        return self._serializers.get(name)
+
+    def unregister(self, name):
+        """Remove registered serializer with ``name``
+
+        Raises a :class:`ValueError` if there is no such registered
+        serializer.
+
+        :param name: Name of serializer to remove
+        :type name: ``unicode`` or ``str``
+        :returns: serializer object
+
+        """
+
+        if name not in self._serializers:
+            raise ValueError('No such serializer registered : {}'.format(name))
+
+        serializer = self._serializers[name]
+        del self._serializers[name]
+
+        return serializer
+
+    @property
+    def serializers(self):
+        """Return names of registered serializers"""
+        return sorted(self._serializers.keys())
+
+
+class JSONSerializer(object):
+    """Wrapper around :mod:`json`. Sets ``indent`` and ``encoding``.
+
+    .. versionadded:: 1.8
+
+    Use this serializer if you need readable data files. JSON doesn't
+    support Python objects as well as ``cPickle``/``pickle``, so be
+    careful which data you try to serialize as JSON.
+
+    """
+
+    @classmethod
+    def load(cls, file_obj):
+        return json.load(file_obj)
+
+    @classmethod
+    def dump(cls, obj, file_obj):
+        return json.dump(obj, file_obj, indent=2, encoding='utf-8')
+
+
+class CPickleSerializer(object):
+    """Wrapper around :mod:`cPickle`. Sets ``protocol``.
+
+    .. versionadded:: 1.8
+
+    This is the default serializer and the best combination of speed and
+    flexibility.
+
+    """
+
+    @classmethod
+    def load(cls, file_obj):
+        return cPickle.load(file_obj)
+
+    @classmethod
+    def dump(cls, obj, file_obj):
+        return cPickle.dump(obj, file_obj, protocol=-1)
+
+
+class PickleSerializer(object):
+    """Wrapper around :mod:`pickle`. Sets ``protocol``.
+
+    .. versionadded:: 1.8
+
+    Use this serializer if you need to add custom pickling.
+
+    """
+
+    @classmethod
+    def load(cls, file_obj):
+        return pickle.load(file_obj)
+
+    @classmethod
+    def dump(cls, obj, file_obj):
+        return pickle.dump(obj, file_obj, protocol=-1)
+
+
+# Set up default manager and register built-in serializers
+manager = SerializerManager()
+manager.register('cpickle', CPickleSerializer)
+manager.register('pickle', PickleSerializer)
+manager.register('json', JSONSerializer)
+
+
 class Item(object):
     """Represents a feedback item for Alfred. Generates Alfred-compliant
     XML for a single item.
@@ -459,7 +661,8 @@ class Item(object):
 
     def __init__(self, title, subtitle='', modifier_subtitles=None,
                  arg=None, autocomplete=None, valid=False, uid=None,
-                 icon=None, icontype=None, type=None):
+                 icon=None, icontype=None, type=None, largetext=None,
+                 copytext=None):
         """Arguments the same as for :meth:`Workflow.add_item`.
 
         """
@@ -474,6 +677,8 @@ class Item(object):
         self.icon = icon
         self.icontype = icontype
         self.type = type
+        self.largetext = largetext
+        self.copytext = copytext
 
     @property
     def elem(self):
@@ -513,6 +718,15 @@ class Item(object):
             else:
                 attr = {}
             ET.SubElement(root, 'icon', attr).text = self.icon
+
+        if self.largetext:
+            ET.SubElement(root, 'text',
+                          {'type': 'largetype'}).text = self.largetext
+
+        if self.copytext:
+            ET.SubElement(root, 'text',
+                          {'type': 'copy'}).text = self.copytext
+
         return root
 
 
@@ -544,7 +758,7 @@ class Settings(dict):
         elif defaults:
             for key, val in defaults.items():
                 self[key] = val
-            self._save()  # save default settings
+            self.save()  # save default settings
 
     def _load(self):
         """Load cached settings from JSON file `self._filepath`"""
@@ -555,8 +769,13 @@ class Settings(dict):
                 self[key] = value
         self._nosave = False
 
-    def _save(self):
-        """Save settings to JSON file `self._filepath`"""
+    def save(self):
+        """Save settings to JSON file specified in ``self._filepath``
+
+        If you're using this class via :attr:`Workflow.settings`, which
+        you probably are, ``self._filepath`` will be ``settings.json``
+        in your workflow's data directory (see :attr:`~Workflow.datadir`).
+        """
         if self._nosave:
             return
         data = {}
@@ -568,17 +787,17 @@ class Settings(dict):
     # dict methods
     def __setitem__(self, key, value):
         super(Settings, self).__setitem__(key, value)
-        self._save()
+        self.save()
 
     def update(self, *args, **kwargs):
         """Override :class:`dict` method to save on update."""
         super(Settings, self).update(*args, **kwargs)
-        self._save()
+        self.save()
 
     def setdefault(self, key, value=None):
         """Override :class:`dict` method to save on update."""
         ret = super(Settings, self).setdefault(key, value)
-        self._save()
+        self.save()
         return ret
 
 
@@ -619,12 +838,15 @@ class Workflow(object):
         self._settings = None
         self._bundleid = None
         self._name = None
+        self._cache_serializer = 'cpickle'
+        self._data_serializer = 'cpickle'
         # info.plist should be in the directory above this one
         self._info_plist = self.workflowfile('info.plist')
         self._info = None
         self._info_loaded = False
         self._logger = None
         self._items = []
+        self._alfred_env = None
         self._search_pattern_cache = {}
         if libraries:
             sys.path = libraries + sys.path
@@ -633,7 +855,80 @@ class Workflow(object):
     # API methods
     ####################################################################
 
-    # info.plist contents ----------------------------------------------
+    # info.plist contents and alfred_* environment variables  ----------
+
+    @property
+    def alfred_env(self):
+        """Alfred's environmental variables minus the ``alfred_`` prefix.
+
+        .. versionadded:: 1.7
+
+        The variables Alfred 2.4+ exports are:
+
+        ============================  =========================================
+        Variable                      Description
+        ============================  =========================================
+        alfred_preferences            Path to Alfred.alfredpreferences
+                                      (where your workflows and settings are
+                                      stored).
+        alfred_preferences_localhash  Machine-specific preferences are stored
+                                      in ``Alfred.alfredpreferences/preferences/local/<hash>``
+                                      (see ``alfred_preferences`` above for
+                                      the path to ``Alfred.alfredpreferences``)
+        alfred_theme                  ID of selected theme
+        alfred_theme_background       Background colour of selected theme in
+                                      format ``rgba(r,g,b,a)``
+        alfred_theme_subtext          Show result subtext.
+                                      ``0`` = Always,
+                                      ``1`` = Alternative actions only,
+                                      ``2`` = Selected result only,
+                                      ``3`` = Never
+        alfred_version                Alfred version number, e.g. ``2.4``
+        alfred_version_build          Alfred build number, e.g. ``277``
+        alfred_workflow_bundleid      Bundle ID, e.g.
+                                      ``net.deanishe.alfred-mailto``
+        alfred_workflow_cache         Path to workflow's cache directory
+        alfred_workflow_data          Path to workflow's data directory
+        alfred_workflow_name          Name of current workflow
+        alfred_workflow_uid           UID of workflow
+        ============================  =========================================
+
+        **Note:** all values are Unicode strings
+
+        :returns: ``dict`` of Alfred's environmental variables without the
+            ``alfred_`` prefix, e.g. ``preferences``, ``workflow_data``.
+
+        """
+
+        if self._alfred_env is not None:
+            return self._alfred_env
+
+        data = {}
+
+        for key in (
+                'alfred_preferences',
+                'alfred_preferences_localhash',
+                'alfred_theme',
+                'alfred_theme_background',
+                'alfred_theme_subtext',
+                'alfred_version',
+                'alfred_version_build',
+                'alfred_workflow_bundleid',
+                'alfred_workflow_cache',
+                'alfred_workflow_data',
+                'alfred_workflow_name',
+                'alfred_workflow_uid'):
+
+            value = os.getenv(key)
+
+            if isinstance(value, str):
+                value = self.decode(value)
+
+            data[key[7:]] = value
+
+        self._alfred_env = data
+
+        return self._alfred_env
 
     @property
     def info(self):
@@ -657,7 +952,11 @@ class Workflow(object):
         """
 
         if not self._bundleid:
-            self._bundleid = unicode(self.info['bundleid'], 'utf-8')
+            if self.alfred_env.get('workflow_bundleid'):
+                self._bundleid = self.alfred_env.get('workflow_bundleid')
+            else:
+                self._bundleid = unicode(self.info['bundleid'], 'utf-8')
+
         return self._bundleid
 
     @property
@@ -670,7 +969,11 @@ class Workflow(object):
         """
 
         if not self._name:
-            self._name = unicode(self.info['name'], 'utf-8')
+            if self.alfred_env.get('workflow_name'):
+                self._name = self.decode(self.alfred_env.get('workflow_name'))
+            else:
+                self._name = self.decode(self.info['name'])
+
         return self._name
 
     # Workflow utility methods -----------------------------------------
@@ -699,9 +1002,15 @@ class Workflow(object):
             if 'workflow:openlog' in args:
                 msg = 'Opening workflow log file'
                 self.open_log()
+            elif 'workflow:reset' in args:
+                self.reset()
+                msg = 'Reset workflow'
             elif 'workflow:delcache' in args:
                 self.clear_cache()
                 msg = 'Deleted workflow cache'
+            elif 'workflow:deldata' in args:
+                self.clear_data()
+                msg = 'Deleted workflow data'
             elif 'workflow:delsettings' in args:
                 self.clear_settings()
                 msg = 'Deleted workflow settings'
@@ -719,14 +1028,14 @@ class Workflow(object):
                 self.open_terminal()
             elif 'workflow:foldingon' in args:
                 msg = 'Diacritics will always be folded'
-                self.settings['__workflows_diacritic_folding'] = True
+                self.settings['__workflow_diacritic_folding'] = True
             elif 'workflow:foldingoff' in args:
                 msg = 'Diacritics will never be folded'
-                self.settings['__workflows_diacritic_folding'] = False
+                self.settings['__workflow_diacritic_folding'] = False
             elif 'workflow:foldingdefault' in args:
                 msg = 'Diacritics folding reset'
-                if '__workflows_diacritic_folding' in self.settings:
-                    del self.settings['__workflows_diacritic_folding']
+                if '__workflow_diacritic_folding' in self.settings:
+                    del self.settings['__workflow_diacritic_folding']
 
             if msg:
                 self.logger.debug(msg)
@@ -740,28 +1049,50 @@ class Workflow(object):
     def cachedir(self):
         """Path to workflow's cache directory.
 
+        The cache directory is a subdirectory of Alfred's own cache directory in
+        ``~/Library/Caches``. The full path is:
+
+        ``~/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/<bundle id>``
+
         :returns: full path to workflow's cache directory
         :rtype: ``unicode``
 
         """
 
-        dirpath = os.path.join(os.path.expanduser(
-            '~/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/'),
-            self.bundleid)
+        if self.alfred_env.get('workflow_cache'):
+            dirpath = self.alfred_env.get('workflow_cache')
+
+        else:
+            dirpath = os.path.join(
+                os.path.expanduser(
+                    '~/Library/Caches/com.runningwithcrayons.Alfred-2/'
+                    'Workflow Data/'),
+                self.bundleid)
+
         return self._create(dirpath)
 
     @property
     def datadir(self):
         """Path to workflow's data directory.
 
+        The data directory is a subdirectory of Alfred's own data directory in
+        ``~/Library/Application Support``. The full path is:
+
+        ``~/Library/Application Support/Alfred 2/Workflow Data/<bundle id>``
+
         :returns: full path to workflow data directory
         :rtype: ``unicode``
 
         """
 
-        dirpath = os.path.join(os.path.expanduser(
-            '~/Library/Application Support/Alfred 2/Workflow Data/'),
-            self.bundleid)
+        if self.alfred_env.get('workflow_data'):
+            dirpath = self.alfred_env.get('workflow_data')
+
+        else:
+            dirpath = os.path.join(os.path.expanduser(
+                '~/Library/Application Support/Alfred 2/Workflow Data/'),
+                self.bundleid)
+
         return self._create(dirpath)
 
     @property
@@ -774,21 +1105,43 @@ class Workflow(object):
         """
 
         if not self._workflowdir:
+            # Try the working directory first, then the directory
+            # the library is in. CWD will be the workflow root if
+            # a workflow is being run in Alfred
+            candidates = [
+                os.path.abspath(os.getcwdu()),
+                os.path.dirname(os.path.abspath(os.path.dirname(__file__)))]
+
             # climb the directory tree until we find `info.plist`
-            dirpath = os.path.abspath(os.path.dirname(__file__))
-            while True:
-                dirpath = os.path.dirname(dirpath)
-                if os.path.exists(os.path.join(dirpath, 'info.plist')):
-                    self._workflowdir = dirpath
+            for dirpath in candidates:
+
+                # Ensure directory path is Unicode
+                dirpath = self.decode(dirpath)
+
+                while True:
+                    if os.path.exists(os.path.join(dirpath, 'info.plist')):
+                        self._workflowdir = dirpath
+                        break
+
+                    elif dirpath == '/':
+                        # no `info.plist` found
+                        break
+
+                    # Check the parent directory
+                    dirpath = os.path.dirname(dirpath)
+
+                # No need to check other candidates
+                if self._workflowdir:
                     break
-                elif dirpath == '/':  # pragma: no cover
-                    # no `info.plist` found
-                    raise IOError("'info.plist' not found in directory tree")
+
+            if not self._workflowdir:
+                raise IOError("'info.plist' not found in directory tree")
 
         return self._workflowdir
 
     def cachefile(self, filename):
-        """Return full path to ``filename`` within workflow's cache dir.
+        """Return full path to ``filename`` within your workflow's
+        :attr:`cache directory <Workflow.cachedir>`.
 
         :param filename: basename of file
         :type filename: ``unicode``
@@ -800,7 +1153,8 @@ class Workflow(object):
         return os.path.join(self.cachedir, filename)
 
     def datafile(self, filename):
-        """Return full path to ``filename`` within workflow's data dir.
+        """Return full path to ``filename`` within your workflow's
+        :attr:`data directory <Workflow.datadir>`.
 
         :param filename: basename of file
         :type filename: ``unicode``
@@ -915,6 +1269,203 @@ class Workflow(object):
                                       self._default_settings)
         return self._settings
 
+    @property
+    def cache_serializer(self):
+        """Name of default cache serializer.
+
+        .. versionadded:: 1.8
+
+        This serializer is used by :meth:`cache_data()` and
+        :meth:`cached_data()`
+
+        See :class:`SerializerManager` for details.
+
+        :returns: serializer name
+        :rtype: ``unicode``
+
+        """
+
+        return self._cache_serializer
+
+    @cache_serializer.setter
+    def cache_serializer(self, serializer_name):
+        """Set the default cache serialization format.
+
+        .. versionadded:: 1.8
+
+        This serializer is used by :meth:`cache_data()` and
+        :meth:`cached_data()`
+
+        The specified serializer must already by registered with the
+        :class:`SerializerManager` at `~workflow.workflow.manager`,
+        otherwise a :class:`ValueError` will be raised.
+
+        :param serializer_name: Name of default serializer to use.
+        :type serializer_name:
+
+        """
+
+        if manager.serializer(serializer_name) is None:
+            raise ValueError(
+                'Unknown serializer : `{}`. Register your serializer '
+                'with `manager` first.'.format(serializer_name))
+
+        self.logger.debug(
+            'default cache serializer set to `{}`'.format(serializer_name))
+
+        self._cache_serializer = serializer_name
+
+    @property
+    def data_serializer(self):
+        """Name of default data serializer.
+
+        .. versionadded:: 1.8
+
+        This serializer is used by :meth:`store_data()` and
+        :meth:`stored_data()`
+
+        See :class:`SerializerManager` for details.
+
+        :returns: serializer name
+        :rtype: ``unicode``
+
+        """
+
+        return self._data_serializer
+
+    @data_serializer.setter
+    def data_serializer(self, serializer_name):
+        """Set the default cache serialization format.
+
+        .. versionadded:: 1.8
+
+        This serializer is used by :meth:`store_data()` and
+        :meth:`stored_data()`
+
+        The specified serializer must already by registered with the
+        :class:`SerializerManager` at `~workflow.workflow.manager`,
+        otherwise a :class:`ValueError` will be raised.
+
+        :param serializer_name: Name of default serializer to use.
+        :type serializer_name:
+
+        """
+
+        if manager.serializer(serializer_name) is None:
+            raise ValueError(
+                'Unknown serializer : `{}`. Register your serializer '
+                'with `manager` first.'.format(serializer_name))
+
+        self.logger.debug(
+            'default data serializer set to `{}`'.format(serializer_name))
+
+        self._data_serializer = serializer_name
+
+    def stored_data(self, name):
+        """Retrieve data from data directory. Returns ``None`` if there
+        is no data stored.
+
+        .. versionadded:: 1.8
+
+        :param name: name of datastore
+        :type name: ``unicode``
+
+        """
+
+        metadata_path = self.datafile('.{}.alfred-workflow'.format(name))
+
+        if not os.path.exists(metadata_path):
+            self.logger.debug('No data stored for `{}`'.format(name))
+            return None
+
+        with open(metadata_path, 'rb') as file_obj:
+            serializer_name = file_obj.read().strip()
+
+        serializer = manager.serializer(serializer_name)
+
+        if serializer is None:
+            raise ValueError(
+                'Unknown serializer `{}`. Register a corresponding serializer '
+                'with `manager.register()` to load this data.'.format(
+                serializer_name))
+
+        self.logger.debug('Data `{}` stored in `{}` format'.format(
+                          name, serializer_name))
+
+        filename = '{}.{}'.format(name, serializer_name)
+        data_path = self.datafile(filename)
+
+        if not os.path.exists(data_path):
+            self.logger.debug('No data stored for `{}`'.format(name))
+            if os.path.exists(metadata_path):
+                os.unlink(metadata_path)
+
+            return None
+
+        with open(data_path, 'rb') as file_obj:
+            data = serializer.load(file_obj)
+
+        self.logger.debug('Stored data loaded from : {}'.format(data_path))
+
+        return data
+
+    def store_data(self, name, data, serializer=None):
+        """Save data to data directory.
+
+        .. versionadded:: 1.8
+
+        If ``data`` is ``None``, the datastore will be deleted.
+
+        :param name: name of datastore
+        :type name: ``unicode``
+        :param data: object(s) to store
+        :type data: artibrary Python objects. **Note:** some serializers
+            can only handled certain types of data.
+        :param serializer: name of serializer to use.
+            See :class:`SerializerManager` for more information.
+        :type serializer: ``unicode``
+        :returns: data in datastore or ``None``
+
+        """
+
+        serializer_name = serializer or self.data_serializer
+
+        if serializer_name == 'json' and name == 'settings':
+            raise ValueError(
+                'Cannot save data to `settings` with format `json`. '
+                "This would overwrite Alfred-Workflow's settings file.")
+
+        serializer = manager.serializer(serializer_name)
+
+        if serializer is None:
+            raise ValueError(
+                'Invalid serializer `{}`. Register your serializer with '
+                '`manager.register()` first.'.format(serializer_name))
+
+        # In order for `stored_data()` to be able to load data stored with
+        # an arbitrary serializer, yet still have meaningful file extensions,
+        # the format (i.e. extension) is saved to an accompanying file
+        metadata_path = self.datafile('.{}.alfred-workflow'.format(name))
+        filename = '{}.{}'.format(name, serializer_name)
+        data_path = self.datafile(filename)
+
+        if data is None:  # Delete cached data
+            for path in (metadata_path, data_path):
+                if os.path.exists(path):
+                    os.unlink(path)
+                    self.logger.debug('Deleted data file : {}'.format(path))
+
+            return
+
+        # Save file extension
+        with open(metadata_path, 'wb') as file_obj:
+            file_obj.write(serializer_name)
+
+        with open(data_path, 'wb') as file_obj:
+            serializer.dump(data, file_obj)
+
+        self.logger.debug('Stored data saved at : {}'.format(data_path))
+
     def cached_data(self, name, data_func=None, max_age=60):
         """Retrieve data from cache or re-generate and re-cache data if
         stale/non-existant. If ``max_age`` is 0, return cached data no
@@ -932,21 +1483,30 @@ class Workflow(object):
 
         """
 
-        cache_path = self.cachefile('%s.cache' % name)
+        serializer = manager.serializer(self.cache_serializer)
+
+        cache_path = self.cachefile('%s.%s' % (name, self.cache_serializer))
         age = self.cached_data_age(name)
+
         if (age < max_age or max_age == 0) and os.path.exists(cache_path):
+
             with open(cache_path, 'rb') as file:
                 self.logger.debug('Loading cached data from : %s',
                                   cache_path)
-                return pickle.load(file)
+                return serializer.load(file)
+
         if not data_func:
             return None
+
         data = data_func()
         self.cache_data(name, data)
+
         return data
 
     def cache_data(self, name, data):
-        """Save ``data`` to cache under ``name``
+        """Save ``data`` to cache under ``name``.
+
+        If ``data`` is ``None``, the corresponding cache file will be deleted.
 
         :param name: name of datastore
         :type name: ``unicode``
@@ -955,9 +1515,19 @@ class Workflow(object):
 
         """
 
-        cache_path = self.cachefile('%s.cache' % name)
+        serializer = manager.serializer(self.cache_serializer)
+
+        cache_path = self.cachefile('%s.%s' % (name, self.cache_serializer))
+
+        if data is None:
+            if os.path.exists(cache_path):
+                os.unlink(cache_path)
+                self.logger.debug('Deleted cache file : %s', cache_path)
+            return
+
         with open(cache_path, 'wb') as file:
-            pickle.dump(data, file)
+            serializer.dump(data, file)
+
         self.logger.debug('Cached data saved at : %s', cache_path)
 
     def cached_data_fresh(self, name, max_age):
@@ -973,8 +1543,10 @@ class Workflow(object):
         """
 
         age = self.cached_data_age(name)
+
         if not age:
             return False
+
         return age < max_age
 
     def cached_data_age(self, name):
@@ -988,9 +1560,11 @@ class Workflow(object):
 
         """
 
-        cache_path = self.cachefile('%s.cache' % name)
+        cache_path = self.cachefile('%s.%s' % (name, self.cache_serializer))
+
         if not os.path.exists(cache_path):
             return 0
+
         return time.time() - os.stat(cache_path).st_mtime
 
     def filter(self, query, items, key=lambda x: x, ascending=False,
@@ -1079,10 +1653,10 @@ class Workflow(object):
         query = query.strip()
 
         # Use user override if there is one
-        fold_diacritics = self.settings.get('__workflows_diacritic_folding',
+        fold_diacritics = self.settings.get('__workflow_diacritic_folding',
                                             fold_diacritics)
 
-        results = {}
+        results = []
 
         for i, item in enumerate(items):
             skip = False
@@ -1108,12 +1682,12 @@ class Workflow(object):
                 # use "reversed" `score` (i.e. highest becomes lowest) and
                 # `value` as sort key. This means items with the same score
                 # will be sorted in alphabetical not reverse alphabetical order
-                results[(100.0 / score, value.lower(), score)] = (item, score,
-                                                                  r)
+                results.append(((100.0 / score, value.lower(), score),
+                                (item, score, r)))
 
         # sort on keys, then discard the keys
-        keys = sorted(results.keys(), reverse=ascending)
-        results = [results.get(k) for k in keys]
+        results.sort(reverse=True)
+        results = [t[1] for t in results]
 
         if max_results and len(results) > max_results:
             results = results[:max_results]
@@ -1272,7 +1846,7 @@ class Workflow(object):
 
     def add_item(self, title, subtitle='', modifier_subtitles=None, arg=None,
                  autocomplete=None, valid=False, uid=None, icon=None,
-                 icontype=None, type=None):
+                 icontype=None, type=None, largetext=None, copytext=None):
         """Add an item to be output to Alfred
 
         :param title: Title shown in Alfred
@@ -1283,7 +1857,7 @@ class Workflow(object):
             (CMD, OPT etc.) is pressed. Use a ``dict`` with the lowercase
             keys ``cmd``, ``ctrl``, ``shift``, ``alt`` and ``fn``
         :type modifier_subtitles: ``dict``
-        :param arg: Argument passed by Alfred as `{query}` when item is
+        :param arg: Argument passed by Alfred as ``{query}`` when item is
             actioned
         :type arg: ``unicode``
         :param autocomplete: Text expanded in Alfred when item is TABbed
@@ -1296,7 +1870,7 @@ class Workflow(object):
         :type icon: ``unicode``
         :param icontype: Type of icon. Must be one of ``None`` , ``'filetype'``
            or ``'fileicon'``. Use ``'filetype'`` when ``icon`` is a filetype
-           such as``public.folder``. Use ``'fileicon'`` when you wish to
+           such as ``'public.folder'``. Use ``'fileicon'`` when you wish to
            use the icon of the file specified as ``icon``, e.g.
            ``icon='/Applications/Safari.app', icontype='fileicon'``.
            Leave as `None` if ``icon`` points to an actual
@@ -1306,12 +1880,22 @@ class Workflow(object):
             (by Alfred). This will tell Alfred to enable file actions for
             this item.
         :type type: ``unicode``
+        :param largetext: Text to be displayed in Alfred's large text box
+            if user presses CMD+L on item.
+        :type largetext: ``unicode``
+        :param copytext: Text to be copied to pasteboard if user presses
+            CMD+C on item.
+        :type copytext: ``unicode``
         :returns: :class:`Item` instance
+
+        See the :ref:`script-filter-results` section of the documentation
+        for more information.
 
         """
 
         item = self.item_class(title, subtitle, modifier_subtitles, arg,
-                               autocomplete, valid, uid, icon, icontype, type)
+                               autocomplete, valid, uid, icon, icontype, type,
+                               largetext, copytext)
         self._items.append(item)
         return item
 
@@ -1412,20 +1996,23 @@ class Workflow(object):
 
     def clear_cache(self):
         """Delete all files in workflow cache directory."""
-        if os.path.exists(self.cachedir):
-            for filename in os.listdir(self.cachedir):
-                path = os.path.join(self.cachedir, filename)
-                if os.path.isdir(path):
-                    shutil.rmtree(path)
-                else:
-                    os.unlink(path)
-                self.logger.debug('Deleted : %r', path)
+        self._delete_directory_contents(self.cachedir)
+
+    def clear_data(self):
+        """Delete all files in workflow data directory."""
+        self._delete_directory_contents(self.datadir)
 
     def clear_settings(self):
         """Delete settings file."""
         if os.path.exists(self.settings_path):
             os.unlink(self.settings_path)
             self.logger.debug('Deleted : %r', self.settings_path)
+
+    def reset(self):
+        """Delete settings, cache and data"""
+        self.clear_cache()
+        self.clear_data()
+        self.clear_settings()
 
     def open_log(self):
         """Open log file in standard application (usually Console.app)."""
@@ -1504,6 +2091,23 @@ class Workflow(object):
         text = ''.join([ASCII_REPLACEMENTS.get(c, c) for c in text])
         return unicode(unicodedata.normalize('NFKD',
                        text).encode('ascii', 'ignore'))
+
+    def _delete_directory_contents(self, dirpath):
+        """Delete all files in a directory
+
+        :param dirpath: path to directory to clear
+        :type dirpath: ``unicode`` or ``str``
+
+        """
+
+        if os.path.exists(dirpath):
+            for filename in os.listdir(dirpath):
+                path = os.path.join(dirpath, filename)
+                if os.path.isdir(path):
+                    shutil.rmtree(path)
+                else:
+                    os.unlink(path)
+                self.logger.debug('Deleted : %r', path)
 
     def _load_info_plist(self):
         """Load workflow info from ``info.plist``

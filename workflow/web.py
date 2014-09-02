@@ -20,6 +20,16 @@ Features:
 - File uploads
 - Redirection support
 
+**WARNING**: As ``web.py`` is based on Python 2's standard HTTP libraries, it
+**does not** verify SSL certificates when establishing HTTPS connections.
+
+As a result, you *must not* use this module for sensitive connections.
+
+If you require certificate verification (which you really should), you should
+use the `requests <http://docs.python-requests.org/en/latest/>`_
+Python library (upon which the `web.py` API is based) or the
+command-line tool `cURL <http://curl.haxx.se/>`_ instead.
+
 """
 
 from __future__ import print_function
@@ -33,6 +43,7 @@ import random
 import json
 import re
 import unicodedata
+import codecs
 
 
 USER_AGENT = u'alfred-workflow-0.1'
@@ -139,12 +150,12 @@ class Response(object):
         self.request = request
         self.url = None
         self.raw = None
-        self.encoding = None
-        self.content = None
+        self._encoding = None
         self.error = None
         self.status_code = None
         self.reason = None
         self.headers = {}
+        self._content = None
 
         # Execute query
         try:
@@ -161,7 +172,6 @@ class Response(object):
         else:
             self.status_code = self.raw.getcode()
             self.url = self.raw.geturl()
-            self.content = self.raw.read()
         self.reason = RESPONSES.get(self.status_code)
 
         # Parse additional info if request succeeded
@@ -171,7 +181,6 @@ class Response(object):
             self.mimetype = headers.gettype()
             for key in headers.keys():
                 self.headers[key.lower()] = headers.get(key)
-            self.encoding = self._get_encoding()
 
     def json(self):
         """Decode response contents as JSON.
@@ -182,6 +191,32 @@ class Response(object):
         """
 
         return json.loads(self.content, self.encoding or 'utf-8')
+
+    @property
+    def encoding(self):
+        """Return text encoding of document or ``None``
+
+        :returns: ``str``
+
+        """
+
+        if not self._encoding:
+            self._encoding = self._get_encoding()
+
+        return self._encoding
+
+    @property
+    def content(self):
+        """Return raw content of response (i.e. bytes)
+
+        :returns: ``str``
+
+        """
+
+        if not self._content:
+            self._content = self.raw.read()
+
+        return self._content
 
     @property
     def text(self):
@@ -195,6 +230,45 @@ class Response(object):
             return unicodedata.normalize('NFC', unicode(self.content,
                                                         self.encoding))
         return self.content
+
+    def iter_content(self, chunk_size=1, decode_unicode=False):
+        """Iterate over response data.
+
+        .. versionadded:: 1.6
+
+        :param chunk_size: Number of bytes to read into memory
+        :type chunk_size: ``int``
+        :param decode_unicode: Decode to Unicode using detected encoding
+        :type decode_unicode: ``Boolean``
+        :returns: iterator
+
+        """
+
+        def decode_stream(iterator, r):
+
+            decoder = codecs.getincrementaldecoder(r.encoding)(errors='replace')
+
+            for chunk in iterator:
+                rv = decoder.decode(chunk)
+                if rv:
+                    yield rv
+            rv = decoder.decode(b'', final=True)
+            if rv:
+                yield rv  # pragma: nocover
+
+        def generate():
+            while True:
+                chunk = self.raw.read(chunk_size)
+                if not chunk:
+                    break
+                yield chunk
+
+        chunks = generate()
+
+        if decode_unicode and self.encoding:
+            chunks = decode_stream(chunks, self)
+
+        return chunks
 
     def raise_for_status(self):
         """Raise stored error if one occurred.
@@ -214,27 +288,45 @@ class Response(object):
 
         """
 
-        # HTTP Content-Type header
         headers = self.raw.info()
-        # _, params = cgi.parse_header(self.headers.get('content-type'))
-        encoding = headers.getparam('charset')
+        encoding = None
+
+        if headers.getparam('charset'):
+            encoding = headers.getparam('charset')
+
+        # HTTP Content-Type header
+        for param in headers.getplist():
+            if param.startswith('charset='):
+                encoding = param[8:]
+                break
+
+        # Encoding declared in document should override HTTP headers
         if self.mimetype == 'text/html':  # sniff HTML headers
-            m = re.search("""<meta.+charset=["']{0,1}(.+)["'].*>""",
+            m = re.search("""<meta.+charset=["']{0,1}(.+?)["'].*>""",
                           self.content)
             if m:
                 encoding = m.group(1)
+
         elif ((self.mimetype.startswith('application/') or
                self.mimetype.startswith('text/')) and
               'xml' in self.mimetype):
-            m = re.search("""<?xml.+encoding=["'](.+?)["'].*>""",
+            m = re.search("""<?xml.+encoding=["'](.+?)["'][^>]*\?>""",
                           self.content)
             if m:
                 encoding = m.group(1)
-        elif self.mimetype == 'application/json' and not encoding:
+
+        # Format defaults
+        if self.mimetype == 'application/json' and not encoding:
             # The default encoding for JSON
             encoding = 'utf-8'
+
+        elif self.mimetype == 'application/xml' and not encoding:
+            # The default for 'application/xml'
+            encoding = 'utf-8'
+
         if encoding:
             encoding = encoding.lower()
+
         return encoding
 
 
