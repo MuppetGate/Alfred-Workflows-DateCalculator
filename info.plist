@@ -551,7 +551,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>## Date Calculator Version 1.6
+	<string>## Date Calculator Version 1.7
 
 ## Date Calculator
 Hello there!
@@ -722,24 +722,6 @@ A list of things that made my first attempt at Python programming possible:
 ### Version History
 Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
 Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
-
-Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic. 
-Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
-
-Last release (Version 1.4) Fixed bug that caused inaccuracies when calculating anniversaries. 
-Refactored code to make it easier to add new date functions and date formatters. General tidy-up
-
-Last release (Version 1.3) Adds extra formatting functions (day of week) and bug fixes.
-
-Last release (Version 1.2) was an improvement to add user-defined macros.
-
-Last release (Version 1.1) was on the 01.07.2014. This included a new anniversary list function, 
-and the addition of the international date format (yyyy-mm-dd).
-
-Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser, 
-added macros (days of week, christmas and easter) and a general tidy up. 
-The symbol for getting the week number for a particular date has changed 
-from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
 Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
