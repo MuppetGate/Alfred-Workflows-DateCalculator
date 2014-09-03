@@ -37,6 +37,8 @@ class UnknownExclusionTypeError(Exception):
     somehow makes it through the checking list. Shouldn't occur really,
     but if it does then we want to know about it.
     """
+    pass
+
 
 def do_functions(command, date_format, settings):
     date_time, _ = convert_date_time(command.dateTime, date_format, settings)
@@ -147,7 +149,7 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
 
     datetime_list = list(rules)
 
-    # You want to delete everything from the found
+      # You want to delete everything from the found
     # list of dates that is part of the exclusion list
     # of dates. There's bound to be an easier way
     # to do this in Python.
@@ -159,7 +161,7 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
                 del datetime_list[index]
 
     if datetime_list:
-        return len(datetime_list), datetime_list[-1]
+        return len(datetime_list) - 1, datetime_list[-1]
     else:
         return 0, end_datetime
 

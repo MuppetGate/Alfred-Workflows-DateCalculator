@@ -58,7 +58,7 @@ def convert_date_time(date_time_str, date_format, settings):
 
     anniversary_date = process_macros(date_time_str.lower(), settings['anniversaries'])
     if anniversary_date is not None:
-        return anniversary_date, date_format
+        return datetime.combine(anniversary_date, datetime.max.time()), date_format
 
     # Now try each in turn to see if we get anything
     try:
@@ -71,7 +71,7 @@ def convert_date_time(date_time_str, date_format, settings):
         try:
 
             process_date = datetime.strptime(date_time_str, date_format)
-            date_and_time = datetime.combine(process_date, datetime.min.time())
+            date_and_time = datetime.combine(process_date, datetime.max.time())
             return date_and_time, date_format
 
         except ValueError:
