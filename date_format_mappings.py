@@ -19,7 +19,14 @@ DATE_MAPPINGS = {
     'yyyy-mm-dd': {'name': 'international (-)', 'date-format': '%Y-%m-%d', 'regex': '\d{4}-\d{2}-\d{2}'}
 }
 
+TIME_MAPPINGS = {
+
+    '24-hour': {'name': '24-hour format', 'time-format': '%H:%M ', 'regex': '\d{2}\:\d{2}'},
+    '12-hour': {'name': '12-hour format', 'time-format': '%I:%M%p', 'regex': '\d{2}\:\d{2}(AM|PM)'}
+}
+
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
+DEFAULT_TIME_FORMAT = '24-hour'
 
 DEFAULT_TIME_RE = '\d{2}:\d{2}'
 
@@ -50,7 +57,8 @@ DEFAULT_ANNIVERSARIES = {'christmas': '1900-12-25T00:30:00',
 DEFAULT_WORKFLOW_SETTINGS = {
 
     'date-format': DEFAULT_DATE_FORMAT,
-    'anniversaries': DEFAULT_ANNIVERSARIES
+    'anniversaries': DEFAULT_ANNIVERSARIES,
+    'time_format': DEFAULT_TIME_FORMAT
 
 }
 

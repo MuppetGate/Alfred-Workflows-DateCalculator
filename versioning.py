@@ -1,5 +1,5 @@
 from __future__ import unicode_literals, print_function
-from date_format_mappings import DEFAULT_ANNIVERSARIES
+from date_format_mappings import DEFAULT_ANNIVERSARIES, DEFAULT_TIME_FORMAT
 
 
 def update_settings(wf):
@@ -13,3 +13,5 @@ def update_settings(wf):
     if "anniversaries" not in wf.settings:
         wf.settings['anniversaries'] = DEFAULT_ANNIVERSARIES
 
+    if "time-format" not in wf.settings:
+        wf.settings['time-format'] = DEFAULT_TIME_FORMAT

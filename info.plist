@@ -8,6 +8,17 @@
 	<string>Productivity</string>
 	<key>connections</key>
 	<dict>
+		<key>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7205A144-D946-40B6-BF86-C19518026D45</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>308D6AD9-DB3C-4021-9318-F162FF0E4254</key>
 		<array>
 			<dict>
@@ -86,6 +97,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>AC56E0A1-82E8-4C9C-B6CF-2B53EBD02ABF</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>7205A144-D946-40B6-BF86-C19518026D45</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C5269892-166A-4776-9B18-6B0A72E66364</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -174,7 +196,7 @@
 				<key>text</key>
 				<string>{query}</string>
 				<key>title</key>
-				<string>Set week num format</string>
+				<string>Set date format</string>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.notification</string>
@@ -449,7 +471,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalset list edit {query}"</string>
+				<string>tell application "Alfred 2" to search "dcalcset list edit {query}"</string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -546,6 +568,75 @@
 			<string>alfred.workflow.input.keyword</string>
 			<key>uid</key>
 			<string>325B8F31-17CE-427F-ABB6-9D77B34CE8B7</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>dcalcset time format</string>
+				<key>runningsubtext</key>
+				<string>Loading list . . .</string>
+				<key>script</key>
+				<string>python time_format_list.py</string>
+				<key>title</key>
+				<string>Set the time format</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>python set_time_format.py "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>7205A144-D946-40B6-BF86-C19518026D45</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Set time format</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>C5269892-166A-4776-9B18-6B0A72E66364</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -748,6 +839,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.</string>
 	<key>uidata</key>
 	<dict>
+		<key>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</key>
+		<dict>
+			<key>ypos</key>
+			<real>1400</real>
+		</dict>
 		<key>308D6AD9-DB3C-4021-9318-F162FF0E4254</key>
 		<dict>
 			<key>ypos</key>
@@ -793,6 +889,11 @@ THE SOFTWARE.</string>
 			<key>ypos</key>
 			<real>320</real>
 		</dict>
+		<key>7205A144-D946-40B6-BF86-C19518026D45</key>
+		<dict>
+			<key>ypos</key>
+			<real>1400</real>
+		</dict>
 		<key>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</key>
 		<dict>
 			<key>ypos</key>
@@ -832,6 +933,11 @@ THE SOFTWARE.</string>
 		<dict>
 			<key>ypos</key>
 			<real>200</real>
+		</dict>
+		<key>C5269892-166A-4776-9B18-6B0A72E66364</key>
+		<dict>
+			<key>ypos</key>
+			<real>1400</real>
 		</dict>
 		<key>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</key>
 		<dict>
