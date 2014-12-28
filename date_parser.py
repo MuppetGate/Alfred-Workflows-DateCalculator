@@ -1,6 +1,6 @@
 from __future__ import unicode_literals, print_function
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
-from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DEFAULT_TIME_RE, TIME_MAPPINGS
+from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, TIME_MAPPINGS
 from date_formatters import DATE_FORMATTERS_MAP
 from date_functions import DATE_FUNCTION_MAP
 

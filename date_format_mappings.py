@@ -28,10 +28,6 @@ TIME_MAPPINGS = {
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
 DEFAULT_TIME_FORMAT = '24-hour'
 
-DEFAULT_TIME_RE = '\d{2}:\d{2}'
-
-DEFAULT_TIME_EXPR = '%H:%M'
-
 VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]
 

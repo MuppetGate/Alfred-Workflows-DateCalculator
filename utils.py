@@ -2,7 +2,7 @@ from datetime import datetime
 
 from date_functions import DATE_FUNCTION_MAP
 from dateutil.rrule import rrule, YEARLY
-from date_format_mappings import DEFAULT_TIME_EXPR, DATE_MAPPINGS, TIME_MAPPINGS
+from date_format_mappings import DATE_MAPPINGS, TIME_MAPPINGS
 import dateutil.parser
 
 
@@ -59,7 +59,7 @@ def convert_date_time(date_time, settings):
     full_format = date_format + "@" + time_format
 
     if date_time_str.lower() in DATE_FUNCTION_MAP.keys():
-        return DATE_FUNCTION_MAP[date_time_str.lower()](date_format)
+        return DATE_FUNCTION_MAP[date_time_str.lower()](settings)
 
     anniversary_date = process_macros(date_time_str.lower(), settings['anniversaries'])
     if anniversary_date is not None:

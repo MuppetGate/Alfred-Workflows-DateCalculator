@@ -1,9 +1,10 @@
 # This file contains all the functions that the workflow
 # uses for specialised dates.
 from datetime import datetime, date, timedelta
-from date_format_mappings import DEFAULT_TIME_EXPR
+from math import floor
 
 # The DAY_MAP is specific to relative delta
+from date_format_mappings import DATE_MAPPINGS, TIME_MAPPINGS
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
 from dateutil.rrule import rrule, YEARLY
 
@@ -27,6 +28,14 @@ DAY_MAP = {
 }
 
 
+def _get_date_format(settings):
+    return DATE_MAPPINGS[settings['date-format']]['date-format']
+
+
+def _get_time_format(settings):
+    return TIME_MAPPINGS[settings['time-format']]['time-format']
+
+
 def _get_current_date():
     return datetime.combine(date.today(), datetime.max.time())
 
@@ -35,25 +44,24 @@ def _get_current_time():
     return datetime.combine(date.today(), datetime.now().time())
 
 
-def current_date(date_format):
-    return _get_current_date(), date_format
+def current_date(settings):
+    return _get_current_date(), _get_date_format(settings)
 
 
-def current_time(date_format):
-    del date_format # delete it because we're not using it.
-    return _get_current_time(), DEFAULT_TIME_EXPR
+def current_time(settings):
+    return _get_current_time(), _get_time_format(settings)
 
 
-def now(date_format):
-    return datetime.now(), date_format + "@" + DEFAULT_TIME_EXPR
+def now(settings):
+    return datetime.now(), _get_date_format(settings) + "@" + _get_time_format(settings)
 
 
-def yesterday(date_format):
-    return _get_current_date() - timedelta(days=1), date_format
+def yesterday(settings):
+    return _get_current_date() - timedelta(days=1), _get_date_format(settings)
 
 
-def tomorrow(date_format):
-    return _get_current_date() + timedelta(days=1), date_format
+def tomorrow(settings):
+    return _get_current_date() + timedelta(days=1), _get_date_format(settings)
 
 
 def weekday(day_of_week_str):
@@ -65,27 +73,71 @@ def weekday(day_of_week_str):
     calculation.
     :return: a function that will calculate the day of week and return it along with the format
     """
-    def _weekday(date_format):
-        return _get_current_date() + DAY_MAP[day_of_week_str.lower()], date_format
+    def _weekday(settings):
+        return _get_current_date() + DAY_MAP[day_of_week_str.lower()], _get_date_format(settings)
 
     return _weekday
 
 
-def next_easter(date_format):
+def next_easter(settings):
     easter_rule = rrule(freq=YEARLY, byeaster=0)
-    return easter_rule.after(_get_current_date(), inc=False), date_format
+    return easter_rule.after(_get_current_date(), inc=False), _get_date_format(settings)
 
 
-def start_of_year(date_format):
-    return datetime(year=_get_current_date().year, day=1, month=1), date_format
+def start_of_year(settings):
+    return datetime(year=_get_current_date().year, day=1, month=1), _get_date_format(settings)
 
 
-def end_of_year(date_format):
-    return datetime(year=_get_current_date().year, day=31, month=12), date_format
+def end_of_year(settings):
+    return datetime(year=_get_current_date().year, day=31, month=12), _get_date_format(settings)
 
 
-def next_month(date_format):
-    return datetime(year=_get_current_date().year, day=1, month=_get_current_date().month + 1), date_format
+def next_month(settings):
+    return datetime(year=_get_current_date().year, day=1, month=_get_current_date().month + 1), \
+        _get_date_format(settings)
+
+
+def next_passover(settings):
+    """
+    Credit goes to programmingpraxis.com for supplying
+    the function for working out the date of the passover
+    """
+    def calc_passover_year(year):
+        return datetime(year, 3, 21) + timedelta(rosh_hashanah(year))
+
+    def rosh_hashanah(year):
+
+        g = year % 19 + 1
+        r = 12 * g % 19
+
+        v = (floor(year / 100.0) - floor(year / 400.0) - 2)
+        v += 765433.0 * r / 492480
+        v += (year % 4) / 4.0
+        v -= (313.0 * year + 89081) / 98496
+
+        n = int(v)
+        f = v - n
+
+        # Monday .. Sunday = 0..6
+        dow = (date(year, 8, 31).weekday() + n) % 7
+
+        if dow in (2, 4, 6):
+            n += 1
+        elif dow == 0 and f >= 23269.0 / 25920 and r > 11:
+            n += 1
+        elif dow == 1 and f >= 1367.0 / 2160 and r > 6:
+            n += 2
+
+        return n
+
+    # Just need the year of the current date
+    passover_date = calc_passover_year(_get_current_date().year)
+
+    #if we've already gone past it then we need to try for the following year.
+    if passover_date >= _get_current_date():
+        return passover_date, _get_date_format(settings)
+    else:
+        return calc_passover_year(_get_current_date().year + 1), _get_date_format(settings)
 
 
 def bst(month_number):
@@ -96,9 +148,9 @@ def bst(month_number):
     :param month_number:
     :return:
     """
-    def _bst(date_format):
+    def _bst(settings):
         bst_rule = rrule(freq=YEARLY, bymonth=month_number, byweekday=SU(-1))
-        return bst_rule.after(_get_current_date(), inc=False), date_format
+        return bst_rule.after(_get_current_date(), inc=False), _get_date_format(settings)
 
     return _bst
 
@@ -130,7 +182,8 @@ DATE_FUNCTION_MAP = {
     "end bst": bst(10),
     "start year": start_of_year,
     "end year": end_of_year,
-    "next month": next_month
+    "next month": next_month,
+    "passover": next_passover
 }
 
 
