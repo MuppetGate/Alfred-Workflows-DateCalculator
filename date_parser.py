@@ -1,6 +1,6 @@
 from __future__ import unicode_literals, print_function
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
-from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DEFAULT_TIME_RE
+from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, DEFAULT_TIME_RE, TIME_MAPPINGS
 from date_formatters import DATE_FORMATTERS_MAP
 from date_functions import DATE_FUNCTION_MAP
 
@@ -9,12 +9,13 @@ from pypeg2 import *
 
 class DateParser:
 
-    def __init__(self, date_expr, settings):
+    def __init__(self, date_expr, time_expr, settings):
         self.date_expression = date_expr
+        self.time_expression = time_expr
         self.settings = settings
         self.date_re = re.compile(self.date_expression)
-        self.time_re = re.compile(DEFAULT_TIME_RE)
-        self.date_time_re = re.compile(self.date_expression + '@' + DEFAULT_TIME_RE)
+        self.time_re = re.compile(self.time_expression)
+        self.date_time_re = re.compile(self.date_expression + '@' + self.time_expression)
         self.date_functions_re = re.compile(self._get_date_functions(), re.IGNORECASE)
         self.user_macros_re = re.compile(self._get_anniversaries(self.settings), re.IGNORECASE)
         self.operator_re = re.compile('[+-]')

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from date_functions import DATE_FUNCTION_MAP
 from dateutil.rrule import rrule, YEARLY
-from date_format_mappings import DEFAULT_TIME_EXPR
+from date_format_mappings import DEFAULT_TIME_EXPR, DATE_MAPPINGS, TIME_MAPPINGS
 import dateutil.parser
 
 
@@ -46,12 +46,17 @@ def process_macros(date_time_str, anniversaries):
     return None
 
 
-def convert_date_time(date_time_str, date_format, settings):
+def convert_date_time(date_time, settings):
     # first of all, what format are we using.
     # We use the longer format if the date contains an ampersand
     # Remember at this point we know that the format is correct.
 
-    full_format = date_format + "@" + DEFAULT_TIME_EXPR
+    date_format = DATE_MAPPINGS[settings['date-format']]['date-format']
+    time_format = TIME_MAPPINGS[settings['time-format']]['time-format']
+
+    date_time_str = str(date_time)
+
+    full_format = date_format + "@" + time_format
 
     if date_time_str.lower() in DATE_FUNCTION_MAP.keys():
         return DATE_FUNCTION_MAP[date_time_str.lower()](date_format)
@@ -79,9 +84,9 @@ def convert_date_time(date_time_str, date_format, settings):
             try:
 
                 # Should throw an error all on its own.
-                process_time = datetime.strptime(date_time_str, DEFAULT_TIME_EXPR).time()
+                process_time = datetime.strptime(date_time_str, time_format).time()
                 date_and_time = datetime.combine(datetime.today(), process_time)
-                return date_and_time, DEFAULT_TIME_EXPR
+                return date_and_time, time_format
 
             except:
 

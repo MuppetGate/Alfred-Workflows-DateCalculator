@@ -21,7 +21,7 @@ DATE_MAPPINGS = {
 
 TIME_MAPPINGS = {
 
-    '24-hour': {'name': '24-hour format', 'time-format': '%H:%M ', 'regex': '\d{2}\:\d{2}'},
+    '24-hour': {'name': '24-hour format', 'time-format': '%H:%M', 'regex': '\d{2}\:\d{2}'},
     '12-hour': {'name': '12-hour format', 'time-format': '%I:%M%p', 'regex': '\d{2}\:\d{2}(AM|PM)'}
 }
 

@@ -3,7 +3,7 @@ from datetime import datetime
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     DATE_MAPPINGS, \
-    TIME_CALCULATION, VALID_FORMAT_OPTIONS
+    TIME_CALCULATION, VALID_FORMAT_OPTIONS, TIME_MAPPINGS
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
@@ -40,8 +40,8 @@ class UnknownExclusionTypeError(Exception):
     pass
 
 
-def do_functions(command, date_format, settings):
-    date_time, _ = convert_date_time(command.dateTime, date_format, settings)
+def do_functions(command, settings):
+    date_time, _ = convert_date_time(command.dateTime, settings)
 
     if command.functionName.lower() in DATE_FORMATTERS_MAP:
         # noinspection PyCallingNonCallable
@@ -70,8 +70,8 @@ def delta_arithmetic(date_time, operand):
     return delta_date_time
 
 
-def do_timespans(command, date_format, settings):
-    date_time, output_format = convert_date_time(command.dateTime, date_format, settings)
+def do_timespans(command, settings):
+    date_time, output_format = convert_date_time(command.dateTime, settings)
 
     for operand in command.operandList:
         date_time = delta_arithmetic(date_time, operand)
@@ -79,9 +79,9 @@ def do_timespans(command, date_format, settings):
     return date_time.strftime(output_format)
 
 
-def do_subtraction(command, date_format, settings):
-    date_time_1, output_format_1 = convert_date_time(command.dateTime1, date_format, settings)
-    date_time_2, output_format_2 = convert_date_time(command.dateTime2, date_format, settings)
+def do_subtraction(command, settings):
+    date_time_1, output_format_1 = convert_date_time(command.dateTime1, settings)
+    date_time_2, output_format_2 = convert_date_time(command.dateTime2, settings)
 
     # In a moment of madness, we've decided to allow operands in a date from date
     # subtraction. It's much easier to process these first.
@@ -93,7 +93,7 @@ def do_subtraction(command, date_format, settings):
         for operand in command.operandList2:
             date_time_2 = delta_arithmetic(date_time_2, operand)
 
-    exclusion_rules = build_exclusion_list(command, date_time_1, date_time_2, date_format, settings)
+    exclusion_rules = build_exclusion_list(command, date_time_1, date_time_2, settings)
 
     return normalised_days(command, date_time_1, date_time_2, exclusion_rules)
 
@@ -186,7 +186,7 @@ def later_date_first(date_time_1, date_time_2):
     return start_date_time, end_date_time
 
 
-def build_exclusion_list(command, date_time_1, date_time_2, date_format, settings):
+def build_exclusion_list(command, date_time_1, date_time_2, settings):
     """
     If the user has build an exclusion list then we process it here
     :param command:
@@ -211,16 +211,14 @@ def build_exclusion_list(command, date_time_1, date_time_2, date_format, setting
 
                 elif hasattr(exclusion_item, "exclusionDateTime"):
 
-                    date_time, _ = convert_date_time(exclusion_item.exclusionDateTime, date_format, settings)
+                    date_time, _ = convert_date_time(exclusion_item.exclusionDateTime, settings)
 
                     new_rule = rrule(freq=DAILY, dtstart=date_time, until=date_time)
 
                 elif hasattr(exclusion_item, "exclusionRange"):
-                    exclusion_date_1, _ = convert_date_time(exclusion_item.exclusionRange.fromDateTime,
-                                                            date_format, settings)
+                    exclusion_date_1, _ = convert_date_time(exclusion_item.exclusionRange.fromDateTime, settings)
 
-                    exclusion_date_2, _ = convert_date_time(exclusion_item.exclusionRange.toDateTime,
-                                                            date_format, settings)
+                    exclusion_date_2, _ = convert_date_time(exclusion_item.exclusionRange.toDateTime, settings)
 
                     date_1, date_2 = later_date_first(exclusion_date_1, exclusion_date_2)
 
@@ -299,12 +297,15 @@ def main(wf):
 
     update_settings(wf)
 
-    key = wf.settings['date-format']
+    date_key = wf.settings['date-format']
+    time_key = wf.settings['time-format']
+
     args = wf.args
 
-    date_mapping = DATE_MAPPINGS[key]
+    date_mapping = DATE_MAPPINGS[date_key]
+    time_mapping = TIME_MAPPINGS[time_key]
 
-    command_parser = DateParser(date_mapping['regex'], wf.settings)
+    command_parser = DateParser(date_mapping['regex'], time_mapping['regex'], wf.settings)
 
     try:
 
@@ -314,15 +315,15 @@ def main(wf):
             raise IncompatibleFunctionError
 
         if hasattr(command, "dateTime"):
-            output = do_timespans(command, date_mapping['date-format'], wf.settings)
+            output = do_timespans(command, wf.settings)
 
             if hasattr(command, "functionName"):
                 setattr(command, "dateTime", output)
                 # and run it through the functions function
-                output = do_functions(command, date_mapping['date-format'], wf.settings)
+                output = do_functions(command, wf.settings)
 
         elif hasattr(command, "dateTime1") and hasattr(command, "dateTime2"):
-            output = do_subtraction(command, date_mapping['date-format'], wf.settings)
+            output = do_subtraction(command, wf.settings)
 
         else:
             output = "Invalid Expression"
