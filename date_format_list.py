@@ -10,7 +10,7 @@ def main(wf):
     update_settings(wf)
 
     # Get the current setting
-    current_setting = wf.settings['time-format']
+    current_setting = wf.settings['date-format']
 
     # These are the date formats the workflow supports
     for key in sorted(DATE_MAPPINGS.keys()):
