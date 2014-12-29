@@ -1,10 +1,14 @@
 import sys
+from versioning import update_settings
 
 from workflow import Workflow
 from date_format_mappings import DATE_MAPPINGS, DEFAULT_WORKFLOW_SETTINGS
 
 
 def main(wf):
+
+    update_settings(wf)
+
     # Get the current setting
     current_setting = wf.settings['time-format']
 

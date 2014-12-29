@@ -213,7 +213,7 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>keyword</key>
-				<string>dcalcset format</string>
+				<string>dcalcset date format</string>
 				<key>runningsubtext</key>
 				<string>Loading list . . .</string>
 				<key>script</key>

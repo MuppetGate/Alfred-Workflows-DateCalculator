@@ -47,6 +47,19 @@ def process_macros(date_time_str, anniversaries):
     return None
 
 
+def english_parser(date_time, full_format):
+    """
+    This is a bit clever. We've found a python lib that can translate
+    """
+    # remove the first character and send attempt to translate it
+    date_time_to_parse = date_time[1:-1]
+    cal = parsedatetime.Calendar()
+    date_time_parsed = cal.parse(date_time_to_parse)
+    new_date = datetime(date_time_parsed[0][0], date_time_parsed[0][1], date_time_parsed[0][2],
+                        date_time_parsed[0][3], date_time_parsed[0][4], date_time_parsed[0][5])
+    return new_date, full_format
+
+
 def convert_date_time(date_time, settings):
     # first of all, what format are we using.
     # We use the longer format if the date contains an ampersand
@@ -57,14 +70,7 @@ def convert_date_time(date_time, settings):
 
     #Okay, Does the date command start with a ' symbol?
     if date_time[0] == "\"":
-        # remove the first character and send attempt to translate it
-        date_time_to_parse = date_time[1:-1]
-
-        cal = parsedatetime.Calendar()
-        date_time_parsed = cal.parse(date_time_to_parse)
-        new_date = datetime(date_time_parsed[0][0], date_time_parsed[0][1], date_time_parsed[0][2],
-                            date_time_parsed[0][3], date_time_parsed[0][4], date_time_parsed[0][5])
-        return new_date, full_format
+        return english_parser(date_time, full_format)
 
     date_time_str = str(date_time)
 
