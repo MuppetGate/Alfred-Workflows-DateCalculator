@@ -24,6 +24,9 @@ class DateParser:
         self.format_re = re.compile('[ymwdhMs]+|long')
         self.date_formatters_re = re.compile(self._get_date_formatters(), re.IGNORECASE)
 
+        # The money shot
+        self.parseable_date_re = re.compile('\"[^\"]+\"', re.IGNORECASE)
+
         # Exclusions from date subtraction calculations.
         self.exclusion_keyword_re = re.compile('exclude|ex|x', re.IGNORECASE)
         self.exclusion_macros_re = re.compile(self._get_exclusion_macros(), re.IGNORECASE)
@@ -83,7 +86,7 @@ class DateParser:
             grammar = self.date_formatters_re
 
         class DateTime(str):
-            grammar = [self.date_time_re, self.date_re, self.time_re, self.date_functions_re, self.user_macros_re]
+            grammar = [self.date_time_re, self.date_re, self.time_re, self.date_functions_re, self.user_macros_re, self.parseable_date_re]
 
         class Format(str):
             grammar = optional(self.format_re)

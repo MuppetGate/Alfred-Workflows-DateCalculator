@@ -7,6 +7,7 @@ import dateutil.parser
 
 
 # package for general utility stuff
+from parsedatetime import parsedatetime
 
 
 def get_anniversary(date_object):
@@ -50,13 +51,22 @@ def convert_date_time(date_time, settings):
     # first of all, what format are we using.
     # We use the longer format if the date contains an ampersand
     # Remember at this point we know that the format is correct.
-
     date_format = DATE_MAPPINGS[settings['date-format']]['date-format']
     time_format = TIME_MAPPINGS[settings['time-format']]['time-format']
+    full_format = date_format + "@" + time_format
+
+    #Okay, Does the date command start with a ' symbol?
+    if date_time[0] == "\"":
+        # remove the first character and send attempt to translate it
+        date_time_to_parse = date_time[1:-1]
+
+        cal = parsedatetime.Calendar()
+        date_time_parsed = cal.parse(date_time_to_parse)
+        new_date = datetime(date_time_parsed[0][0], date_time_parsed[0][1], date_time_parsed[0][2],
+                            date_time_parsed[0][3], date_time_parsed[0][4], date_time_parsed[0][5])
+        return new_date, full_format
 
     date_time_str = str(date_time)
-
-    full_format = date_format + "@" + time_format
 
     if date_time_str.lower() in DATE_FUNCTION_MAP.keys():
         return DATE_FUNCTION_MAP[date_time_str.lower()](settings)

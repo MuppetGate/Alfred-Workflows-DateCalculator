@@ -303,7 +303,7 @@
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>126</integer>
 				<key>keyword</key>
 				<string>dcalc</string>
 				<key>runningsubtext</key>
