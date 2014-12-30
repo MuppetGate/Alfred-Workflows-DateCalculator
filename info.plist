@@ -642,8 +642,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>## Date Calculator Version 1.7
-
+	<string>## Date Calculator Version 2.0
 ## Date Calculator
 Hello there!
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
@@ -694,7 +693,7 @@ or combine ‘em
 **dcalc 18.12.12 + 5y 9d 3w - 2d + 1d 1w**
 
 What does that mess do?
-- Take the date 18.12.12 
+- Take the date 18.12.12
 - Add 5 years
 - Add another 9 days
 - Add another 3 weeks
@@ -735,7 +734,7 @@ Probably not all that useful, but some of this other stuff might be. You know al
 
 **dcalc now**
 
-For giving you the current time and date. While you can use 
+For giving you the current time and date. While you can use
 
 **dcalc tomorrow**
 
@@ -759,7 +758,13 @@ will give you the same answer.
 
 That about covers it, I think. I haven’t done anything clever with locales, but you can pick a different date format with
 
-**dcalc settings**
+**dcalcset date format**
+
+And we also support both 12-hour and 24-hour time formats.
+
+**dcalcset time format**
+
+I would recommend sticking with the 24-hour format; it's a lot easier to type because the AM/PM symbols have to be in upper case.
 
 If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
@@ -770,6 +775,31 @@ Oh, almost forgot.
 Is the date for next Easter Sunday, for no other reason that I can never remember it, and now there’s an easy way to find out how many days until Christmas:
 
 **dcalc today - christmas**
+
+And to celebrate finishing my new book, I decided to add:
+
+**dcalc passover**
+
+## Alternative parser
+If surround a simple expression in double quotes, then something quite magical happens:
+
+**dcalc "4 hours 8 minutes after 4pm"**
+
+or
+
+**dcalc "6 weeks and 4 days after next wednesday"**
+
+or
+
+**dcalc "1 day after tomorrow"**
+
+Yup! A natural date language parser!
+
+You can even combine it with the existing parser:
+
+**dcalc "next friday" + 1d**
+
+This is a little bit experimental (I might drop it later if it proves to be problematic), but I thought I'd throw it in for a bit of a fun.
 
 ## Exclusions
 Added at the request of a friend, though I'm not sure there's a lot of call for it. Okay, say you need to know how long you have to complete a project:
@@ -808,11 +838,33 @@ A list of things that made my first attempt at Python programming possible:
 - Peter Odding for writing [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/).
 - Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
 - Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
+- Mike Taylor for [ParseDateTime](https://github.com/bear/parsedatetime).
+
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+
+Latest release (Version 2.0). Refactoring. Added a natural date language parser. Added support for 12-hour clock. Added function to get date of the next passover
 Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
 Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
+
+Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic.
+Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
+
+Last release (Version 1.4) Fixed bug that caused inaccuracies when calculating anniversaries.
+Refactored code to make it easier to add new date functions and date formatters. General tidy-up
+
+Last release (Version 1.3) Adds extra formatting functions (day of week) and bug fixes.
+
+Last release (Version 1.2) was an improvement to add user-defined macros.
+
+Last release (Version 1.1) was on the 01.07.2014. This included a new anniversary list function,
+and the addition of the international date format (yyyy-mm-dd).
+
+Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser,
+added macros (days of week, christmas and easter) and a general tidy up.
+The symbol for getting the week number for a particular date has changed
+from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
 Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
@@ -836,7 +888,8 @@ FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.</string>
+THE SOFTWARE.
+</string>
 	<key>uidata</key>
 	<dict>
 		<key>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</key>

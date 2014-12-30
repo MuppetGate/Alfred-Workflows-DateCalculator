@@ -113,7 +113,13 @@ will give you the same answer.
 
 That about covers it, I think. I haven’t done anything clever with locales, but you can pick a different date format with
 
-**dcalc settings**
+**dcalcset date format**
+
+And we also support both 12-hour and 24-hour time formats. 
+
+**dcalcset time format**
+
+I would recommend sticking with the 24-hour format; it's a lot easier to type because the AM/PM symbols have to be in upper case.
 
 If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
@@ -124,6 +130,31 @@ Oh, almost forgot.
 Is the date for next Easter Sunday, for no other reason that I can never remember it, and now there’s an easy way to find out how many days until Christmas:
 
 **dcalc today - christmas**
+
+And to celebrate finishing my new book, I decided to add:
+
+**dcalc passover**
+
+## Alternative parser
+If surround a simple expression in double quotes, then something quite magical happens:
+
+**dcalc "4 hours 8 minutes after 4pm"**
+
+or
+
+**dcalc "6 weeks and 4 days after next wednesday"**
+
+or
+
+**dcalc "1 day after tomorrow"**
+
+Yup! A natural date language parser! 
+
+You can even combine it with the existing parser:
+
+**dcalc "next friday" + 1d**
+
+This is a little bit experimental (I might drop it later if it proves to be problematic), but I thought I'd throw it in for a bit of a fun.
 
 ## Exclusions
 Added at the request of a friend, though I'm not sure there's a lot of call for it. Okay, say you need to know how long you have to complete a project:
@@ -162,10 +193,13 @@ A list of things that made my first attempt at Python programming possible:
 - Peter Odding for writing [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/).
 - Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
 - Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
+- Mike Taylor for [ParseDateTime](https://github.com/bear/parsedatetime).
 
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+
+Latest release (Version 2.0). Refactoring. Added a natural date language parser. Added support for 12-hour clock. Added function to get date of the next passover
 Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
 Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
 
