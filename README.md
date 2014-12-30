@@ -162,6 +162,7 @@ A list of things that made my first attempt at Python programming possible:
 - Peter Odding for writing [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/).
 - Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
 - Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
+
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History

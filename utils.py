@@ -47,17 +47,30 @@ def process_macros(date_time_str, anniversaries):
     return None
 
 
-def english_parser(date_time, full_format):
+def natural_parser(date_time, date_format, time_format, full_format):
     """
     This is a bit clever. We've found a python lib that can translate
     """
+    # This is a list of the error codes and matching formats that will be used
+    # depending on what is returned by the parser
+    format_map = {
+        1: date_format,
+        2: time_format,
+        3: full_format
+    }
+
     # remove the first character and send attempt to translate it
     date_time_to_parse = date_time[1:-1]
     cal = parsedatetime.Calendar()
-    date_time_parsed = cal.parse(date_time_to_parse)
-    new_date = datetime(date_time_parsed[0][0], date_time_parsed[0][1], date_time_parsed[0][2],
-                        date_time_parsed[0][3], date_time_parsed[0][4], date_time_parsed[0][5])
-    return new_date, full_format
+    date_time_parsed = cal.parseDT(date_time_to_parse)
+
+    # This parser handily sends back an error code, just in case
+    error_code = date_time_parsed[1]
+
+    if error_code == 0:
+        raise ValueError
+    else:
+        return date_time_parsed[0], format_map[error_code]
 
 
 def convert_date_time(date_time, settings):
@@ -68,9 +81,9 @@ def convert_date_time(date_time, settings):
     time_format = TIME_MAPPINGS[settings['time-format']]['time-format']
     full_format = date_format + "@" + time_format
 
-    #Okay, Does the date command start with a ' symbol?
+    #Okay, Does the date command start with a " symbol?
     if date_time[0] == "\"":
-        return english_parser(date_time, full_format)
+        return natural_parser(date_time, date_format, time_format, full_format)
 
     date_time_str = str(date_time)
 
