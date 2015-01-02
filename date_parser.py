@@ -1,21 +1,22 @@
 from __future__ import unicode_literals, print_function
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
-from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, TIME_MAPPINGS
+from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS
 from date_formatters import DATE_FORMATTERS_MAP
-from date_functions import DATE_FUNCTION_MAP
+from date_functions import DATE_FUNCTION_MAP, get_date_format_regex, get_time_format_regex, get_full_format_regex
 
 from pypeg2 import *
 
 
 class DateParser:
 
-    def __init__(self, date_expr, time_expr, settings):
-        self.date_expression = date_expr
-        self.time_expression = time_expr
+    def __init__(self, settings):
+        self.date_expression = get_date_format_regex(settings)
+        self.time_expression = get_time_format_regex(settings)
+        self.full_date_time_expression = get_full_format_regex(settings)
         self.settings = settings
         self.date_re = re.compile(self.date_expression)
         self.time_re = re.compile(self.time_expression)
-        self.date_time_re = re.compile(self.date_expression + '@' + self.time_expression)
+        self.date_time_re = re.compile(self.full_date_time_expression)
         self.date_functions_re = re.compile(self._get_date_functions(), re.IGNORECASE)
         self.user_macros_re = re.compile(self._get_anniversaries(self.settings), re.IGNORECASE)
         self.operator_re = re.compile('[+-]')

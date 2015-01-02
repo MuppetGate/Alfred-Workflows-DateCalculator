@@ -27,6 +27,7 @@ TIME_MAPPINGS = {
 
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
 DEFAULT_TIME_FORMAT = '24-hour'
+DEFAULT_DATE_TIME_SEPARATOR = '@'
 
 VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]

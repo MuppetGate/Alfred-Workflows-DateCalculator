@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from date_functions import DATE_FUNCTION_MAP
+from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format
 from dateutil.rrule import rrule, YEARLY
-from date_format_mappings import DATE_MAPPINGS, TIME_MAPPINGS
 import dateutil.parser
 
 
@@ -47,16 +46,16 @@ def process_macros(date_time_str, anniversaries):
     return None
 
 
-def natural_parser(date_time, date_format, time_format, full_format):
+def natural_parser(date_time, settings):
     """
     This is a bit clever. We've found a python lib that can translate
     """
     # This is a list of the error codes and matching formats that will be used
     # depending on what is returned by the parser
     format_map = {
-        1: date_format,
-        2: time_format,
-        3: full_format
+        1: get_date_format(settings),
+        2: get_time_format(settings),
+        3: get_full_format(settings)
     }
 
     # remove the first character and send attempt to translate it
@@ -77,13 +76,13 @@ def convert_date_time(date_time, settings):
     # first of all, what format are we using.
     # We use the longer format if the date contains an ampersand
     # Remember at this point we know that the format is correct.
-    date_format = DATE_MAPPINGS[settings['date-format']]['date-format']
-    time_format = TIME_MAPPINGS[settings['time-format']]['time-format']
-    full_format = date_format + "@" + time_format
+    date_format = get_date_format(settings)
+    time_format = get_time_format(settings)
+    full_format = get_full_format(settings)
 
     #Okay, Does the date command start with a " symbol?
     if date_time[0] == "\"":
-        return natural_parser(date_time, date_format, time_format, full_format)
+        return natural_parser(date_time, settings)
 
     date_time_str = str(date_time)
 

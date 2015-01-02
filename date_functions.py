@@ -4,7 +4,7 @@ from datetime import datetime, date, timedelta
 from math import floor
 
 # The DAY_MAP is specific to relative delta
-from date_format_mappings import DATE_MAPPINGS, TIME_MAPPINGS
+from date_format_mappings import DATE_MAPPINGS, TIME_MAPPINGS, DEFAULT_DATE_TIME_SEPARATOR
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
 from dateutil.rrule import rrule, YEARLY
 
@@ -28,12 +28,28 @@ DAY_MAP = {
 }
 
 
-def _get_date_format(settings):
+def get_date_format(settings):
     return DATE_MAPPINGS[settings['date-format']]['date-format']
 
 
-def _get_time_format(settings):
+def get_time_format(settings):
     return TIME_MAPPINGS[settings['time-format']]['time-format']
+
+
+def get_full_format(settings):
+    return get_date_format(settings) + DEFAULT_DATE_TIME_SEPARATOR + get_time_format(settings)
+
+
+def get_date_format_regex(settings):
+    return DATE_MAPPINGS[settings['date-format']]['regex']
+
+
+def get_time_format_regex(settings):
+    return TIME_MAPPINGS[settings['time-format']]['regex']
+
+
+def get_full_format_regex(settings):
+    return get_date_format_regex(settings) + DEFAULT_DATE_TIME_SEPARATOR + get_time_format_regex(settings)
 
 
 def _get_current_date():
@@ -45,23 +61,23 @@ def _get_current_time():
 
 
 def current_date(settings):
-    return _get_current_date(), _get_date_format(settings)
+    return _get_current_date(), get_date_format(settings)
 
 
 def current_time(settings):
-    return _get_current_time(), _get_time_format(settings)
+    return _get_current_time(), get_time_format(settings)
 
 
 def now(settings):
-    return datetime.now(), _get_date_format(settings) + "@" + _get_time_format(settings)
+    return datetime.now(), get_full_format(settings)
 
 
 def yesterday(settings):
-    return _get_current_date() - timedelta(days=1), _get_date_format(settings)
+    return _get_current_date() - timedelta(days=1), get_date_format(settings)
 
 
 def tomorrow(settings):
-    return _get_current_date() + timedelta(days=1), _get_date_format(settings)
+    return _get_current_date() + timedelta(days=1), get_date_format(settings)
 
 
 def weekday(day_of_week_str):
@@ -74,27 +90,27 @@ def weekday(day_of_week_str):
     :return: a function that will calculate the day of week and return it along with the format
     """
     def _weekday(settings):
-        return _get_current_date() + DAY_MAP[day_of_week_str.lower()], _get_date_format(settings)
+        return _get_current_date() + DAY_MAP[day_of_week_str.lower()], get_date_format(settings)
 
     return _weekday
 
 
 def next_easter(settings):
     easter_rule = rrule(freq=YEARLY, byeaster=0)
-    return easter_rule.after(_get_current_date(), inc=False), _get_date_format(settings)
+    return easter_rule.after(_get_current_date(), inc=False), get_date_format(settings)
 
 
 def start_of_year(settings):
-    return datetime(year=_get_current_date().year, day=1, month=1), _get_date_format(settings)
+    return datetime(year=_get_current_date().year, day=1, month=1), get_date_format(settings)
 
 
 def end_of_year(settings):
-    return datetime(year=_get_current_date().year, day=31, month=12), _get_date_format(settings)
+    return datetime(year=_get_current_date().year, day=31, month=12), get_date_format(settings)
 
 
 def next_month(settings):
     return datetime(year=_get_current_date().year, day=1, month=_get_current_date().month + 1), \
-        _get_date_format(settings)
+        get_date_format(settings)
 
 
 def next_passover(settings):
@@ -135,9 +151,9 @@ def next_passover(settings):
 
     #if we've already gone past it then we need to try for the following year.
     if passover_date >= _get_current_date():
-        return passover_date, _get_date_format(settings)
+        return passover_date, get_date_format(settings)
     else:
-        return calc_passover_year(_get_current_date().year + 1), _get_date_format(settings)
+        return calc_passover_year(_get_current_date().year + 1), get_date_format(settings)
 
 
 def bst(month_number):
@@ -150,7 +166,7 @@ def bst(month_number):
     """
     def _bst(settings):
         bst_rule = rrule(freq=YEARLY, bymonth=month_number, byweekday=SU(-1))
-        return bst_rule.after(_get_current_date(), inc=False), _get_date_format(settings)
+        return bst_rule.after(_get_current_date(), inc=False), get_date_format(settings)
 
     return _bst
 

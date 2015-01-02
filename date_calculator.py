@@ -296,16 +296,8 @@ def main(wf):
     # Get the date format from the configuration
 
     update_settings(wf)
-
-    date_key = wf.settings['date-format']
-    time_key = wf.settings['time-format']
-
     args = wf.args
-
-    date_mapping = DATE_MAPPINGS[date_key]
-    time_mapping = TIME_MAPPINGS[time_key]
-
-    command_parser = DateParser(date_mapping['regex'], time_mapping['regex'], wf.settings)
+    command_parser = DateParser(wf.settings)
 
     try:
 
@@ -332,7 +324,7 @@ def main(wf):
         output = "Invalid Command"
 
     except ValueError:
-        output = "Invalid Date"
+        output = "Invalid Date/time"
 
     except FormatError:
         output = "Invalid format"
