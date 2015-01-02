@@ -11,7 +11,7 @@ def main(wf):
 
     update_settings(wf)
 
-    print("Date format is {format}".format(format=wf.settings['date-format']))
+    print("Time format is {format}".format(format=wf.settings['time-format']))
 
 if __name__ == '__main__':
     workflow = Workflow(default_settings=DEFAULT_WORKFLOW_SETTINGS)

@@ -125,6 +125,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>8BB3905A-8C58-4F09-B871-9CF756226504</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>5F6FEA98-E805-408A-A1F4-A8A5FC49DC81</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>8F4747B0-FA9D-4FCB-B828-4B37602854B5</key>
 		<array>
 			<dict>
@@ -141,6 +152,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>8F4747B0-FA9D-4FCB-B828-4B37602854B5</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>BFDF2A5E-8F79-4B66-9297-4FC3A926B30A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>8BB3905A-8C58-4F09-B871-9CF756226504</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -274,7 +296,7 @@
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
-				<string>dcalcshow format</string>
+				<string>dcalcshow date format</string>
 				<key>subtext</key>
 				<string>Show current date format</string>
 				<key>text</key>
@@ -640,6 +662,52 @@
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>dcalcshow time format</string>
+				<key>subtext</key>
+				<string>Show current time format</string>
+				<key>text</key>
+				<string>Show time format</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>BFDF2A5E-8F79-4B66-9297-4FC3A926B30A</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>python show_time_format.py</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8BB3905A-8C58-4F09-B871-9CF756226504</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.output.largetype</string>
+			<key>uid</key>
+			<string>5F6FEA98-E805-408A-A1F4-A8A5FC49DC81</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>## Date Calculator Version 2.0
@@ -932,6 +1000,11 @@ THE SOFTWARE.
 			<key>ypos</key>
 			<real>1280</real>
 		</dict>
+		<key>5F6FEA98-E805-408A-A1F4-A8A5FC49DC81</key>
+		<dict>
+			<key>ypos</key>
+			<real>1520</real>
+		</dict>
 		<key>6344C161-C077-4BB5-800B-6BCF7A98F450</key>
 		<dict>
 			<key>ypos</key>
@@ -957,6 +1030,11 @@ THE SOFTWARE.
 			<key>ypos</key>
 			<real>530</real>
 		</dict>
+		<key>8BB3905A-8C58-4F09-B871-9CF756226504</key>
+		<dict>
+			<key>ypos</key>
+			<real>1520</real>
+		</dict>
 		<key>8F4747B0-FA9D-4FCB-B828-4B37602854B5</key>
 		<dict>
 			<key>ypos</key>
@@ -981,6 +1059,11 @@ THE SOFTWARE.
 		<dict>
 			<key>ypos</key>
 			<real>60</real>
+		</dict>
+		<key>BFDF2A5E-8F79-4B66-9297-4FC3A926B30A</key>
+		<dict>
+			<key>ypos</key>
+			<real>1520</real>
 		</dict>
 		<key>C0DB0242-54B1-475E-A327-B61C54C7B668</key>
 		<dict>
