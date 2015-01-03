@@ -121,6 +121,10 @@ And we also support both 12-hour and 24-hour time formats.
 
 I would recommend sticking with the 24-hour format; it's a lot easier to type because the AM/PM symbols have to be in upper case.
 
+You can also set the combined date and time format using:
+
+**dcalcset date and time format**
+
 If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
 Oh, almost forgot.
@@ -194,6 +198,7 @@ A list of things that made my first attempt at Python programming possible:
 - Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
 - Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
 - Mike Taylor for [ParseDateTime](https://github.com/bear/parsedatetime).
+- [Programming Praxis](http://programmingpraxis.com) for the Passover calculation.
 
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 

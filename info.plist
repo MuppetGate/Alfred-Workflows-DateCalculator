@@ -801,7 +801,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>## Date Calculator Version 2.0
+	<string>
 ## Date Calculator
 Hello there!
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
@@ -925,6 +925,10 @@ And we also support both 12-hour and 24-hour time formats.
 
 I would recommend sticking with the 24-hour format; it's a lot easier to type because the AM/PM symbols have to be in upper case.
 
+You can also set the combined date and time format using:
+
+**dcalcset date and time format**
+
 If you’re ever puzzled by _invalid command_ or _invalid expression_ errors, then start with the settings; they might be set incorrectly.
 
 Oh, almost forgot.
@@ -998,6 +1002,7 @@ A list of things that made my first attempt at Python programming possible:
 - Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
 - Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
 - Mike Taylor for [ParseDateTime](https://github.com/bear/parsedatetime).
+- [Programming Praxis](http://programmingpraxis.com) for the Passover calculation.
 
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
@@ -1048,7 +1053,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-</string>
+    </string>
 	<key>uidata</key>
 	<dict>
 		<key>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</key>
