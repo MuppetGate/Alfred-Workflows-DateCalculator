@@ -4,7 +4,7 @@ from datetime import datetime, date, timedelta
 from math import floor
 
 # The DAY_MAP is specific to relative delta
-from date_format_mappings import DATE_MAPPINGS, TIME_MAPPINGS, DEFAULT_DATE_TIME_SEPARATOR
+from date_format_mappings import DATE_MAPPINGS, TIME_MAPPINGS, DATE_TIME_MAPPINGS
 from dateutil.relativedelta import relativedelta, MO, TU, WE, TH, FR, SA, SU
 from dateutil.rrule import rrule, YEARLY
 
@@ -37,7 +37,9 @@ def get_time_format(settings):
 
 
 def get_full_format(settings):
-    return get_date_format(settings) + DEFAULT_DATE_TIME_SEPARATOR + get_time_format(settings)
+    return DATE_TIME_MAPPINGS[settings['date-time-format']]['date-time-format'](
+        DATE_MAPPINGS[settings['date-format']]['date-format'],
+        TIME_MAPPINGS[settings['time-format']]['time-format'])
 
 
 def get_date_format_regex(settings):
@@ -49,7 +51,9 @@ def get_time_format_regex(settings):
 
 
 def get_full_format_regex(settings):
-    return get_date_format_regex(settings) + DEFAULT_DATE_TIME_SEPARATOR + get_time_format_regex(settings)
+    return DATE_TIME_MAPPINGS[settings['date-time-format']]['date-time-format'](
+        DATE_MAPPINGS[settings['date-format']]['regex'],
+        TIME_MAPPINGS[settings['time-format']]['regex'])
 
 
 def _get_current_date():

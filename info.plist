@@ -169,11 +169,33 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>C762CD13-0320-40F8-8A88-BBBC6304759E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>19E610C7-B40E-4C9A-BFBC-2779322FA99B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
 				<string>7F570625-0CC5-4B6E-A1BF-2F3169943C33</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>E4238A84-F102-401E-A26E-ABC81E1B1E9E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C762CD13-0320-40F8-8A88-BBBC6304759E</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -708,6 +730,75 @@
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<false/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Set time and date format</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>19E610C7-B40E-4C9A-BFBC-2779322FA99B</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>python set_date_time_format.py "{query}"</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>C762CD13-0320-40F8-8A88-BBBC6304759E</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>dcalcset date and time format</string>
+				<key>runningsubtext</key>
+				<string>Loading list . . .</string>
+				<key>script</key>
+				<string>python date_time_format_list.py</string>
+				<key>title</key>
+				<string>Set the date and time format</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>E4238A84-F102-401E-A26E-ABC81E1B1E9E</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string>## Date Calculator Version 2.0
@@ -965,6 +1056,11 @@ THE SOFTWARE.
 			<key>ypos</key>
 			<real>1400</real>
 		</dict>
+		<key>19E610C7-B40E-4C9A-BFBC-2779322FA99B</key>
+		<dict>
+			<key>ypos</key>
+			<real>1640</real>
+		</dict>
 		<key>308D6AD9-DB3C-4021-9318-F162FF0E4254</key>
 		<dict>
 			<key>ypos</key>
@@ -1075,10 +1171,20 @@ THE SOFTWARE.
 			<key>ypos</key>
 			<real>1400</real>
 		</dict>
+		<key>C762CD13-0320-40F8-8A88-BBBC6304759E</key>
+		<dict>
+			<key>ypos</key>
+			<real>1640</real>
+		</dict>
 		<key>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</key>
 		<dict>
 			<key>ypos</key>
 			<real>530</real>
+		</dict>
+		<key>E4238A84-F102-401E-A26E-ABC81E1B1E9E</key>
+		<dict>
+			<key>ypos</key>
+			<real>1640</real>
 		</dict>
 		<key>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</key>
 		<dict>

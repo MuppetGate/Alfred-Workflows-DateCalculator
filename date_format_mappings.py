@@ -1,5 +1,4 @@
 # The date formats array
-from collections import OrderedDict
 from dateutil.rrule import YEARLY, MONTHLY, WEEKLY, DAILY, HOURLY, MINUTELY, SECONDLY
 
 DATE_MAPPINGS = {
@@ -25,13 +24,22 @@ TIME_MAPPINGS = {
     '12-hour': {'name': '12-hour format', 'time-format': '%I:%M%p', 'regex': '\d{2}\:\d{2}(AM|PM)'}
 }
 
+# Note that the regex and formatting for the full date/time format is
+# calculated at runtime using the settings for date format and time format
+DATE_TIME_MAPPINGS = {
+
+    '@': {'date-time-format': lambda date, time: '{date}@{time}'.format(date=date, time=time)},
+    'at': {'date-time-format': lambda date, time: '{date} at {time}'.format(date=date, time=time)},
+    'on': {'date-time-format': lambda date, time: time + ' on ' + date},
+    'arrow': {'date-time-format': lambda date, time: 'DATE ==> {date} TIME ==> {time}'.format(date=date, time=time)}
+}
+
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
 DEFAULT_TIME_FORMAT = '24-hour'
-DEFAULT_DATE_TIME_SEPARATOR = '@'
+DEFAULT_DATE_TIME_FORMAT = 'ampersand'
 
 VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]
-
 
 TIME_CALCULATION = {
 
@@ -45,7 +53,6 @@ TIME_CALCULATION = {
 
 }
 
-
 DEFAULT_ANNIVERSARIES = {'christmas': '1900-12-25T00:30:00',
                          'alfred': '2010-02-28T00:00:00',
                          'leap': '2012-02-29T00:00:00',
@@ -55,7 +62,7 @@ DEFAULT_WORKFLOW_SETTINGS = {
 
     'date-format': DEFAULT_DATE_FORMAT,
     'anniversaries': DEFAULT_ANNIVERSARIES,
-    'time_format': DEFAULT_TIME_FORMAT
+    'time-format': DEFAULT_TIME_FORMAT,
+    'date-time-format': DEFAULT_DATE_TIME_FORMAT
 
 }
-
