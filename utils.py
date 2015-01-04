@@ -93,17 +93,21 @@ def convert_date_time(date_time, settings):
     if anniversary_date is not None:
         return datetime.combine(anniversary_date, datetime.max.time()), date_format
 
-    # Now try each in turn to see if we get anything
+    # Now try each in turn to see if we get anything. Note that we have to convert
+    # each one to uppercase before we attempt the conversion. Why? Because if the
+    # user is using the 12-hour format then the AM/PM indicators must be in upper case
+    # to get translated correctly. We don't want to force the user to enter the indicators
+    # in upper case, so we'll do the conversion for them.
     try:
 
-        date_and_time = datetime.strptime(date_time_str, full_format)
+        date_and_time = datetime.strptime(date_time_str.upper(), full_format)
         return date_and_time, full_format
 
     except ValueError:
 
         try:
 
-            process_date = datetime.strptime(date_time_str, date_format)
+            process_date = datetime.strptime(date_time_str.upper(), date_format)
             date_and_time = datetime.combine(process_date, datetime.max.time())
             return date_and_time, date_format
 
@@ -112,7 +116,7 @@ def convert_date_time(date_time, settings):
             try:
 
                 # Should throw an error all on its own.
-                process_time = datetime.strptime(date_time_str, time_format).time()
+                process_time = datetime.strptime(date_time_str.upper(), time_format).time()
                 date_and_time = datetime.combine(datetime.today(), process_time)
                 return date_and_time, time_format
 

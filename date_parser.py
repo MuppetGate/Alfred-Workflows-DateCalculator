@@ -14,9 +14,9 @@ class DateParser:
         self.time_expression = get_time_format_regex(settings)
         self.full_date_time_expression = get_full_format_regex(settings)
         self.settings = settings
-        self.date_re = re.compile(self.date_expression)
-        self.time_re = re.compile(self.time_expression)
-        self.date_time_re = re.compile(self.full_date_time_expression)
+        self.date_re = re.compile(self.date_expression, re.IGNORECASE)
+        self.time_re = re.compile(self.time_expression, re.IGNORECASE)
+        self.date_time_re = re.compile(self.full_date_time_expression, re.IGNORECASE)
         self.date_functions_re = re.compile(self._get_date_functions(), re.IGNORECASE)
         self.user_macros_re = re.compile(self._get_anniversaries(self.settings), re.IGNORECASE)
         self.operator_re = re.compile('[+-]')
