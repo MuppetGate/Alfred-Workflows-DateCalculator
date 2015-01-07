@@ -24,6 +24,10 @@ def week_day(date_time):
 def week_day_in_isoformat(date_time):
     return str(date_time.isoweekday())
 
+
+def iso_format(date_time):
+    return date_time.isoformat()
+
 # Regular expression matched as a list of optionals
 # will always match the first one they find in the list,
 # so if your function names start with the same characters,
@@ -37,5 +41,5 @@ DATE_FORMATTERS_MAP = {
     "wn": week_number,
     "wd": week_day,
     "!": week_number,
-
+    "iso": iso_format
 }

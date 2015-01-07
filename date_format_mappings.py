@@ -1,5 +1,15 @@
 # The date formats array
+import re
 from dateutil.rrule import YEARLY, MONTHLY, WEEKLY, DAILY, HOURLY, MINUTELY, SECONDLY
+
+
+def no_process(date_time_str):
+    return date_time_str
+
+
+def fill_minutes(date_time_str):
+    return re.sub(r"(?<![:\d])(\d{1,2})(AM|PM)", r"\1:00\2", date_time_str, 0, re.IGNORECASE)
+
 
 DATE_MAPPINGS = {
 
@@ -20,8 +30,9 @@ DATE_MAPPINGS = {
 
 TIME_MAPPINGS = {
 
-    '24-hour': {'name': '24-hour format', 'time-format': '%H:%M', 'regex': '\d{2}\:\d{2}'},
-    '12-hour': {'name': '12-hour format', 'time-format': '%I:%M%p', 'regex': '\d{2}\:\d{2}(AM|PM)'}
+    '24-hour': {'name': '24-hour format', 'time-format': '%H:%M', 'regex': '\d{1,2}\:\d{2}', 'pre-process': no_process},
+    '12-hour': {'name': '12-hour format', 'time-format': '%I:%M%p', 'regex': '\d{1,2}(\:\d{2})?(AM|PM)',
+                'pre-process': fill_minutes}
 }
 
 # Note that the regex and formatting for the full date/time format is
@@ -63,6 +74,6 @@ DEFAULT_WORKFLOW_SETTINGS = {
     'date-format': DEFAULT_DATE_FORMAT,
     'anniversaries': DEFAULT_ANNIVERSARIES,
     'time-format': DEFAULT_TIME_FORMAT,
-    'date-time-format': DEFAULT_DATE_TIME_FORMAT
+    'date-time-format': '12-hour'
 
 }

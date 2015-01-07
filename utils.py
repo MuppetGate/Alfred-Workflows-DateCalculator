@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format
+from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format, get_time_preprocessor
 from dateutil.rrule import rrule, YEARLY
 import dateutil.parser
 
@@ -99,6 +99,11 @@ def convert_date_time(date_time, settings):
     # to get translated correctly. We don't want to force the user to enter the indicators
     # in upper case, so we'll do the conversion for them.
     try:
+
+        time_preprocessor = get_time_preprocessor(settings)
+
+        if time_preprocessor:
+            date_time_str = time_preprocessor(date_time_str)
 
         date_and_time = datetime.strptime(date_time_str.upper(), full_format)
         return date_and_time, full_format

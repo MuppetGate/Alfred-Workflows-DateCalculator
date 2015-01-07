@@ -56,6 +56,11 @@ def get_full_format_regex(settings):
         TIME_MAPPINGS[settings['time-format']]['regex'])
 
 
+def get_time_preprocessor(settings):
+    return TIME_MAPPINGS[settings['time-format']]['pre-process']
+
+
+
 def _get_current_date():
     return datetime.combine(date.today(), datetime.max.time())
 
