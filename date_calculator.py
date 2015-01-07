@@ -149,7 +149,7 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
 
     datetime_list = list(rules)
 
-      # You want to delete everything from the found
+    # You want to delete everything from the found
     # list of dates that is part of the exclusion list
     # of dates. There's bound to be an easier way
     # to do this in Python.
@@ -198,7 +198,7 @@ def build_exclusion_list(command, date_time_1, date_time_2, settings):
 
         for exclusion_command in command.exclusionCommands:
 
-            #process the exclusion list
+            # process the exclusion list
             for exclusion_item in exclusion_command.exclusionList:
 
                 if hasattr(exclusion_item, "exclusionMacro"):
@@ -240,36 +240,32 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     if not valid_command_format(command.format):
         raise FormatError
 
-    if not command.format:
-        # default to days
-        start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
-        count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
-                                           start_date_time, end_date_time, exclusions)
-
-        return "{days}".format(days=pluralize(count, TIME_CALCULATION['d']['singular'],
-                                              TIME_CALCULATION['d']['plural']))
-
     if command.format == "long":
-
         difference = relativedelta(date_time_1, date_time_2)
 
         return "{years}, {months}, {days}, {hours}, {minutes}, {seconds}".format(
             years=pluralize(abs(difference.years), TIME_CALCULATION['y']['singular'], TIME_CALCULATION['y']['plural']),
-            months=pluralize(abs(difference.months), TIME_CALCULATION['m']['singular'], TIME_CALCULATION['m']['plural']),
+            months=pluralize(abs(difference.months), TIME_CALCULATION['m']['singular'],
+                             TIME_CALCULATION['m']['plural']),
             days=pluralize(abs(difference.days), TIME_CALCULATION['d']['singular'], TIME_CALCULATION['d']['plural']),
             hours=pluralize(abs(difference.hours), TIME_CALCULATION['h']['singular'], TIME_CALCULATION['h']['plural']),
-            minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'], TIME_CALCULATION['M']['plural']),
-            seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'], TIME_CALCULATION['s']['plural']))
+            minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'],
+                              TIME_CALCULATION['M']['plural']),
+            seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'],
+                              TIME_CALCULATION['s']['plural']))
 
     # Python gotcha. The keys in the map are not guaranteed
     # to come out in the same order you put then; so we have
     # to scan them specifically in the order we want them to
     # appear in the calculation. If they're out of sequence
     # then the calculation will return the wrong result.
-    #And it does matter which way round the dates go.
+    # And it does matter which way round the dates go.
     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
 
-    ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
+    if not command.format:
+        ordered_format_options = VALID_FORMAT_OPTIONS
+    else:
+        ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
 
     normalised_elements = []
 
@@ -284,8 +280,12 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
         else:
             count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
                                                              start_date_time, end_date_time, exclusions)
-            normalised_elements.append(pluralize(count, TIME_CALCULATION[x]['singular'],
-                                                 TIME_CALCULATION[x]['plural']))
+
+            # If there is no command format specified then try to format the output as best you
+            # can by missing any values that are zero in the final output.
+            if count > 0 or command.format:
+                normalised_elements.append(pluralize(count, TIME_CALCULATION[x]['singular'],
+                                                     TIME_CALCULATION[x]['plural']))
 
     # We put each part of the calculation in a list
     # so that Python can handle comma-separating them later on
