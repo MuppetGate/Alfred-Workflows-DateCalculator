@@ -47,7 +47,7 @@ DATE_TIME_MAPPINGS = {
 
 DEFAULT_DATE_FORMAT = 'dd.mm.yy'
 DEFAULT_TIME_FORMAT = '24-hour'
-DEFAULT_DATE_TIME_FORMAT = 'ampersand'
+DEFAULT_DATE_TIME_FORMAT = '@'
 
 VALID_FORMAT_OPTIONS = ["y", "m", "w", "d", "h", "M", "s"]
 VALID_WORD_FORMAT_OPTIONS = ["long"]
@@ -74,6 +74,6 @@ DEFAULT_WORKFLOW_SETTINGS = {
     'date-format': DEFAULT_DATE_FORMAT,
     'anniversaries': DEFAULT_ANNIVERSARIES,
     'time-format': DEFAULT_TIME_FORMAT,
-    'date-time-format': '12-hour'
+    'date-time-format': DEFAULT_DATE_TIME_FORMAT
 
 }
