@@ -40,12 +40,12 @@ class UnknownExclusionTypeError(Exception):
     pass
 
 
-def do_functions(command, settings):
+def do_formats(command, settings):
     date_time, _ = convert_date_time(command.dateTime, settings)
 
-    if command.functionName.lower() in DATE_FORMATTERS_MAP:
+    if command.dateFormat.lower() in DATE_FORMATTERS_MAP:
         # noinspection PyCallingNonCallable
-        return DATE_FORMATTERS_MAP[command.functionName.lower()](date_time)
+        return DATE_FORMATTERS_MAP[command.dateFormat.lower()](date_time)
     else:
         return "Invalid function . . . "
 
@@ -73,8 +73,25 @@ def delta_arithmetic(date_time, operand):
 def do_timespans(command, settings):
     date_time, output_format = convert_date_time(command.dateTime, settings)
 
+    # Note the very first date in case there is an exclusion rule
+    first_date_time = date_time
+
     for operand in command.operandList:
         date_time = delta_arithmetic(date_time, operand)
+
+    last_date_time = date_time
+
+    if hasattr(command, "exclusionCommands"):
+
+        rules = rruleset()
+        exclusion_rules = build_exclusion_list(command, first_date_time, last_date_time, settings)
+
+        for rule in exclusion_rules:
+            rules.rrule(rule)
+
+        days_to_exclude = len(rules.between(first_date_time, last_date_time, True))
+        operand = relativedelta(days=days_to_exclude)
+        date_time -= operand
 
     return date_time.strftime(output_format)
 
@@ -240,32 +257,36 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     if not valid_command_format(command.format):
         raise FormatError
 
+    if not command.format:
+        # default to days
+        start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+        count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
+                                           start_date_time, end_date_time, exclusions)
+
+        return "{days}".format(days=pluralize(count, TIME_CALCULATION['d']['singular'],
+                                              TIME_CALCULATION['d']['plural']))
+
     if command.format == "long":
+
         difference = relativedelta(date_time_1, date_time_2)
 
         return "{years}, {months}, {days}, {hours}, {minutes}, {seconds}".format(
             years=pluralize(abs(difference.years), TIME_CALCULATION['y']['singular'], TIME_CALCULATION['y']['plural']),
-            months=pluralize(abs(difference.months), TIME_CALCULATION['m']['singular'],
-                             TIME_CALCULATION['m']['plural']),
+            months=pluralize(abs(difference.months), TIME_CALCULATION['m']['singular'], TIME_CALCULATION['m']['plural']),
             days=pluralize(abs(difference.days), TIME_CALCULATION['d']['singular'], TIME_CALCULATION['d']['plural']),
             hours=pluralize(abs(difference.hours), TIME_CALCULATION['h']['singular'], TIME_CALCULATION['h']['plural']),
-            minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'],
-                              TIME_CALCULATION['M']['plural']),
-            seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'],
-                              TIME_CALCULATION['s']['plural']))
+            minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'], TIME_CALCULATION['M']['plural']),
+            seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'], TIME_CALCULATION['s']['plural']))
 
     # Python gotcha. The keys in the map are not guaranteed
     # to come out in the same order you put then; so we have
     # to scan them specifically in the order we want them to
     # appear in the calculation. If they're out of sequence
     # then the calculation will return the wrong result.
-    # And it does matter which way round the dates go.
+    #And it does matter which way round the dates go.
     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
 
-    if not command.format:
-        ordered_format_options = VALID_FORMAT_OPTIONS
-    else:
-        ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
+    ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
 
     normalised_elements = []
 
@@ -280,12 +301,8 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
         else:
             count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
                                                              start_date_time, end_date_time, exclusions)
-
-            # If there is no command format specified then try to format the output as best you
-            # can by missing any values that are zero in the final output.
-            if count > 0 or command.format:
-                normalised_elements.append(pluralize(count, TIME_CALCULATION[x]['singular'],
-                                                     TIME_CALCULATION[x]['plural']))
+            normalised_elements.append(pluralize(count, TIME_CALCULATION[x]['singular'],
+                                                 TIME_CALCULATION[x]['plural']))
 
     # We put each part of the calculation in a list
     # so that Python can handle comma-separating them later on
@@ -303,16 +320,13 @@ def main(wf):
 
         command = command_parser.parse_command(args[0])
 
-        if getattr(command, "exclusionCommands", "") and getattr(command, "format", ""):
-            raise IncompatibleFunctionError
-
         if hasattr(command, "dateTime"):
             output = do_timespans(command, wf.settings)
 
-            if hasattr(command, "functionName"):
+            if hasattr(command, "dateFormat"):
                 setattr(command, "dateTime", output)
                 # and run it through the functions function
-                output = do_functions(command, wf.settings)
+                output = do_formats(command, wf.settings)
 
         elif hasattr(command, "dateTime1") and hasattr(command, "dateTime2"):
             output = do_subtraction(command, wf.settings)

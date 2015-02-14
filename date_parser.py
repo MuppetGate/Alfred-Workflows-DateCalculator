@@ -83,7 +83,7 @@ class DateParser:
         class OperandList(List):
             grammar = maybe_some(Operand)
 
-        class DateFunction(str):
+        class DateFormat(str):
             grammar = self.date_formatters_re
 
         class DateTime(str):
@@ -113,13 +113,22 @@ class DateParser:
 
         class Commands(str):
             grammar = [
-                (attr("dateTime", DateTime), attr("operandList", OperandList), attr("functionName", DateFunction)),
-
-                (attr("dateTime", DateTime), attr("functionName", DateFunction)),
 
                 (attr("dateTime1", DateTime), attr("operandList1", OperandList), "-", attr("dateTime2", DateTime),
                  attr("operandList2", OperandList),
                  attr("exclusionCommands", ExclusionCommands), attr("format", Format)),
+
+                (attr("dateTime", DateTime), attr("operandList", OperandList),
+                 attr("dateFormat", DateFormat)),
+
+                (attr("dateTime", DateTime), attr("operandList", OperandList),
+                 attr("exclusionCommands", ExclusionCommands),
+                 attr("dateFormat", DateFormat)),
+
+                (attr("dateTime", DateTime), attr("operandList", OperandList),
+                 attr("exclusionCommands", ExclusionCommands)),
+
+                (attr("dateTime", DateTime), attr("dateFormat", DateFormat)),
 
                 (attr("dateTime", DateTime), attr("operandList", OperandList))
             ]
