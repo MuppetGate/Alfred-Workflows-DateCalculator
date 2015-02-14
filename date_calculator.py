@@ -225,7 +225,6 @@ def build_exclusion_list(command, date_time_1, date_time_2, settings):
                     # noinspection PyCallingNonCallable
                     new_rule = DATE_EXCLUSION_RULES_MAP[exclusion_item.exclusionMacro](start=start_date_time,
                                                                                        end=end_date_time)
-
                 elif hasattr(exclusion_item, "exclusionDateTime"):
 
                     date_time, _ = convert_date_time(exclusion_item.exclusionDateTime, settings)
@@ -256,15 +255,15 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     # First off, do we have any exclusions to worry about?
     if not valid_command_format(command.format):
         raise FormatError
-
-    if not command.format:
-        # default to days
-        start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
-        count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
-                                           start_date_time, end_date_time, exclusions)
-
-        return "{days}".format(days=pluralize(count, TIME_CALCULATION['d']['singular'],
-                                              TIME_CALCULATION['d']['plural']))
+    #
+    # if not command.format:
+    #     # default to days
+    #     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+    #     count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
+    #                                        start_date_time, end_date_time, exclusions)
+    #
+    #     return "{days}".format(days=pluralize(count, TIME_CALCULATION['d']['singular'],
+    #                                           TIME_CALCULATION['d']['plural']))
 
     if command.format == "long":
 
@@ -286,21 +285,20 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     #And it does matter which way round the dates go.
     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
 
-    ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
+    if command.format:
+
+        ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
+
+    else:
+        ordered_format_options = VALID_FORMAT_OPTIONS
 
     normalised_elements = []
 
     for x in ordered_format_options:
 
-        if x == ordered_format_options[-1]:
-            count = (end_date_time - start_date_time).total_seconds()
-            # Should format it. Make it much easier to read.
-            normalised_elements.append(pluralize("{:.3f}".format(count / TIME_CALCULATION[x]['seconds']),
-                                                 TIME_CALCULATION[x]['singular'],
-                                                 TIME_CALCULATION[x]['plural']))
-        else:
-            count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
-                                                             start_date_time, end_date_time, exclusions)
+        count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
+                                                         start_date_time, end_date_time, exclusions)
+        if count >= 1:
             normalised_elements.append(pluralize(count, TIME_CALCULATION[x]['singular'],
                                                  TIME_CALCULATION[x]['plural']))
 
