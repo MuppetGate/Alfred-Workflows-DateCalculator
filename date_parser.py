@@ -2,13 +2,13 @@ from __future__ import unicode_literals, print_function
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS
 from date_formatters import DATE_FORMATTERS_MAP
-from date_functions import DATE_FUNCTION_MAP, get_date_format_regex, get_time_format_regex, get_full_format_regex
+from date_functions import DATE_FUNCTION_MAP, get_date_format_regex, get_time_format_regex, get_full_format_regex, \
+    DAYS_OF_WEEK_ABBREVIATIONS
 
 from pypeg2 import *
 
 
 class DateParser:
-
     def __init__(self, settings):
         self.date_expression = get_date_format_regex(settings)
         self.time_expression = get_time_format_regex(settings)
@@ -19,19 +19,25 @@ class DateParser:
         self.date_time_re = re.compile(self.full_date_time_expression, re.IGNORECASE)
         self.date_functions_re = re.compile(self._get_date_functions(), re.IGNORECASE)
         self.user_macros_re = re.compile(self._get_anniversaries(self.settings), re.IGNORECASE)
-        self.operator_re = re.compile('[+-]')
-        self.time_span_re = re.compile('[ymwdhMs]')
-        self.time_digits_re = re.compile('[0-9]+')
-        self.format_re = re.compile('[ymwdhMs]+|long')
+        self.operator_re = re.compile(r'[+-]')
+        self.time_span_re = re.compile(r'[ymwdhMs]')
+        self.time_digits_re = re.compile(r'[0-9]+')
+        self.format_re = re.compile(r'[ymwdhMs]+|long')
         self.date_formatters_re = re.compile(self._get_date_formatters(), re.IGNORECASE)
 
         # The money shot
-        self.parseable_date_re = re.compile('\"[^\"]+\"', re.IGNORECASE)
+        self.parseable_date_re = re.compile(r'\"[^\"]+\"', re.IGNORECASE)
 
         # Exclusions from date subtraction calculations.
         self.exclusion_keyword_re = re.compile('exclude|ex|x', re.IGNORECASE)
         self.exclusion_macros_re = re.compile(self._get_exclusion_macros(), re.IGNORECASE)
         self.exclusion_range_operator_re = re.compile('to|until', re.IGNORECASE)
+
+        # Week number calculation
+        self.wn_command_re = re.compile(r'wn', re.IGNORECASE)
+        self.wn_year_re = re.compile(r'\d{4}')
+        self.wn_week_number_re = re.compile(r'\d{1,2}')
+        self.wn_days_of_the_week_re = re.compile(self._get_week_days(), re.IGNORECASE)
 
     @staticmethod
     def _get_anniversaries(settings):
@@ -69,8 +75,11 @@ class DateParser:
     def _get_exclusion_macros():
         return '|'.join(str(x) for x in DATE_EXCLUSION_RULES_MAP.keys())
 
-    def parse_command(self, command_string):
+    @staticmethod
+    def _get_week_days():
+        return '|'.join(str(x) for x in DAYS_OF_WEEK_ABBREVIATIONS.keys())
 
+    def parse_command(self, command_string):
         class Operator(str):
             grammar = self.operator_re
 
@@ -87,7 +96,8 @@ class DateParser:
             grammar = self.date_formatters_re
 
         class DateTime(str):
-            grammar = [self.date_time_re, self.date_re, self.time_re, self.date_functions_re, self.user_macros_re, self.parseable_date_re]
+            grammar = [self.date_time_re, self.date_re, self.time_re, self.date_functions_re, self.user_macros_re,
+                       self.parseable_date_re]
 
         class Format(str):
             grammar = optional(self.format_re)
@@ -111,6 +121,14 @@ class DateParser:
         class ExclusionCommands(List):
             grammar = maybe_some(ExclusionCommand)
 
+        class DayOfTheWeek(str):
+            grammar = optional(self.wn_days_of_the_week_re)
+
+        class WeekNumberCommand(str):
+            grammar = attr("weekNumberKeyword", self.wn_command_re), \
+                attr("year", self.wn_year_re), attr("weekNumber", self.wn_week_number_re), \
+                attr("dayOfTheWeek", DayOfTheWeek)
+
         class Commands(str):
             grammar = [
 
@@ -130,14 +148,15 @@ class DateParser:
 
                 (attr("dateTime", DateTime), attr("dateFormat", DateFormat)),
 
-                (attr("dateTime", DateTime), attr("operandList", OperandList))
+                (attr("dateTime", DateTime), attr("operandList", OperandList)),
+
+                (attr("weekNumberCommand", WeekNumberCommand))
             ]
 
         return parse(command_string, Commands)
 
 
 if __name__ == '__main__':
-
     command_parser = DateParser("\d{2}\.\d{2}\.\d{2}", DEFAULT_WORKFLOW_SETTINGS)
     command = command_parser.parse_command("27.01.14 - 01.01.14 + 1d")
     print(command.dateTime)

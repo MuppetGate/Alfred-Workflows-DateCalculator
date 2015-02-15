@@ -119,13 +119,10 @@ def convert_date_time(date_time, settings):
         except ValueError:
 
             try:
-
                 # Should throw an error all on its own.
                 process_time = datetime.strptime(date_time_str.upper(), time_format).time()
                 date_and_time = datetime.combine(datetime.today(), process_time)
                 return date_and_time, time_format
 
             except:
-
                 raise ValueError
-

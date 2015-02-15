@@ -27,6 +27,17 @@ DAY_MAP = {
     "prev sun": relativedelta(days=-1, weekday=SU(-1)),
 }
 
+DAYS_OF_WEEK_ABBREVIATIONS = {
+
+    "mon": "monday",
+    "tue": "tuesday",
+    "wed": "wednesday",
+    "thu": "thursday",
+    "fri": "friday",
+    "sat": "saturday",
+    "sun": "sunday"
+}
+
 
 def get_date_format(settings):
     return DATE_MAPPINGS[settings['date-format']]['date-format']
