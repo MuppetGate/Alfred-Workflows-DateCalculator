@@ -1,11 +1,13 @@
 from datetime import datetime
 
-from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format, get_time_preprocessor
+from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format, get_time_preprocessor, \
+    DAYS_OF_WEEK_ABBREVIATIONS
 from dateutil.rrule import rrule, YEARLY
 import dateutil.parser
 
 
 # package for general utility stuff
+from isoweek import Week
 from parsedatetime import parsedatetime
 
 
@@ -72,6 +74,25 @@ def natural_parser(date_time, settings):
         return date_time_parsed[0], format_map[error_code]
 
 
+def get_date_from_week_number(date_time):
+
+    #first, split the string
+    date_components = date_time.split(' ')
+
+    year = int(date_components[1])
+    week_number = int(date_components[2])
+
+    if len(date_components) == 4:
+        day = date_components[3]
+    else:
+        day = "mon"
+
+    w = Week(year, week_number)
+
+    func = getattr(w, DAYS_OF_WEEK_ABBREVIATIONS[day], "monday")
+    return func()
+
+
 def convert_date_time(date_time, settings):
     # first of all, what format are we using.
     # We use the longer format if the date contains an ampersand
@@ -83,6 +104,10 @@ def convert_date_time(date_time, settings):
     #Okay, Does the date command start with a " symbol?
     if date_time[0] == "\"":
         return natural_parser(date_time, settings)
+
+    #How about a date from a week number and a year
+    if date_time.startswith("wn"):
+        return get_date_from_week_number(date_time), date_format
 
     date_time_str = str(date_time)
 

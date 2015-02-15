@@ -34,10 +34,7 @@ class DateParser:
         self.exclusion_range_operator_re = re.compile('to|until', re.IGNORECASE)
 
         # Week number calculation
-        self.wn_command_re = re.compile(r'wn', re.IGNORECASE)
-        self.wn_year_re = re.compile(r'\d{4}')
-        self.wn_week_number_re = re.compile(r'\d{1,2}')
-        self.wn_days_of_the_week_re = re.compile(self._get_week_days(), re.IGNORECASE)
+        self.wn_command_re = re.compile(r'wn \d{4} \d{1,2}(\s(mon|tue|wed|thu|fri|sat|sun))?', re.IGNORECASE)
 
     @staticmethod
     def _get_anniversaries(settings):
@@ -97,7 +94,7 @@ class DateParser:
 
         class DateTime(str):
             grammar = [self.date_time_re, self.date_re, self.time_re, self.date_functions_re, self.user_macros_re,
-                       self.parseable_date_re]
+                       self.parseable_date_re, self.wn_command_re]
 
         class Format(str):
             grammar = optional(self.format_re)
@@ -121,14 +118,6 @@ class DateParser:
         class ExclusionCommands(List):
             grammar = maybe_some(ExclusionCommand)
 
-        class DayOfTheWeek(str):
-            grammar = optional(self.wn_days_of_the_week_re)
-
-        class WeekNumberCommand(str):
-            grammar = attr("weekNumberKeyword", self.wn_command_re), \
-                attr("year", self.wn_year_re), attr("weekNumber", self.wn_week_number_re), \
-                attr("dayOfTheWeek", DayOfTheWeek)
-
         class Commands(str):
             grammar = [
 
@@ -148,9 +137,8 @@ class DateParser:
 
                 (attr("dateTime", DateTime), attr("dateFormat", DateFormat)),
 
-                (attr("dateTime", DateTime), attr("operandList", OperandList)),
+                (attr("dateTime", DateTime), attr("operandList", OperandList))
 
-                (attr("weekNumberCommand", WeekNumberCommand))
             ]
 
         return parse(command_string, Commands)

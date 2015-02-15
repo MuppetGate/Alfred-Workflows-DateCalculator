@@ -309,34 +309,6 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     return ', '.join(normalised_elements)
 
 
-def get_date_from_week_number(command, settings):
-
-    date_format = get_date_format(settings)
-
-    year = int(command.weekNumberCommand.year)
-    week_number = int(command.weekNumberCommand.weekNumber)
-
-    if hasattr(command.weekNumberCommand, "dayOfTheWeek") \
-            and command.weekNumberCommand.dayOfTheWeek in DAYS_OF_WEEK_ABBREVIATIONS.keys():
-        day = command.weekNumberCommand.dayOfTheWeek
-    else:
-        day = "mon"
-
-    if week_number not in range(1, 53):
-        raise SyntaxError
-
-    w = Week(year, week_number)
-
-    try:
-        func = getattr(w, DAYS_OF_WEEK_ABBREVIATIONS[day])
-    except AttributeError:
-        raise SyntaxError
-
-    date_from_week_number = func()
-
-    return date_from_week_number.strftime(date_format)
-
-
 def main(wf):
     # Get the date format from the configuration
 
@@ -358,9 +330,6 @@ def main(wf):
 
         elif hasattr(command, "dateTime1") and hasattr(command, "dateTime2"):
             output = do_subtraction(command, wf.settings)
-
-        elif hasattr(command, "weekNumberCommand"):
-            output = get_date_from_week_number(command, wf.settings)
 
         else:
             output = "Invalid Expression"
