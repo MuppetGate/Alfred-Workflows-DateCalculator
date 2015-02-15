@@ -1,4 +1,6 @@
-from datetime import datetime
+from datetime import datetime, date
+import re
+from date_format_mappings import WN_FUNCTION_REGEX
 
 from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format, get_time_preprocessor, \
     DAYS_OF_WEEK_ABBREVIATIONS
@@ -76,20 +78,30 @@ def natural_parser(date_time, settings):
 
 def get_date_from_week_number(date_time):
 
-    #first, split the string
-    date_components = date_time.split(' ')
+    week_day_map = {0: "mon", 1: "tue", 2: "wed", 3: "thu", 4: "fri", 5: "sat", 6: "sun"}
 
-    year = int(date_components[1])
-    week_number = int(date_components[2])
+    current_date = date.today()
 
-    if len(date_components) == 4:
-        day = date_components[3]
+    match = re.match(WN_FUNCTION_REGEX, date_time)
+
+    if match.group('year') is not None:
+        year = int(match.group('year'))
     else:
-        day = "mon"
+        year = current_date.year
+
+    if match.group('week_number') is not None:
+        week_number = int(match.group('week_number'))
+    else:
+        week_number = int(current_date.strftime("%U"))
+
+    if match.group('day') is not None:
+        day = match.group('day')
+    else:
+        day = week_day_map[current_date.weekday()]
 
     w = Week(year, week_number)
 
-    func = getattr(w, DAYS_OF_WEEK_ABBREVIATIONS[day], "monday")
+    func = getattr(w, DAYS_OF_WEEK_ABBREVIATIONS[day], "sunday")
     return func()
 
 

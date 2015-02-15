@@ -1,6 +1,6 @@
 from __future__ import unicode_literals, print_function
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
-from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS
+from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, WN_FUNCTION_REGEX
 from date_formatters import DATE_FORMATTERS_MAP
 from date_functions import DATE_FUNCTION_MAP, get_date_format_regex, get_time_format_regex, get_full_format_regex, \
     DAYS_OF_WEEK_ABBREVIATIONS
@@ -34,7 +34,7 @@ class DateParser:
         self.exclusion_range_operator_re = re.compile('to|until', re.IGNORECASE)
 
         # Week number calculation
-        self.wn_command_re = re.compile(r'wn \d{4} \d{1,2}(\s(mon|tue|wed|thu|fri|sat|sun))?', re.IGNORECASE)
+        self.wn_command_re = WN_FUNCTION_REGEX
 
     @staticmethod
     def _get_anniversaries(settings):

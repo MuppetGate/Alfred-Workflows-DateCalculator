@@ -10,6 +10,9 @@ def no_process(date_time_str):
 def fill_minutes(date_time_str):
     return re.sub(r"(?<![:\d])(\d{1,2})(AM|PM)", r"\1:00\2", date_time_str, 0, re.IGNORECASE)
 
+WN_FUNCTION_REGEX = re.compile(r'wn(\s+(?P<year>\d{4}))?'
+                               r'(\s+(?P<week_number>\d{1,2}))?'
+                               r'(\s+(?P<day>mon|tue|wed|thu|fri|sat|sun))?', re.IGNORECASE)
 
 DATE_MAPPINGS = {
 
