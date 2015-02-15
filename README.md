@@ -200,7 +200,7 @@ This is one I added for a friend of mine. You can use this expression to find th
 
 **dcalc wn 2015 5**
 
-will give you the date that the fifth week falls inside for 2015. The expression will give you the date on Monday of that week, but you can also supply your own day adjustment if you want to.
+will give you the date for the fifth week inside for 2015. The expression will give you the date on Monday of that week, but you can also supply your own day adjustment if you want to.
 
 **dcalc wn 2015 5 sun**
 
