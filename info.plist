@@ -1007,8 +1007,8 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
-(Version 2.3) - Bug fixes. Reworked the auto formatting. You can now apply exclusions to date calculations
-as well as timespan calculations.
+(Version 2.3) - Bug fixes. Reworked the auto formatting. You can now apply exclusions to date calculations as well as timespan calculations.
+Added function to return the date when given a year, a week number and an optional day of the week
 (Version 2.1) - Bug fixes. Made the default formatting a little bit more intelligent.
 Latest release (Version 2.0). Refactoring. Added a natural date language parser. Added support for 12-hour clock. Added function to get date of the next passover
 Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
