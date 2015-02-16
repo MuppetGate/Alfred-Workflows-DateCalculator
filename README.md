@@ -64,6 +64,27 @@ Or for a specific date:
 
 **dcalc 25.12.14 wn**
 
+The **wn** function also works in reverse, finding dates from week numbers:
+
+**dcalc wn 2015 5**
+
+will give you the date for the fifth week inside for 2015. The expression will give you the date on Monday of that week, but you can also supply your own day adjustment if you want to.
+
+**dcalc wn 2015 5 sun**
+
+And of course, you can do some basic calculations, if you can stand the syntax!
+
+**dcalc wn 2015 6 tue +1d wd**
+
+Should give you the Tuesday for week 6 in the year 2015, then add 1 day to that and give back the day of week.
+Which is Wednesday, obviously :-)
+
+I've included defaults so that the workflow will fill in missing parameters:
+
+**dcalc wn 7**
+
+will return the date of the current day of week (Monday, as I'm writing this) for the seventh week of the current year.
+
 You can also use the _today_ thing in other places too:
 
 **dcalc today + 4d**
@@ -194,22 +215,6 @@ You can also exclude dates in timespan calculations.
 **dcalc today + 60d exclude weekends**
 
 Will give you the current date plus sixty days, but then adjust the final date to knock out the weekends.
-
-## Week number
-This is one I added for a friend of mine. You can use this expression to find the date from a given year and week number
-
-**dcalc wn 2015 5**
-
-will give you the date for the fifth week inside for 2015. The expression will give you the date on Monday of that week, but you can also supply your own day adjustment if you want to.
-
-**dcalc wn 2015 5 sun**
-
-And of course, you can do some basic calculations, if you can stand the syntax!
-
-**dcalc wn 2015 6 tue +1d wd**
-
-Should give you the Tuesday for week 6 in the year 2015, then add 1 day to that and give back the day of week.
-Which is Wednesday, obviously :-)
 
 ### Credits
 A list of things that made my first attempt at Python programming possible:
