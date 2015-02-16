@@ -92,7 +92,7 @@ def get_date_from_week_number(date_time):
     if match.group('week_number') is not None:
         week_number = int(match.group('week_number'))
     else:
-        week_number = int(current_date.strftime("%U"))
+        week_number = int(current_date.strftime("%V"))
 
     if match.group('day') is not None:
         day = match.group('day')
