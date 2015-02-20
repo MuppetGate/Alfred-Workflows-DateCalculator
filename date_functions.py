@@ -191,6 +191,32 @@ def bst(month_number):
     return _bst
 
 
+def around_easter(days):
+    """
+    We're being clever again. This is a function that returns a function
+    that returns dates as an offset of Easter. Mainly so we can find
+    Pancake Day
+    :param days:
+    :return:
+    """
+    def _easter_offset(settings):
+
+        easters = list(rrule(freq=YEARLY, byeaster=0, count=2))
+        offset_date = easters[0] + timedelta(days=days)
+
+        if _get_current_date() > offset_date:
+            offset_date = easters[1] + timedelta(days=days)
+
+        return offset_date, get_date_format(settings)
+
+    return _easter_offset
+
+
+def martin_luther_king_day(settings):
+
+    mlk_day_rule = rrule(freq=YEARLY, bymonth=1, byweekday=MO(3))
+    return mlk_day_rule.after(_get_current_date()), get_date_format(settings)
+
 DATE_FUNCTION_MAP = {
 
     "date": current_date,
@@ -224,7 +250,10 @@ DATE_FUNCTION_MAP = {
     "start year": start_of_year,
     "end year": end_of_year,
     "next month": next_month,
-    "passover": next_passover
+    "passover": next_passover,
+    "pancake day": around_easter(-47),
+    "lent": around_easter(-46),
+    "mlk": martin_luther_king_day
 }
 
 

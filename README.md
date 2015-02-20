@@ -219,13 +219,16 @@ Will give you the current date plus sixty days, but then adjust the final date t
 ## Abbreviations
 To speed up entering calculations, there are a couple of function abbreviations you can use within expressions:
 
-Abbreviation|Function
----|---
-<|yesterday
-\*|today
-\>|tomorrow
-&|time
-\#|now
+
+**<** yesterday
+
+**\*** today
+
+**\>** tomorrow
+
+**&** time
+
+**\#** now
 
 So now
 
@@ -254,6 +257,7 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+(Version 2.4) - Bugt fixes. Added abbreviations. Added functions for Pancake Day, Lent and Martin Luther King Day
 (Version 2.3) - Bug fixes. Reworked the auto formatting. You can now apply exclusions to date calculations as well as timespan calculations. 
 Added function to return the date when given a year, a week number and an optional day of the week.
 (Version 2.1) - Bug fixes. Made the default formatting a little bit more intelligent.
