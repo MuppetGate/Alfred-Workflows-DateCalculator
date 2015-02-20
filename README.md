@@ -216,6 +216,31 @@ You can also exclude dates in timespan calculations.
 
 Will give you the current date plus sixty days, but then adjust the final date to knock out the weekends.
 
+## Abbreviations
+To speed up entering calculations, there are a couple of function abbreviations you can use within expressions:
+
+Abbreviation|Function
+---|---
+<|yesterday
+\*|today
+\>|tomorrow
+&|time
+\#|now
+
+So now
+
+**dcalc \*** 
+
+will give you the current date.
+
+And
+
+**dcalc \*+6d**
+
+will give you the date six days from now.
+
+
+
 ### Credits
 A list of things that made my first attempt at Python programming possible:
 - Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](http://www.deanishe.net/alfred-workflow/), and for his ‘parse-as-you-type’ idea.

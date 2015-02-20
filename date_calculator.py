@@ -292,7 +292,7 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
         ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
 
     else:
-        ordered_format_options = VALID_FORMAT_OPTIONS
+        ordered_format_options = ['d', 'h', 'M']
 
     normalised_elements = []
 

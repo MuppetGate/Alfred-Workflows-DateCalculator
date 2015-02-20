@@ -59,22 +59,23 @@ class DateParser:
         """
         This method will get the list of defnined functions and build
         a regular expression from them so that they can be interpreted
-        later on
+        later on. Note that we escape the strings during concatenation
+        so that we can use symbols like '*' for abbreviated keywords.
         :return: a regex string of allowable function names
         """
-        return '|'.join(str(x) for x in DATE_FORMATTERS_MAP.keys())
+        return '|'.join(re.escape(str(x)) for x in DATE_FORMATTERS_MAP.keys())
 
     @staticmethod
     def _get_date_functions():
-        return '|'.join(str(x) for x in DATE_FUNCTION_MAP.keys())
+        return '|'.join(re.escape(str(x)) for x in DATE_FUNCTION_MAP.keys())
 
     @staticmethod
     def _get_exclusion_macros():
-        return '|'.join(str(x) for x in DATE_EXCLUSION_RULES_MAP.keys())
+        return '|'.join(re.escape(str(x)) for x in DATE_EXCLUSION_RULES_MAP.keys())
 
     @staticmethod
     def _get_week_days():
-        return '|'.join(str(x) for x in DAYS_OF_WEEK_ABBREVIATIONS.keys())
+        return '|'.join(re.escape(str(x)) for x in DAYS_OF_WEEK_ABBREVIATIONS.keys())
 
     def parse_command(self, command_string):
         class Operator(str):
