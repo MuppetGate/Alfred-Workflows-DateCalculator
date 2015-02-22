@@ -212,6 +212,18 @@ def around_easter(days):
     return _easter_offset
 
 
+def mothers_day_us(settings):
+    """
+    Yes, Mother's day in the US is different to the UK one. It is
+    always the second Sunday in May.
+    :param settings:
+    :return:
+    """
+
+    mothers_day_rule = rrule(freq=YEARLY, bymonth=5, byweekday=SU(3))
+    return mothers_day_rule.after(_get_current_date()), get_date_format(settings)
+
+
 def martin_luther_king_day(settings):
 
     mlk_day_rule = rrule(freq=YEARLY, bymonth=1, byweekday=MO(3))
@@ -253,7 +265,9 @@ DATE_FUNCTION_MAP = {
     "passover": next_passover,
     "pancake day": around_easter(-47),
     "lent": around_easter(-46),
-    "mlk": martin_luther_king_day
+    "mlk": martin_luther_king_day,
+    "mum": around_easter(-21),
+    "mom": mothers_day_us
 }
 
 
