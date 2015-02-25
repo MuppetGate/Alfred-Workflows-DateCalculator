@@ -220,7 +220,7 @@ def mothers_day_us(settings):
     :return:
     """
 
-    mothers_day_rule = rrule(freq=YEARLY, bymonth=5, byweekday=SU(3))
+    mothers_day_rule = rrule(freq=YEARLY, bymonth=5, byweekday=SU(2))
     return mothers_day_rule.after(_get_current_date()), get_date_format(settings)
 
 
@@ -267,7 +267,8 @@ DATE_FUNCTION_MAP = {
     "lent": around_easter(-46),
     "mlk": martin_luther_king_day,
     "mum": around_easter(-21),
-    "mom": mothers_day_us
+    "mom": mothers_day_us,
+    "mutter": mothers_day_us
 }
 
 

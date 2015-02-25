@@ -83,6 +83,11 @@ def do_timespans(command, settings):
 
     last_date_time = date_time
 
+    # Make sure the dates are the right way around, or the
+    # following functions will not work correctly.
+
+    first_date_time, last_date_time = later_date_last(first_date_time, last_date_time)
+
     if hasattr(command, "exclusionCommands"):
 
         rules = rruleset()
@@ -185,7 +190,7 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
         return 0, end_datetime
 
 
-def later_date_first(date_time_1, date_time_2):
+def later_date_last(date_time_1, date_time_2):
     """
     The rrule is fussy about the order of the dates: the lower one
     has to go first. But we don't force our users to always put the
@@ -222,7 +227,7 @@ def build_exclusion_list(command, date_time_1, date_time_2, settings):
 
                 if hasattr(exclusion_item, "exclusionMacro"):
 
-                    start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+                    start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
 
                     # noinspection PyCallingNonCallable
                     new_rule = DATE_EXCLUSION_RULES_MAP[exclusion_item.exclusionMacro](start=start_date_time,
@@ -238,7 +243,7 @@ def build_exclusion_list(command, date_time_1, date_time_2, settings):
 
                     exclusion_date_2, _ = convert_date_time(exclusion_item.exclusionRange.toDateTime, settings)
 
-                    date_1, date_2 = later_date_first(exclusion_date_1, exclusion_date_2)
+                    date_1, date_2 = later_date_last(exclusion_date_1, exclusion_date_2)
 
                     new_rule = rrule(freq=DAILY, dtstart=date_1, until=date_2)
 
@@ -260,7 +265,7 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     #
     # if not command.format:
     #     # default to days
-    #     start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+    #     start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
     #     count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
     #                                        start_date_time, end_date_time, exclusions)
     #
@@ -285,7 +290,7 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     # appear in the calculation. If they're out of sequence
     # then the calculation will return the wrong result.
     #And it does matter which way round the dates go.
-    start_date_time, end_date_time = later_date_first(date_time_1, date_time_2)
+    start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
 
     if command.format:
 
