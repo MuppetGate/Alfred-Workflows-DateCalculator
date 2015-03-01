@@ -1,15 +1,13 @@
 from collections import Counter
 from datetime import datetime
+
 from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
-    DATE_MAPPINGS, \
-    TIME_CALCULATION, VALID_FORMAT_OPTIONS, TIME_MAPPINGS
+    TIME_CALCULATION, VALID_FORMAT_OPTIONS
 from date_formatters import DATE_FORMATTERS_MAP
-from date_functions import get_date_format, DAYS_OF_WEEK_ABBREVIATIONS
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY, rruleset
-from isoweek import Week
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
@@ -264,7 +262,7 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
         raise FormatError
     #
     # if not command.format:
-    #     # default to days
+    # # default to days
     #     start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
     #     count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
     #                                        start_date_time, end_date_time, exclusions)
@@ -273,16 +271,18 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     #                                           TIME_CALCULATION['d']['plural']))
 
     if command.format == "long":
-
         difference = relativedelta(date_time_1, date_time_2)
 
         return "{years}, {months}, {days}, {hours}, {minutes}, {seconds}".format(
             years=pluralize(abs(difference.years), TIME_CALCULATION['y']['singular'], TIME_CALCULATION['y']['plural']),
-            months=pluralize(abs(difference.months), TIME_CALCULATION['m']['singular'], TIME_CALCULATION['m']['plural']),
+            months=pluralize(abs(difference.months), TIME_CALCULATION['m']['singular'],
+                             TIME_CALCULATION['m']['plural']),
             days=pluralize(abs(difference.days), TIME_CALCULATION['d']['singular'], TIME_CALCULATION['d']['plural']),
             hours=pluralize(abs(difference.hours), TIME_CALCULATION['h']['singular'], TIME_CALCULATION['h']['plural']),
-            minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'], TIME_CALCULATION['M']['plural']),
-            seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'], TIME_CALCULATION['s']['plural']))
+            minutes=pluralize(abs(difference.minutes), TIME_CALCULATION['M']['singular'],
+                              TIME_CALCULATION['M']['plural']),
+            seconds=pluralize(abs(difference.seconds), TIME_CALCULATION['s']['singular'],
+                              TIME_CALCULATION['s']['plural']))
 
     # Python gotcha. The keys in the map are not guaranteed
     # to come out in the same order you put then; so we have
@@ -293,11 +293,9 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
 
     if command.format:
-
         ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
-
     else:
-        ordered_format_options = ['d', 'h', 'M']
+        ordered_format_options = VALID_FORMAT_OPTIONS
 
     normalised_elements = []
 
@@ -305,9 +303,17 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
 
         count, start_date_time = calculate_time_interval(TIME_CALCULATION[x]['interval'],
                                                          start_date_time, end_date_time, exclusions)
-        if count >= 1:
-            normalised_elements.append(pluralize(count, TIME_CALCULATION[x]['singular'],
-                                                 TIME_CALCULATION[x]['plural']))
+
+        # If this is the last format option in the list, then we need some
+        # fractional magic! Remember, the next line only works because the
+        # items in the list are unique and sorted into order! If this changes
+        # then you should use an enumerate call
+        if x == ordered_format_options[-1]:
+            fractional = abs((end_date_time - start_date_time).total_seconds()) / TIME_CALCULATION[x]['seconds']
+            count += fractional
+
+        normalised_elements.append(pluralize(round_number(count), TIME_CALCULATION[x]['singular'],
+                                             TIME_CALCULATION[x]['plural']))
 
     # We put each part of the calculation in a list
     # so that Python can handle comma-separating them later on
