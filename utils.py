@@ -2,8 +2,8 @@ from datetime import datetime, date
 import re
 from date_format_mappings import WN_FUNCTION_REGEX
 
-from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format, get_time_preprocessor, \
-    DAYS_OF_WEEK_ABBREVIATIONS
+from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, get_full_format, \
+    get_time_preprocessor, DAYS_OF_WEEK_ABBREVIATIONS
 from dateutil.rrule import rrule, YEARLY
 import dateutil.parser
 
@@ -14,7 +14,6 @@ from parsedatetime import parsedatetime
 
 
 def get_anniversary(date_object):
-
     anniversary_rule = rrule(bymonthday=date_object.day, bymonth=date_object.month, freq=YEARLY, dtstart=date_object)
     current_date = datetime.today()
     anniversary_date = anniversary_rule.after(current_date, inc=False)
@@ -77,7 +76,6 @@ def natural_parser(date_time, settings):
 
 
 def get_date_from_week_number(date_time):
-
     week_day_map = {0: "mon", 1: "tue", 2: "wed", 3: "thu", 4: "fri", 5: "sat", 6: "sun"}
 
     current_date = date.today()
@@ -105,6 +103,7 @@ def get_date_from_week_number(date_time):
     return func()
 
 
+# noinspection PyCallingNonCallable
 def convert_date_time(date_time, settings):
     # first of all, what format are we using.
     # We use the longer format if the date contains an ampersand
@@ -113,7 +112,7 @@ def convert_date_time(date_time, settings):
     time_format = get_time_format(settings)
     full_format = get_full_format(settings)
 
-    #Okay, Does the date command start with a " symbol?
+    # Okay, Does the date command start with a " symbol?
     if date_time[0] == "\"":
         return natural_parser(date_time, settings)
 

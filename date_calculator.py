@@ -7,7 +7,7 @@ from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, DAILY, rruleset
+from dateutil.rrule import rrule, DAILY, rruleset, SECONDLY
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
@@ -294,8 +294,10 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
 
     if command.format:
         ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
+        show_zero_items = True
     else:
         ordered_format_options = VALID_FORMAT_OPTIONS
+        show_zero_items = False
 
     normalised_elements = []
 
@@ -312,8 +314,12 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
             fractional = abs((end_date_time - start_date_time).total_seconds()) / TIME_CALCULATION[x]['seconds']
             count += fractional
 
-        normalised_elements.append(pluralize(round_number(count), TIME_CALCULATION[x]['singular'],
-                                             TIME_CALCULATION[x]['plural']))
+        # If no format is set then go for a compact display that suppresses all items that are
+        # zero. And don't bother showing the seconds calculation under any circumstances. It is pretty
+        # useless and prone to error.
+        if (show_zero_items or count > 0) and TIME_CALCULATION[x]['interval'] != SECONDLY:
+            normalised_elements.append(pluralize(round_number(count), TIME_CALCULATION[x]['singular'],
+                                       TIME_CALCULATION[x]['plural']))
 
     # We put each part of the calculation in a list
     # so that Python can handle comma-separating them later on
