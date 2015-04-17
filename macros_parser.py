@@ -6,10 +6,10 @@ from pypeg2 import List, attr, parse, optional
 
 
 class MacrosParser(DateParser):
-    def __init__(self, date_expr, settings):
+    def __init__(self, settings):
         # Call super constructor in an oddly clumsy way.
 
-        DateParser.__init__(self, date_expr, settings)
+        DateParser.__init__(self, settings)
 
         self.anniversary_name_re = re.compile('[a-z_]{2,}', re.IGNORECASE)
         self.add_command_re = re.compile('add', re.IGNORECASE)
@@ -44,7 +44,7 @@ class MacrosParser(DateParser):
 
 
 if __name__ == '__main__':
-    command_parser = MacrosParser("\d{2}\.\d{2}\.\d{2}", DEFAULT_WORKFLOW_SETTINGS)
+    command_parser = MacrosParser(DEFAULT_WORKFLOW_SETTINGS)
 
     command = command_parser.parse_command("helen del")
     print(command.anniversaryName)
