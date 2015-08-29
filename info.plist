@@ -202,6 +202,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>FA8E241A-392E-41E0-8B29-F72B273A293F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>0B14F62B-EEC4-460E-A1B4-6DFF6705E5FA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
 		<array>
 			<dict>
@@ -258,6 +269,14 @@
 				<integer>127</integer>
 				<key>keyword</key>
 				<string>dcalcset date format</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
 				<key>runningsubtext</key>
 				<string>Loading list . . .</string>
 				<key>script</key>
@@ -281,6 +300,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -298,6 +319,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -350,6 +373,14 @@
 				<integer>126</integer>
 				<key>keyword</key>
 				<string>dcalc</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
 				<key>runningsubtext</key>
 				<string>Calculating . . .</string>
 				<key>script</key>
@@ -388,6 +419,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -451,6 +484,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
@@ -468,6 +503,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
@@ -491,6 +528,14 @@
 				<integer>0</integer>
 				<key>keyword</key>
 				<string>dcalcshow list</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
 				<key>runningsubtext</key>
 				<string>Please wait . . .</string>
 				<key>script</key>
@@ -512,6 +557,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
@@ -529,6 +576,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
@@ -546,6 +595,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
@@ -563,6 +614,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -580,6 +633,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -624,6 +679,14 @@
 				<integer>127</integer>
 				<key>keyword</key>
 				<string>dcalcset time format</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
 				<key>runningsubtext</key>
 				<string>Loading list . . .</string>
 				<key>script</key>
@@ -645,6 +708,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -708,6 +773,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -758,6 +825,8 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
@@ -781,6 +850,14 @@
 				<integer>127</integer>
 				<key>keyword</key>
 				<string>dcalcset date and time format</string>
+				<key>queuedelaycustom</key>
+				<integer>1</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
 				<key>runningsubtext</key>
 				<string>Loading list . . .</string>
 				<key>script</key>
@@ -796,6 +873,44 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>E4238A84-F102-401E-A26E-ABC81E1B1E9E</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<false/>
+				<key>url</key>
+				<string>http://muppetgate.github.io/datehelp.html</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>0B14F62B-EEC4-460E-A1B4-6DFF6705E5FA</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>datecalc help</string>
+				<key>subtext</key>
+				<string>(launches in browser)</string>
+				<key>text</key>
+				<string>Help page for date calculator</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>FA8E241A-392E-41E0-8B29-F72B273A293F</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -1058,6 +1173,11 @@ THE SOFTWARE.
     </string>
 	<key>uidata</key>
 	<dict>
+		<key>0B14F62B-EEC4-460E-A1B4-6DFF6705E5FA</key>
+		<dict>
+			<key>ypos</key>
+			<real>1760</real>
+		</dict>
 		<key>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</key>
 		<dict>
 			<key>ypos</key>
@@ -1197,6 +1317,11 @@ THE SOFTWARE.
 		<dict>
 			<key>ypos</key>
 			<real>1160</real>
+		</dict>
+		<key>FA8E241A-392E-41E0-8B29-F72B273A293F</key>
+		<dict>
+			<key>ypos</key>
+			<real>1760</real>
 		</dict>
 		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
 		<dict>
