@@ -21,11 +21,12 @@ class pdtLocale_base(object):
     """
     default values for Locales
     """
-    locale_keys = [ 'MonthOffsets', 'Months', 'WeekdayOffsets', 'Weekdays',
-                    'dateFormats', 'dateSep', 'dayOffsets', 'dp_order',
-                    'localeID', 'meridian', 'Modifiers', 're_sources', 're_values',
-                    'shortMonths', 'shortWeekdays', 'timeFormats', 'timeSep', 'units',
-                    'uses24', 'usesMeridian', 'numbers', 'small', 'magnitude', 'ignore' ]
+    locale_keys = set([
+        'MonthOffsets', 'Months', 'WeekdayOffsets', 'Weekdays',
+        'dateFormats', 'dateSep', 'dayOffsets', 'dp_order',
+        'localeID', 'meridian', 'Modifiers', 're_sources', 're_values',
+        'shortMonths', 'shortWeekdays', 'timeFormats', 'timeSep', 'units',
+        'uses24', 'usesMeridian', 'numbers', 'small', 'magnitude', 'ignore'])
 
     def __init__(self):
         self.localeID      = None   # don't use a unicode string
@@ -70,10 +71,10 @@ class pdtLocale_base(object):
         self.dp_order = [ 'm', 'd', 'y' ]
 
         # Used to parse expressions like "in 5 hours"
-        self.numbers = { 'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4,
-                         'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9,
-                         'ten': 10, 'eleven': 11, 'twelve': 12, 'thirteen': 13,
-                         'fourteen': 14, 'fifteen': 15, 'sixteen': 16,
+        self.numbers = { 'zero': 0, 'one': 1, 'a': 1, 'an': 1, 'two': 2, 'three': 3,
+                         'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8,
+                         'nine': 9, 'ten': 10, 'eleven': 11, 'twelve': 12,
+                         'thirteen': 13, 'fourteen': 14, 'fifteen': 15, 'sixteen': 16,
                          'seventeen': 17, 'eighteen': 18, 'nineteen': 19,
                          'twenty': 20 }
 
@@ -108,7 +109,6 @@ class pdtLocale_base(object):
                            'last':     -1,
                            'next':      1,
                            'previous': -1,
-                           'in a':      2,
                            'end of':    0,
                            'eod':       1,
                            'eom':       1,
@@ -125,6 +125,7 @@ class pdtLocale_base(object):
           # to fill in any value to be replace - the current date/time will
           # already have been populated by the method buildSources
         self.re_sources    = { 'noon':      { 'hr': 12, 'mn': 0, 'sec': 0 },
+                               'afternoon': { 'hr': 13, 'mn': 0, 'sec': 0 },
                                'lunch':     { 'hr': 12, 'mn': 0, 'sec': 0 },
                                'morning':   { 'hr':  6, 'mn': 0, 'sec': 0 },
                                'breakfast': { 'hr':  8, 'mn': 0, 'sec': 0 },
@@ -138,6 +139,8 @@ class pdtLocale_base(object):
 
         self.small = {'zero': 0,
                       'one': 1,
+                      'a': 1,
+                      'an': 1,
                       'two': 2,
                       'three': 3,
                       'four': 4,
@@ -371,6 +374,53 @@ class pdtLocale_es(pdtLocale_base):
         self.dp_order = [ 'd', 'm', 'y' ]
 
 
+class pdtLocale_ptBR(pdtLocale_base):
+    """
+    pt_BR Locale
+
+    """
+    def __init__(self):
+        super( pdtLocale_ptBR, self ).__init__()
+
+        self.localeID     = 'pt_BR'   # don't use a unicode string
+        self.dateSep      = [ '/' ]
+        self.usesMeridian = False
+        self.uses24       = True
+
+        self.Weekdays      = [ 'segunda-feira', 'ter\xe7a-feira', 'quarta-feira',
+                               'quinta-feira', 'sexta-feira', 's\xe1bado', 'domingo',
+                             ]
+        self.shortWeekdays = [ 'seg', 'ter', 'qua',
+                               'qui', 'sex', 's\xe1b', 'dom',
+                             ]
+        self.Months        = [ 'janeiro', 'fevereiro', 'mar\xe7o',
+                               'abril', 'maio', 'junho',
+                               'julho', 'agosto', 'setembro',
+                               'outubro', 'novembro', 'dezembro'
+                             ]
+        self.shortMonths   = [ 'jan', 'fev', 'mar',
+                               'abr', 'mai', 'jun',
+                               'jul', 'ago', 'set',
+                               'out', 'nov', 'dez'
+                             ]
+        self.dateFormats['full']   = "EEEE, d' de 'MMMM' de 'yyyy"
+        self.dateFormats['long']   = "d' de 'MMMM' de 'yyyy"
+        self.dateFormats['medium'] = "dd-MM-yy"
+        self.dateFormats['short']  = "dd/MM/yyyy"
+
+        self.timeFormats['full']   = "HH'H'mm' 'ss z"
+        self.timeFormats['long']   = "HH:mm:ss z"
+        self.timeFormats['medium'] = "HH:mm:ss"
+        self.timeFormats['short']  = "HH:mm"
+
+        self.dp_order = [ 'd', 'm', 'y' ]
+
+        self.units['seconds'] = [ 'segundo', 'seg', 's']
+        self.units['minutes'] = [ 'minuto', 'min',  'm']
+        self.units['days']    = [ 'dia',  'dias',   'd']
+        self.units['months']  = [ 'm\xeas',     'meses']
+
+
 class pdtLocale_de(pdtLocale_base):
     """
     de_DE Locale constants
@@ -551,7 +601,7 @@ class pdtLocale_nl(pdtLocale_base):
         self.Modifiers['vorige']    = -1
         self.Modifiers['over']        =  2
         self.Modifiers['eind van']      =  0
-        
+
         #morgen/abermorgen does not work, see http://code.google.com/p/parsedatetime/issues/detail?id=19
         self.dayOffsets['morgen']        =  1
         self.dayOffsets['vandaag']         =  0
