@@ -185,7 +185,7 @@ def calculate_time_interval(interval, start_datetime, end_datetime, exclusions):
     if datetime_list:
         return len(datetime_list) - 1, datetime_list[-1]
     else:
-        return 0, end_datetime
+        return 0, start_datetime
 
 
 def later_date_last(date_time_1, date_time_2):
