@@ -882,7 +882,7 @@
 				<key>plusspaces</key>
 				<false/>
 				<key>url</key>
-				<string>http://muppetgate.github.io/datehelp.html</string>
+				<string>http://muppetgate.github.io/pages/date-calculator-help-page.html</string>
 				<key>utf8</key>
 				<true/>
 			</dict>
@@ -899,7 +899,7 @@
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
-				<string>datecalc help</string>
+				<string>dcalchelp</string>
 				<key>subtext</key>
 				<string>(launches in browser)</string>
 				<key>text</key>
