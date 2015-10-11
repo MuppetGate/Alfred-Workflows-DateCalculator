@@ -96,7 +96,7 @@ def do_timespans(command, settings):
 
         days_to_exclude = len(rules.between(first_date_time, last_date_time, True))
         operand = relativedelta(days=days_to_exclude)
-        date_time -= operand
+        date_time += operand
 
     return date_time.strftime(output_format)
 
