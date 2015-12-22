@@ -260,15 +260,6 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     # First off, do we have any exclusions to worry about?
     if not valid_command_format(command.format):
         raise FormatError
-    #
-    # if not command.format:
-    # # default to days
-    #     start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
-    #     count, _ = calculate_time_interval(TIME_CALCULATION['d']['interval'],
-    #                                        start_date_time, end_date_time, exclusions)
-    #
-    #     return "{days}".format(days=pluralize(count, TIME_CALCULATION['d']['singular'],
-    #                                           TIME_CALCULATION['d']['plural']))
 
     if command.format == "long":
         difference = relativedelta(date_time_1, date_time_2)
@@ -289,7 +280,7 @@ def normalised_days(command, date_time_1, date_time_2, exclusions):
     # to scan them specifically in the order we want them to
     # appear in the calculation. If they're out of sequence
     # then the calculation will return the wrong result.
-    #And it does matter which way round the dates go.
+    # And it does matter which way round the dates go.
     start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
 
     if command.format:
