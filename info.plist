@@ -303,7 +303,7 @@
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>127</integer>
+				<integer>126</integer>
 				<key>script</key>
 				<string>python set_date_format.py "{query}"</string>
 				<key>type</key>
@@ -322,7 +322,7 @@
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>127</integer>
+				<integer>126</integer>
 				<key>script</key>
 				<string>python show_date_format.py</string>
 				<key>type</key>
@@ -916,8 +916,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>
-## Date Calculator
+	<string>## Date Calculator
 Hello there!
 I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
 Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
@@ -1169,8 +1168,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-    </string>
+THE SOFTWARE.</string>
 	<key>uidata</key>
 	<dict>
 		<key>0B14F62B-EEC4-460E-A1B4-6DFF6705E5FA</key>
@@ -1330,6 +1328,6 @@ THE SOFTWARE.
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string></string>
+	<string>http://muppetgate.github.io/pages/date-calculator-help-page.html</string>
 </dict>
 </plist>
