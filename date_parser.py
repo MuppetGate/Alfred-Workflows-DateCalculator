@@ -100,25 +100,6 @@ class DateParser:
         class Format(str):
             grammar = optional(self.format_re)
 
-        class ExclusionKeyword(str):
-            grammar = self.exclusion_keyword_re
-
-        class ExclusionRange(str):
-            grammar = attr("fromDateTime", DateTime), self.exclusion_range_operator_re, attr("toDateTime", DateTime)
-
-        class ExclusionType(List):
-            grammar = [attr("exclusionRange", ExclusionRange),
-                       attr("exclusionDateTime", DateTime), attr("exclusionMacro", self.exclusion_macros_re)]
-
-        class ExclusionList(List):
-            grammar = some(ExclusionType)
-
-        class ExclusionCommand(str):
-            grammar = attr("exclusionKeyword", ExclusionKeyword), attr("exclusionList", ExclusionList)
-
-        class ExclusionCommands(List):
-            grammar = maybe_some(ExclusionCommand)
-
         class Commands(str):
             grammar = [
 
@@ -144,7 +125,7 @@ class DateParser:
 
 
 if __name__ == '__main__':
-    command_parser = DateParser("\d{2}\.\d{2}\.\d{2}", DEFAULT_WORKFLOW_SETTINGS)
+    command_parser = DateParser(DEFAULT_WORKFLOW_SETTINGS)
     command = command_parser.parse_command("27.01.14 - 01.01.14 + 1d")
     print(command.dateTime)
     print(command.operandList[0].operator)
