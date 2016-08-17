@@ -169,7 +169,7 @@ def next_passover(settings):
     # Just need the year of the current date
     passover_date = calc_passover_year(_get_current_date().year)
 
-    #if we've already gone past it then we need to try for the following year.
+    # if we've already gone past it then we need to try for the following year.
     if passover_date >= _get_current_date():
         return passover_date, get_date_format(settings)
     else:

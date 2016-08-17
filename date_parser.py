@@ -1,5 +1,4 @@
 from __future__ import unicode_literals, print_function
-from date_exclusion_rules import DATE_EXCLUSION_RULES_MAP
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, WN_FUNCTION_REGEX
 from date_formatters import DATE_FORMATTERS_MAP
 from date_functions import DATE_FUNCTION_MAP, get_date_format_regex, get_time_format_regex, get_full_format_regex, \
@@ -27,11 +26,6 @@ class DateParser:
 
         # The money shot
         self.parseable_date_re = re.compile(r'\"[^\"]+\"', re.IGNORECASE)
-
-        # Exclusions from date subtraction calculations.
-        self.exclusion_keyword_re = re.compile('exclude|ex|x', re.IGNORECASE)
-        self.exclusion_macros_re = re.compile(self._get_exclusion_macros(), re.IGNORECASE)
-        self.exclusion_range_operator_re = re.compile('to|until', re.IGNORECASE)
 
         # Week number calculation
         self.wn_command_re = WN_FUNCTION_REGEX
@@ -68,10 +62,6 @@ class DateParser:
     @staticmethod
     def _get_date_functions():
         return '|'.join(re.escape(str(x)) for x in DATE_FUNCTION_MAP.keys())
-
-    @staticmethod
-    def _get_exclusion_macros():
-        return '|'.join(re.escape(str(x)) for x in DATE_EXCLUSION_RULES_MAP.keys())
 
     @staticmethod
     def _get_week_days():
