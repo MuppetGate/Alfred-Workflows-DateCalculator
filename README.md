@@ -183,40 +183,6 @@ You can even combine it with the existing parser:
 
 This is a little bit experimental (I might drop it later if it proves to be problematic), but I thought I'd throw it in for a bit of a fun.
 
-## Exclusions
-Added at the request of a friend, though I'm not sure there's a lot of call for it. Okay, say you need to know how long you have to complete a project:
-
-**dcalc today - christmas**
-
-Not a problem, but hang on a mo – you don't like to work on weekends, so you'd better exclude them:
-
-**dcalc today - christmas exclude weekends**
-
-That'll exclude weekends from the calculations. Fantastic! But hang on, the wife's birthday! You won't be working on that day if you know what's good for you:
-
-**dcalc today - christmas exclude weekends 26.09.2014**
-
-Nicely saved, my friend; but there is still that small break you were planning in October:
-
-**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014**
-
-Crap! You're also having a wisdom tooth removed next wednesday
-
-**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014 next wed**
-
-Though I think you'll need more than a day to get over that. The _exclude_ keyword is a little verbose for the lightning typists, so you can also use _x_ instead:
-
-**dcalc today - christmas x weekends tuesdays**
-
-As you might have guessed, this will work out the number of days between now and Christmas, not counting weekends and Tuesdays. We also have a very wordy variation which excludes every day except the one specified:
-
-** dcalc today - easter x all except tuesdays**
-
-You can also exclude dates in timespan calculations.
-
-**dcalc today + 60d exclude weekends**
-
-Will give you the current date plus sixty days, but then adjust the final date to knock out the weekends.
 
 ## Abbreviations
 To speed up entering calculations, there are a couple of function abbreviations you can use within expressions:
@@ -259,11 +225,17 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
+(Version 2.7) - Removed the exclude stuff. It wasn't very reliable and was very hard to explain. Also fixed a problem which caused incorrect date calculuations if the input phrase was right at the end of  the month.
+
 (Version 2.4) - Bugt fixes. Added abbreviations. Added functions for Pancake Day, Lent and Martin Luther King Day
+
 (Version 2.3) - Bug fixes. Reworked the auto formatting. You can now apply exclusions to date calculations as well as timespan calculations. 
 Added function to return the date when given a year, a week number and an optional day of the week.
+
 (Version 2.1) - Bug fixes. Made the default formatting a little bit more intelligent.
+
 Latest release (Version 2.0). Refactoring. Added a natural date language parser. Added support for 12-hour clock. Added function to get date of the next passover
+
 Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
 Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
 

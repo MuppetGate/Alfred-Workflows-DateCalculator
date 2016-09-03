@@ -5,11 +5,11 @@ from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
 from date_formatters import DATE_FORMATTERS_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
-from dateutil.rrule import rrule, SECONDLY
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
 from humanfriendly import *
+import arrow
 
 
 class FormatError(Exception):
@@ -128,15 +128,13 @@ def calculate_time_interval(interval, start_datetime, end_datetime):
     you pick up at the starting poing where the last count ended!
     Note. We knock one of the count because rrule includes the date you're counting from in the list,
     which you don't really want.
-    :param interval: YEARLY, MONTHLY, WEEKLY, DAILY, HOURLY, MINUTELY or SECONDLY
+    :param interval: The interval we're calculating over: year, month, week, day, hour, minute or second.
     :param start_datetime: When you're counting from
     :param end_datetime:  When you're counting to.
     :return:
     """
 
-    rules = rrule(freq=interval, dtstart=start_datetime, until=end_datetime)
-
-    datetime_list = list(rules)
+    datetime_list = arrow.Arrow.range(interval, start_datetime, end_datetime)
 
     if datetime_list:
         return len(datetime_list) - 1, datetime_list[-1]
@@ -173,6 +171,7 @@ def normalised_days(command, date_time_1, date_time_2):
         raise FormatError
 
     if command.format == "long":
+
         difference = relativedelta(date_time_1, date_time_2)
 
         return "{years}, {months}, {days}, {hours}, {minutes}, {seconds}".format(
@@ -192,7 +191,10 @@ def normalised_days(command, date_time_1, date_time_2):
     # appear in the calculation. If they're out of sequence
     # then the calculation will return the wrong result.
     # And it does matter which way round the dates go.
-    start_date_time, end_date_time = later_date_last(date_time_1, date_time_2)
+    date_1, date_2 = later_date_last(date_time_1, date_time_2)
+
+    start_date_time = arrow.get(date_1)
+    end_date_time = arrow.get(date_2)
 
     if command.format:
         ordered_format_options = [option for option in VALID_FORMAT_OPTIONS if option in command.format]
@@ -219,7 +221,7 @@ def normalised_days(command, date_time_1, date_time_2):
         # If no format is set then go for a compact display that suppresses all items that are
         # zero. And don't bother showing the seconds calculation under any circumstances. It is pretty
         # useless and prone to error.
-        if (show_zero_items or count > 0) and TIME_CALCULATION[x]['interval'] != SECONDLY:
+        if (show_zero_items or count > 0) and TIME_CALCULATION[x]['interval'] != 'second':
             normalised_elements.append(pluralize(round_number(count), TIME_CALCULATION[x]['singular'],
                                        TIME_CALCULATION[x]['plural']))
 
