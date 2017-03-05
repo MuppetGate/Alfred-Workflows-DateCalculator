@@ -1,7 +1,7 @@
 from __future__ import unicode_literals, print_function
 
 import sys
-import datetime
+from arrow.arrow import datetime
 from versioning import update_settings
 
 from workflow import Workflow

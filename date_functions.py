@@ -1,6 +1,6 @@
 # This file contains all the functions that the workflow
 # uses for specialised dates.
-from datetime import datetime, date, timedelta
+from arrow.arrow import datetime, timedelta
 from math import floor
 
 # The DAY_MAP is specific to relative delta
@@ -71,13 +71,12 @@ def get_time_preprocessor(settings):
     return TIME_MAPPINGS[settings['time-format']]['pre-process']
 
 
-
 def _get_current_date():
-    return datetime.combine(date.today(), datetime.max.time())
+    return datetime.combine(datetime.today(), datetime.max.time())
 
 
 def _get_current_time():
-    return datetime.combine(date.today(), datetime.now().time())
+    return datetime.combine(datetime.today(), datetime.now().time())
 
 
 def current_date(settings):
@@ -155,7 +154,7 @@ def next_passover(settings):
         f = v - n
 
         # Monday .. Sunday = 0..6
-        dow = (date(year, 8, 31).weekday() + n) % 7
+        dow = (datetime(year, 8, 31).weekday() + n) % 7
 
         if dow in (2, 4, 6):
             n += 1
@@ -270,5 +269,3 @@ DATE_FUNCTION_MAP = {
     "mom": mothers_day_us,
     "mutter": mothers_day_us
 }
-
-

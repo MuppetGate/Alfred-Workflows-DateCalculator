@@ -1,5 +1,5 @@
 from collections import Counter
-from datetime import datetime
+from arrow.arrow import datetime
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     TIME_CALCULATION, VALID_FORMAT_OPTIONS
 from date_formatters import DATE_FORMATTERS_MAP

@@ -1,3 +1,4 @@
+from bisect import bisect
 
 DAYS_OF_WEEK = {
     1: "MON",
@@ -28,6 +29,17 @@ def week_day_in_isoformat(date_time):
 def iso_format(date_time):
     return date_time.isoformat()
 
+
+# Just for a laugh we'll add a function to find the star sign
+# for a given date
+def zodiac_sign(date_time):
+    signs = [(1, 20, "Capricorn"), (2, 18, "Aquarius"), (3, 20, "Pisces"), (4, 20, "Aries"),
+             (5, 21, "Taurus"), (6, 21, "Gemini"), (7, 22, "Cancer"), (8, 23, "Leo"),
+             (9, 23, "Virgo"), (10, 23, "Libra"), (11, 22, "Scorpio"), (12, 22, "Sagittarius"),
+             (12, 31, "Capricorn")]
+    return signs[bisect(signs, (date_time.month, date_time.day))][2]
+
+
 # Regular expression matched as a list of optionals
 # will always match the first one they find in the list,
 # so if your function names start with the same characters,
@@ -41,5 +53,6 @@ DATE_FORMATTERS_MAP = {
     "wn": week_number,
     "wd": week_day,
     "!": week_number,
-    "iso": iso_format
+    "iso": iso_format,
+    "sign": zodiac_sign
 }
