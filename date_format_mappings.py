@@ -45,6 +45,7 @@ TIME_MAPPINGS = {
 DATE_TIME_MAPPINGS = {
 
     '@': {'date-time-format': lambda date, time: '{date}@{time}'.format(date=date, time=time)},
+    'T': {'date-time-format': lambda date, time: '{date}T{time}'.format(date=date, time=time)},
     'at': {'date-time-format': lambda date, time: '{date} at {time}'.format(date=date, time=time)},
     'on': {'date-time-format': lambda date, time: time + ' on ' + date},
     'arrow': {'date-time-format': lambda date, time: 'DATE ==> {date} TIME ==> {time}'.format(date=date, time=time)}
