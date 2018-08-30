@@ -28,12 +28,14 @@ DATE_MAPPINGS = {
     'mm.dd.yy': {'name': 'short US date (.)', 'date-format': '%m.%d.%y', 'regex': '\d{2}\.\d{2}\.\d{2}'},
     'mm.dd.yyyy': {'name': 'long US date (.)', 'date-format': '%m.%d.%Y', 'regex': '\d{2}\.\d{2}\.\d{4}'},
     'yyyy-mm-dd': {'name': 'international (-)', 'date-format': '%Y-%m-%d', 'regex': '\d{4}-\d{2}-\d{2}'},
+    'yyyymmdd': {'name': 'iso', 'date-format': '%Y%m%d', 'regex': '\d{8}'},
     'dd mmm yyyy': {'name': 'wordy date format', 'date-format': '%d %b %Y', 'regex': '\d{2} [a-zA-Z]{3} \d{4}'}
 }
 
 TIME_MAPPINGS = {
 
     '24-hour': {'name': '24-hour format', 'time-format': '%H:%M', 'regex': '\d{1,2}\:\d{2}', 'pre-process': no_process},
+    'Military': {'name': 'Military format', 'time-format': '%H%M', 'regex': '\d{4}', 'pre-process': no_process},
     '12-hour': {'name': '12-hour format', 'time-format': '%I:%M%p', 'regex': '\d{1,2}(\:\d{2})?(AM|PM)',
                 'pre-process': fill_minutes}
 }
@@ -43,6 +45,7 @@ TIME_MAPPINGS = {
 DATE_TIME_MAPPINGS = {
 
     '@': {'date-time-format': lambda date, time: '{date}@{time}'.format(date=date, time=time)},
+    'T': {'date-time-format': lambda date, time: '{date}T{time}'.format(date=date, time=time)},
     'at': {'date-time-format': lambda date, time: '{date} at {time}'.format(date=date, time=time)},
     'on': {'date-time-format': lambda date, time: time + ' on ' + date},
     'arrow': {'date-time-format': lambda date, time: 'DATE ==> {date} TIME ==> {time}'.format(date=date, time=time)}
