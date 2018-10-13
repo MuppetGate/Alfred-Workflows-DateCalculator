@@ -1959,8 +1959,10 @@ class Workflow(object):
         ``query`` is case-insensitive. Any item that does not contain the
         entirety of ``query`` is rejected.
 
-        If ``query`` is an empty string or contains only whitespace,
-        all items will match.
+        .. warning::
+
+            If ``query`` is an empty string or contains only whitespace,
+            a :class:`ValueError` will be raised.
 
         :param query: query to test items against
         :type query: ``unicode``
@@ -2053,13 +2055,13 @@ class Workflow(object):
 
         """
         if not query:
-            return items
+            raise ValueError('Empty `query`')
 
         # Remove preceding/trailing spaces
         query = query.strip()
 
         if not query:
-            return items
+            raise ValueError('`query` contains only whitespace')
 
         # Use user override if there is one
         fold_diacritics = self.settings.get('__workflow_diacritic_folding',
@@ -2242,16 +2244,15 @@ class Workflow(object):
         # Call workflow's entry function/method within a try-except block
         # to catch any errors and display an error message in Alfred
         try:
+
             if self.version:
-                self.logger.debug('---------- %s (%s) ----------',
-                                  self.name, self.version)
-            else:
-                self.logger.debug('---------- %s ----------', self.name)
+                self.logger.debug('workflow version: %s', self.version)
 
             # Run update check if configured for self-updates.
             # This call has to go in the `run` try-except block, as it will
             # initialise `self.settings`, which will raise an exception
             # if `settings.json` isn't valid.
+
             if self._update_settings:
                 self.check_update()
 
@@ -2274,7 +2275,7 @@ class Workflow(object):
                     self._items = []
                     if self._name:
                         name = self._name
-                    elif self._bundleid:  # pragma: no cover
+                    elif self._bundleid:
                         name = self._bundleid
                     else:  # pragma: no cover
                         name = os.path.dirname(__file__)
@@ -2285,7 +2286,7 @@ class Workflow(object):
             return 1
 
         finally:
-            self.logger.debug('---------- finished in %0.3fs ----------',
+            self.logger.debug('workflow finished in %0.3f seconds',
                               time.time() - start)
 
         return 0
@@ -2523,12 +2524,12 @@ class Workflow(object):
             if self.prereleases:
                 cmd.append('--prereleases')
 
-            self.logger.info('checking for update ...')
+            self.logger.info('Checking for update ...')
 
             run_in_background('__workflow_update_check', cmd)
 
         else:
-            self.logger.debug('update check not due')
+            self.logger.debug('Update check not due')
 
     def start_update(self):
         """Check for update and download and install new workflow file.
@@ -2563,7 +2564,7 @@ class Workflow(object):
         if self.prereleases:
             cmd.append('--prereleases')
 
-        self.logger.debug('downloading update ...')
+        self.logger.debug('Downloading update ...')
         run_in_background('__workflow_update_install', cmd)
 
         return True
@@ -2597,14 +2598,14 @@ class Workflow(object):
         try:
             self._call_security('add-generic-password', service, account,
                                 '-w', password)
-            self.logger.debug('saved password : %s:%s', service, account)
+            self.logger.debug('Saved password : %s:%s', service, account)
 
         except PasswordExists:
-            self.logger.debug('password exists : %s:%s', service, account)
+            self.logger.debug('Password exists : %s:%s', service, account)
             current_password = self.get_password(account, service)
 
             if current_password == password:
-                self.logger.debug('password unchanged')
+                self.logger.debug('Password unchanged')
 
             else:
                 self.delete_password(account, service)
@@ -2647,7 +2648,7 @@ class Workflow(object):
             if h:
                 password = unicode(binascii.unhexlify(h), 'utf-8')
 
-        self.logger.debug('got password : %s:%s', service, account)
+        self.logger.debug('Got password : %s:%s', service, account)
 
         return password
 
@@ -2669,7 +2670,7 @@ class Workflow(object):
 
         self._call_security('delete-generic-password', service, account)
 
-        self.logger.debug('deleted password : %s:%s', service, account)
+        self.logger.debug('Deleted password : %s:%s', service, account)
 
     ####################################################################
     # Methods for workflow:* magic args
@@ -2772,7 +2773,7 @@ class Workflow(object):
             for name in sorted(self.magic_arguments.keys()):
                 if name == 'magic':
                     continue
-                arg = self.magic_prefix + name
+                arg = '{0}{1}'.format(self.magic_prefix, name)
                 self.logger.debug(arg)
 
                 if not isatty:
@@ -2813,7 +2814,7 @@ class Workflow(object):
         """Delete workflow's :attr:`settings_path`."""
         if os.path.exists(self.settings_path):
             os.unlink(self.settings_path)
-            self.logger.debug('deleted : %r', self.settings_path)
+            self.logger.debug('Deleted : %r', self.settings_path)
 
     def reset(self):
         """Delete workflow settings, cache and data.
@@ -2950,7 +2951,7 @@ class Workflow(object):
                     shutil.rmtree(path)
                 else:
                     os.unlink(path)
-                self.logger.debug('deleted : %r', path)
+                self.logger.debug('Deleted : %r', path)
 
     def _load_info_plist(self):
         """Load workflow info from ``info.plist``."""
