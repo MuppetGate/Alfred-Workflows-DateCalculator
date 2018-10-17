@@ -17,6 +17,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>308D6AD9-DB3C-4021-9318-F162FF0E4254</key>
@@ -28,6 +30,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>325B8F31-17CE-427F-ABB6-9D77B34CE8B7</key>
@@ -39,6 +43,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>6344C161-C077-4BB5-800B-6BCF7A98F450</key>
@@ -50,6 +56,8 @@
 				<integer>262144</integer>
 				<key>modifiersubtext</key>
 				<string>Delete entry</string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -58,6 +66,8 @@
 				<integer>524288</integer>
 				<key>modifiersubtext</key>
 				<string>alter entry</string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -66,6 +76,8 @@
 				<integer>1048576</integer>
 				<key>modifiersubtext</key>
 				<string>Calculate with this date</string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -74,6 +86,8 @@
 				<integer>131072</integer>
 				<key>modifiersubtext</key>
 				<string>Absolute date</string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -82,6 +96,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
@@ -93,6 +109,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -101,6 +119,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>7205A144-D946-40B6-BF86-C19518026D45</key>
@@ -112,6 +132,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</key>
@@ -123,6 +145,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>8BB3905A-8C58-4F09-B871-9CF756226504</key>
@@ -134,6 +158,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>8F4747B0-FA9D-4FCB-B828-4B37602854B5</key>
@@ -145,6 +171,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>B222BD5C-5A0E-4EC1-9D9E-E308621BC7C8</key>
@@ -156,6 +184,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>BFDF2A5E-8F79-4B66-9297-4FC3A926B30A</key>
@@ -167,6 +197,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>C762CD13-0320-40F8-8A88-BBBC6304759E</key>
@@ -178,6 +210,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</key>
@@ -189,6 +223,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>E4238A84-F102-401E-A26E-ABC81E1B1E9E</key>
@@ -200,6 +236,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>FA8E241A-392E-41E0-8B29-F72B273A293F</key>
@@ -211,6 +249,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
@@ -222,6 +262,8 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 	</dict>
@@ -242,11 +284,7 @@
 				<false/>
 				<key>onlyshowifquerypopulated</key>
 				<false/>
-				<key>output</key>
-				<integer>0</integer>
 				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
 				<false/>
 				<key>text</key>
 				<string>{query}</string>
@@ -258,11 +296,17 @@
 			<key>uid</key>
 			<string>52C696F5-80D3-4235-92F9-6830E819A88D</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
@@ -281,6 +325,10 @@
 				<string>Loading list . . .</string>
 				<key>script</key>
 				<string>python date_format_list.py</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>subtext</key>
 				<string>Select one of the valid date formats</string>
 				<key>title</key>
@@ -295,7 +343,7 @@
 			<key>uid</key>
 			<string>B222BD5C-5A0E-4EC1-9D9E-E308621BC7C8</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -306,6 +354,10 @@
 				<integer>126</integer>
 				<key>script</key>
 				<string>python set_date_format.py "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -314,7 +366,7 @@
 			<key>uid</key>
 			<string>8F4747B0-FA9D-4FCB-B828-4B37602854B5</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -325,6 +377,10 @@
 				<integer>126</integer>
 				<key>script</key>
 				<string>python show_date_format.py</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -333,7 +389,7 @@
 			<key>uid</key>
 			<string>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -354,19 +410,30 @@
 			<key>uid</key>
 			<string>FC254D99-C731-4315-B760-9452FF77AC53</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
+			<key>config</key>
+			<dict>
+				<key>largetypetext</key>
+				<string>{query}</string>
+			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.largetype</string>
 			<key>uid</key>
 			<string>C0DB0242-54B1-475E-A327-B61C54C7B668</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
@@ -385,6 +452,10 @@
 				<string>Calculating . . .</string>
 				<key>script</key>
 				<string>python date_calculator.py "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>subtext</key>
 				<string>See the Workflow's ReadMe section for help.</string>
 				<key>title</key>
@@ -399,7 +470,7 @@
 			<key>uid</key>
 			<string>6A04F044-39CB-4830-8CAF-6E471F570AE8</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -408,13 +479,15 @@
 				<false/>
 				<key>clipboardtext</key>
 				<string>{query}</string>
+				<key>transient</key>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
 			<string>93F1AC54-E8DD-416A-BA06-74779BDA2668</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -425,6 +498,10 @@
 				<integer>127</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2" to search "dcalc {query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -433,7 +510,7 @@
 			<key>uid</key>
 			<string>AC56E0A1-82E8-4C9C-B6CF-2B53EBD02ABF</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -454,7 +531,7 @@
 			<key>uid</key>
 			<string>308D6AD9-DB3C-4021-9318-F162FF0E4254</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -463,11 +540,7 @@
 				<false/>
 				<key>onlyshowifquerypopulated</key>
 				<false/>
-				<key>output</key>
-				<integer>0</integer>
 				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
 				<false/>
 				<key>text</key>
 				<string>{query}</string>
@@ -479,7 +552,7 @@
 			<key>uid</key>
 			<string>7F570625-0CC5-4B6E-A1BF-2F3169943C33</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -490,6 +563,10 @@
 				<integer>0</integer>
 				<key>script</key>
 				<string>python set_anniversary.py "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -498,7 +575,7 @@
 			<key>uid</key>
 			<string>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -509,6 +586,10 @@
 				<integer>0</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2" to search "dcalcset list delete {query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -517,11 +598,17 @@
 			<key>uid</key>
 			<string>42E3993D-0D36-40CD-89F8-562E443F4BCF</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>1</integer>
 				<key>escaping</key>
@@ -540,6 +627,12 @@
 				<string>Please wait . . .</string>
 				<key>script</key>
 				<string>python anniversary_list.py "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
 				<key>title</key>
 				<string>Show anniversaries list</string>
 				<key>type</key>
@@ -552,7 +645,7 @@
 			<key>uid</key>
 			<string>6344C161-C077-4BB5-800B-6BCF7A98F450</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -563,6 +656,10 @@
 				<integer>0</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2" to search "dcalcset list edit {query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -571,7 +668,7 @@
 			<key>uid</key>
 			<string>9A630331-69C6-40E1-9F7B-7B782D30236E</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -582,6 +679,10 @@
 				<integer>0</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2" to search "dcalc {query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -590,7 +691,7 @@
 			<key>uid</key>
 			<string>52DA2602-1085-48CD-BDA1-8BF4F5005B57</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -601,6 +702,10 @@
 				<integer>0</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2" to search "dcalc ^{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -609,7 +714,7 @@
 			<key>uid</key>
 			<string>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -620,6 +725,10 @@
 				<integer>127</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2" to search "dcalcshow list {query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -628,7 +737,7 @@
 			<key>uid</key>
 			<string>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -639,6 +748,10 @@
 				<integer>127</integer>
 				<key>script</key>
 				<string>tell application "Alfred 2" to search "dcalc date"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>6</integer>
 			</dict>
@@ -647,7 +760,7 @@
 			<key>uid</key>
 			<string>56D0C077-A984-4BCD-B4B7-BF789A8C69FB</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -668,11 +781,17 @@
 			<key>uid</key>
 			<string>325B8F31-17CE-427F-ABB6-9D77B34CE8B7</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
@@ -691,6 +810,12 @@
 				<string>Loading list . . .</string>
 				<key>script</key>
 				<string>python time_format_list.py</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
 				<key>title</key>
 				<string>Set the time format</string>
 				<key>type</key>
@@ -703,7 +828,7 @@
 			<key>uid</key>
 			<string>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -714,6 +839,10 @@
 				<integer>127</integer>
 				<key>script</key>
 				<string>python set_time_format.py "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -722,7 +851,7 @@
 			<key>uid</key>
 			<string>7205A144-D946-40B6-BF86-C19518026D45</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -731,11 +860,7 @@
 				<false/>
 				<key>onlyshowifquerypopulated</key>
 				<false/>
-				<key>output</key>
-				<integer>0</integer>
 				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
 				<false/>
 				<key>text</key>
 				<string>{query}</string>
@@ -747,7 +872,7 @@
 			<key>uid</key>
 			<string>C5269892-166A-4776-9B18-6B0A72E66364</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -768,7 +893,7 @@
 			<key>uid</key>
 			<string>BFDF2A5E-8F79-4B66-9297-4FC3A926B30A</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -779,6 +904,10 @@
 				<integer>127</integer>
 				<key>script</key>
 				<string>python show_time_format.py</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -787,15 +916,20 @@
 			<key>uid</key>
 			<string>8BB3905A-8C58-4F09-B871-9CF756226504</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
+			<key>config</key>
+			<dict>
+				<key>largetypetext</key>
+				<string>{query}</string>
+			</dict>
 			<key>type</key>
 			<string>alfred.workflow.output.largetype</string>
 			<key>uid</key>
 			<string>5F6FEA98-E805-408A-A1F4-A8A5FC49DC81</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -804,11 +938,7 @@
 				<false/>
 				<key>onlyshowifquerypopulated</key>
 				<false/>
-				<key>output</key>
-				<integer>0</integer>
 				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
 				<false/>
 				<key>text</key>
 				<string>{query}</string>
@@ -820,7 +950,7 @@
 			<key>uid</key>
 			<string>19E610C7-B40E-4C9A-BFBC-2779322FA99B</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -831,6 +961,10 @@
 				<integer>127</integer>
 				<key>script</key>
 				<string>python set_date_time_format.py "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -839,11 +973,17 @@
 			<key>uid</key>
 			<string>C762CD13-0320-40F8-8A88-BBBC6304759E</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
@@ -862,6 +1002,12 @@
 				<string>Loading list . . .</string>
 				<key>script</key>
 				<string>python date_time_format_list.py</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string></string>
 				<key>title</key>
 				<string>Set the date and time format</string>
 				<key>type</key>
@@ -874,13 +1020,15 @@
 			<key>uid</key>
 			<string>E4238A84-F102-401E-A26E-ABC81E1B1E9E</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>plusspaces</key>
-				<false/>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
 				<key>url</key>
 				<string>http://muppetgate.github.io/pages/date-calculator-help-page.html</string>
 				<key>utf8</key>
@@ -891,7 +1039,7 @@
 			<key>uid</key>
 			<string>0B14F62B-EEC4-460E-A1B4-6DFF6705E5FA</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -912,7 +1060,7 @@
 			<key>uid</key>
 			<string>FA8E241A-392E-41E0-8B29-F72B273A293F</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -1173,160 +1321,224 @@ THE SOFTWARE.</string>
 	<dict>
 		<key>0B14F62B-EEC4-460E-A1B4-6DFF6705E5FA</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>1760</real>
 		</dict>
 		<key>0D06D18F-E39D-49F3-BF9C-D8919BC950B7</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>1400</real>
 		</dict>
 		<key>19E610C7-B40E-4C9A-BFBC-2779322FA99B</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>1640</real>
 		</dict>
 		<key>308D6AD9-DB3C-4021-9318-F162FF0E4254</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>530</real>
 		</dict>
 		<key>325B8F31-17CE-427F-ABB6-9D77B34CE8B7</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>1280</real>
 		</dict>
 		<key>42E3993D-0D36-40CD-89F8-562E443F4BCF</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>650</real>
 		</dict>
 		<key>4B49B105-733E-4F5D-A690-B7B76C0B3B1D</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>1040</real>
 		</dict>
 		<key>52C696F5-80D3-4235-92F9-6830E819A88D</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>60</real>
 		</dict>
 		<key>52DA2602-1085-48CD-BDA1-8BF4F5005B57</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>920</real>
 		</dict>
 		<key>56D0C077-A984-4BCD-B4B7-BF789A8C69FB</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>1280</real>
 		</dict>
 		<key>5F6FEA98-E805-408A-A1F4-A8A5FC49DC81</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>1520</real>
 		</dict>
 		<key>6344C161-C077-4BB5-800B-6BCF7A98F450</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>650</real>
 		</dict>
 		<key>6A04F044-39CB-4830-8CAF-6E471F570AE8</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>320</real>
 		</dict>
 		<key>7205A144-D946-40B6-BF86-C19518026D45</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>1400</real>
 		</dict>
 		<key>78DDDF2F-629A-4313-95EE-1BB4A7AB3C4A</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>200</real>
 		</dict>
 		<key>7F570625-0CC5-4B6E-A1BF-2F3169943C33</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>530</real>
 		</dict>
 		<key>8BB3905A-8C58-4F09-B871-9CF756226504</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>1520</real>
 		</dict>
 		<key>8F4747B0-FA9D-4FCB-B828-4B37602854B5</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>60</real>
 		</dict>
 		<key>93F1AC54-E8DD-416A-BA06-74779BDA2668</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>320</real>
 		</dict>
 		<key>9A630331-69C6-40E1-9F7B-7B782D30236E</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>770</real>
 		</dict>
 		<key>AC56E0A1-82E8-4C9C-B6CF-2B53EBD02ABF</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>410</real>
 		</dict>
 		<key>B222BD5C-5A0E-4EC1-9D9E-E308621BC7C8</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>60</real>
 		</dict>
 		<key>BFDF2A5E-8F79-4B66-9297-4FC3A926B30A</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>1520</real>
 		</dict>
 		<key>C0DB0242-54B1-475E-A327-B61C54C7B668</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>200</real>
 		</dict>
 		<key>C5269892-166A-4776-9B18-6B0A72E66364</key>
 		<dict>
+			<key>xpos</key>
+			<integer>700</integer>
 			<key>ypos</key>
 			<real>1400</real>
 		</dict>
 		<key>C762CD13-0320-40F8-8A88-BBBC6304759E</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>1640</real>
 		</dict>
 		<key>CC4BA615-8C01-40D0-A08E-E29034EE6FAA</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>530</real>
 		</dict>
 		<key>E4238A84-F102-401E-A26E-ABC81E1B1E9E</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>1640</real>
 		</dict>
 		<key>F7EC7A12-0BA0-4294-A84C-A144CF6DFCCF</key>
 		<dict>
+			<key>xpos</key>
+			<integer>500</integer>
 			<key>ypos</key>
 			<real>1160</real>
 		</dict>
 		<key>FA8E241A-392E-41E0-8B29-F72B273A293F</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>1760</real>
 		</dict>
 		<key>FC254D99-C731-4315-B760-9452FF77AC53</key>
 		<dict>
+			<key>xpos</key>
+			<integer>300</integer>
 			<key>ypos</key>
 			<real>200</real>
 		</dict>
 	</dict>
+	<key>version</key>
+	<string>2.8</string>
 	<key>webaddress</key>
 	<string>http://muppetgate.github.io/pages/date-calculator-help-page.html</string>
 </dict>
