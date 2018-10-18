@@ -27,6 +27,7 @@ class DateParser:
         # This is for the exclusions
         self.exclusion_keyword_re = re.compile(r'exclude|ex|x')
         self.exclusion_macro_re = re.compile(self._get_exclusion_macros(), re.IGNORECASE)
+        self.exclusion_range_operator_re = re.compile(r'to|until', re.IGNORECASE)
 
         # The money shot
         self.parseable_date_re = re.compile(r'\"[^\"]+\"', re.IGNORECASE)
@@ -101,8 +102,12 @@ class DateParser:
         class ExclusionKeyword(str):
             grammar = self.exclusion_keyword_re
 
+        class ExclusionRange(str):
+            grammar = attr("fromDateTime", DateTime), self.exclusion_range_operator_re, attr("toDateTime", DateTime)
+
         class ExclusionType(List):
-            grammar = [attr("exclusionDateTime", DateTime), attr("exclusionMacro", self.exclusion_macro_re)]
+            grammar = [attr("exclusionRange", ExclusionRange),
+                       attr("exclusionDateTime", DateTime), attr("exclusionMacro", self.exclusion_macro_re)]
 
         class ExclusionList(List):
             grammar = some(ExclusionType)

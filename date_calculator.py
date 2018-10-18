@@ -42,6 +42,7 @@ class UnknownExclusionTypeError(Exception):
     pass
 
 
+
 def do_formats(command, settings):
     date_time, _ = convert_date_time(command.dateTime, settings)
 
@@ -107,14 +108,22 @@ def exclusion_check(date_time, command, settings):
         return date_time
 
     exclusion_day_set = build_exclusion_day_set(command.exclusionCommands)
+
+    # if there are seven elements in the exclusion day set then there is no way
+    # we can calculate the exclusions, so throw an error
+
+    if len(exclusion_day_set) >= 7:
+        raise SyntaxError
+
     exclusion_dates = build_exclusion_date_set(command.exclusionCommands, settings)
+    exclusion_dates.update(build_exclusion_range_set(command.exclusionCommands, settings))
 
     lookahead_count = 0
 
     lookahead_date = date_time
 
-    while (calendar.day_name[lookahead_date.weekday()] in exclusion_day_set \
-            or lookahead_date in exclusion_dates) \
+    while (calendar.day_name[lookahead_date.weekday()] in exclusion_day_set
+           or lookahead_date in exclusion_dates) \
             and lookahead_count < MAX_LOOKAHEAD_IN_DAYS:
 
         lookahead_date = lookahead_date + timedelta(days=1)
@@ -149,6 +158,26 @@ def build_exclusion_date_set(exclusion_commands, settings):
             excluded_dates.add(real_date)
 
     return excluded_dates
+
+
+def build_exclusion_range_set(exclusion_commands, settings):
+    exclusion_range_set = set()
+
+    exclusion_types = exclusion_commands.exclusionList
+
+    for exclusionType in exclusion_types:
+
+        if hasattr(exclusionType, "exclusionRange"):
+
+            from_date, _ = convert_date_time(exclusionType.exclusionRange.fromDateTime, settings)
+            to_date, _ = convert_date_time(exclusionType.exclusionRange.toDateTime, settings)
+
+            while from_date <= to_date:
+
+                exclusion_range_set.add(from_date)
+                from_date = from_date + timedelta(days=1)
+
+    return exclusion_range_set
 
 
 def valid_command_format(command_format):
