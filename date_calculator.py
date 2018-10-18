@@ -79,7 +79,7 @@ def do_timespans(command, settings):
         date_time = delta_arithmetic(date_time, operand)
 
     # TODO this is where you're going to slot in the exclusion check
-    date_time = exclusion_check(date_time, command)
+    date_time = exclusion_check(date_time, command, settings)
 
     return date_time.strftime(output_format)
 
@@ -101,18 +101,21 @@ def do_subtraction(command, settings):
     return normalised_days(command, date_time_1, date_time_2)
 
 
-def exclusion_check(date_time, command):
+def exclusion_check(date_time, command, settings):
 
     if not hasattr(command, "exclusionCommands"):
         return date_time
 
     exclusion_day_set = build_exclusion_day_set(command.exclusionCommands)
+    exclusion_dates = build_exclusion_date_set(command.exclusionCommands, settings)
 
     lookahead_count = 0
 
     lookahead_date = date_time
 
-    while calendar.day_name[lookahead_date.weekday()] in exclusion_day_set and lookahead_count < MAX_LOOKAHEAD_IN_DAYS:
+    while (calendar.day_name[lookahead_date.weekday()] in exclusion_day_set \
+            or lookahead_date in exclusion_dates) \
+            and lookahead_count < MAX_LOOKAHEAD_IN_DAYS:
 
         lookahead_date = lookahead_date + timedelta(days=1)
         lookahead_count = lookahead_count + 1
@@ -120,11 +123,11 @@ def exclusion_check(date_time, command):
     return lookahead_date
 
 
-def build_exclusion_day_set(exclusionCommands):
+def build_exclusion_day_set(exclusion_commands):
 
     excluded_days = set()
 
-    exclusion_types = exclusionCommands.exclusionList
+    exclusion_types = exclusion_commands.exclusionList
 
     for exclusionType in exclusion_types:
 
@@ -132,6 +135,20 @@ def build_exclusion_day_set(exclusionCommands):
             excluded_days.update(EXCLUSION_MAP[exclusionType.exclusionMacro])
 
     return excluded_days
+
+
+def build_exclusion_date_set(exclusion_commands, settings):
+    excluded_dates = set()
+
+    exclusion_types = exclusion_commands.exclusionList
+
+    for exclusionType in exclusion_types:
+
+        if hasattr(exclusionType, "exclusionDateTime"):
+            real_date, _ = convert_date_time(exclusionType.exclusionDateTime, settings)
+            excluded_dates.add(real_date)
+
+    return excluded_dates
 
 
 def valid_command_format(command_format):
