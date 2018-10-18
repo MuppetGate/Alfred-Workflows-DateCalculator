@@ -42,6 +42,23 @@ class UnknownExclusionTypeError(Exception):
     pass
 
 
+class ExclusionTooFarAheadError(Exception):
+    """
+    We'll throw this bad boy if the exclusion calculations goes
+    further than a preset value. We don't want the process running years into the future
+    """
+    pass
+
+
+class ExclusionNoDaysFoundError(Exception):
+    """
+    We're going to check to make sure that the user doesn't
+    enter an exclusion clause that blocks out all the days in the
+    week. Should be easy to find. If the exclusion set has seven
+    items in it, then that's all the days in the week!
+    """
+    pass
+
 
 def do_formats(command, settings):
     date_time, _ = convert_date_time(command.dateTime, settings)
@@ -113,7 +130,7 @@ def exclusion_check(date_time, command, settings):
     # we can calculate the exclusions, so throw an error
 
     if len(exclusion_day_set) >= 7:
-        raise SyntaxError
+        raise ExclusionNoDaysFoundError
 
     exclusion_dates = build_exclusion_date_set(command.exclusionCommands, settings)
     exclusion_dates.update(build_exclusion_range_set(command.exclusionCommands, settings))
@@ -123,11 +140,13 @@ def exclusion_check(date_time, command, settings):
     lookahead_date = date_time
 
     while (calendar.day_name[lookahead_date.weekday()] in exclusion_day_set
-           or lookahead_date in exclusion_dates) \
-            and lookahead_count < MAX_LOOKAHEAD_IN_DAYS:
+           or lookahead_date in exclusion_dates):
 
         lookahead_date = lookahead_date + timedelta(days=1)
         lookahead_count = lookahead_count + 1
+
+        if lookahead_count >= MAX_LOOKAHEAD_IN_DAYS:
+            raise ExclusionTooFarAheadError
 
     return lookahead_date
 
@@ -356,6 +375,12 @@ def main(wf):
     except UnknownExclusionTypeError:
         output = "Invalid exclusion - Try again."
 
+    except ExclusionNoDaysFoundError:
+        output = "All days excluded"
+
+    except ExclusionTooFarAheadError:
+        output = "That's too far into the future"
+
     if output.startswith("Invalid"):
         wf.add_item(title=". . .", subtitle=output, valid=False, arg=args[0], icon=ICON_ERROR)
     else:
@@ -365,6 +390,7 @@ def main(wf):
 
 # ## Python calling routine. Will only run this app if it is the main program
 # ## Otherwise it won't run because it is an included module -- clever!
+
 
 if __name__ == '__main__':
     workflow = Workflow(default_settings=DEFAULT_WORKFLOW_SETTINGS)
