@@ -281,6 +281,14 @@ EXCLUSION_MAP = {
     "thursdays": {'Thursday'},
     "fridays": {'Friday'},
     "saturdays": {'Saturday'},
-    "sundays": {'Sunday'}
-
+    "sundays": {'Sunday'},
+    "all except weekdays": {'Saturday', 'Sunday'},
+    "all except weekends": {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'},
+    "all except mondays": {'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
+    "all except tuesdays": {'Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
+    "all except wednesdays": {'Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
+    "all except thursdays": {'Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'},
+    "all except fridays": {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday', 'Sunday'},
+    "all except saturdays": {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'},
+    "all except sundays": {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'}
 }
