@@ -120,7 +120,6 @@ class DateParser:
 
                 (attr("dateTime1", DateTime), attr("operandList1", OperandList), "-", attr("dateTime2", DateTime),
                  attr("operandList2", OperandList),
-                 attr("exclusionCommands", ExclusionCommands),
                  attr("format", Format)),
 
                 (attr("dateTime", DateTime), attr("operandList", OperandList),
