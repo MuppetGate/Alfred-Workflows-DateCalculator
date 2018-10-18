@@ -1,8 +1,12 @@
+import calendar
 from collections import Counter
+from datetime import timedelta
+
 from arrow.arrow import datetime
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
-    TIME_CALCULATION, VALID_FORMAT_OPTIONS
+    TIME_CALCULATION, VALID_FORMAT_OPTIONS, MAX_LOOKAHEAD_IN_DAYS
 from date_formatters import DATE_FORMATTERS_MAP
+from date_functions import EXCLUSION_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
 from utils import convert_date_time
@@ -74,6 +78,9 @@ def do_timespans(command, settings):
     for operand in command.operandList:
         date_time = delta_arithmetic(date_time, operand)
 
+    # TODO this is where you're going to slot in the exclusion check
+    date_time = exclusion_check(date_time, command)
+
     return date_time.strftime(output_format)
 
 
@@ -92,6 +99,39 @@ def do_subtraction(command, settings):
             date_time_2 = delta_arithmetic(date_time_2, operand)
 
     return normalised_days(command, date_time_1, date_time_2)
+
+
+def exclusion_check(date_time, command):
+
+    if not hasattr(command, "exclusionCommands"):
+        return date_time
+
+    exclusion_day_set = build_exclusion_day_set(command.exclusionCommands)
+
+    lookahead_count = 0
+
+    lookahead_date = date_time
+
+    while calendar.day_name[lookahead_date.weekday()] in exclusion_day_set and lookahead_count < MAX_LOOKAHEAD_IN_DAYS:
+
+        lookahead_date = lookahead_date + timedelta(days=1)
+        lookahead_count = lookahead_count + 1
+
+    return lookahead_date
+
+
+def build_exclusion_day_set(exclusionCommands):
+
+    excluded_days = set()
+
+    exclusion_types = exclusionCommands.exclusionList
+
+    for exclusionType in exclusion_types:
+
+        if hasattr(exclusionType, "exclusionMacro"):
+            excluded_days.update(EXCLUSION_MAP[exclusionType.exclusionMacro])
+
+    return excluded_days
 
 
 def valid_command_format(command_format):

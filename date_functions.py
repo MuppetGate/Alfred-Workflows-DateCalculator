@@ -269,3 +269,18 @@ DATE_FUNCTION_MAP = {
     "mom": mothers_day_us,
     "mutter": mothers_day_us
 }
+
+# Note that these are not arrays; they're sets --> curly braces
+EXCLUSION_MAP = {
+
+    "weekdays": {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'},
+    "weekends": {'Saturday', 'Sunday'},
+    "mondays": {'Monday'},
+    "tuesdays": {'Tuesday'},
+    "wednesdays": {'Wednesday'},
+    "thursdays": {'Thursday'},
+    "fridays": {'Friday'},
+    "saturdays": {'Saturday'},
+    "sundays": {'Sunday'}
+
+}

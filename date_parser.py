@@ -2,7 +2,7 @@ from __future__ import unicode_literals, print_function
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, WN_FUNCTION_REGEX
 from date_formatters import DATE_FORMATTERS_MAP
 from date_functions import DATE_FUNCTION_MAP, get_date_format_regex, get_time_format_regex, get_full_format_regex, \
-    DAYS_OF_WEEK_ABBREVIATIONS
+    DAYS_OF_WEEK_ABBREVIATIONS, EXCLUSION_MAP
 
 from pypeg2 import *
 
@@ -23,6 +23,10 @@ class DateParser:
         self.time_digits_re = re.compile(r'[0-9]+')
         self.format_re = re.compile(r'[ymwdhMs]+|long')
         self.date_formatters_re = re.compile(self._get_date_formatters(), re.IGNORECASE)
+
+        # This is for the exclusions
+        self.exclusion_keyword_re = re.compile(r'exclude|ex|x')
+        self.exclusion_macro_re = re.compile(self._get_exclusion_macros(), re.IGNORECASE)
 
         # The money shot
         self.parseable_date_re = re.compile(r'\"[^\"]+\"', re.IGNORECASE)
@@ -67,6 +71,10 @@ class DateParser:
     def _get_week_days():
         return '|'.join(re.escape(str(x)) for x in DAYS_OF_WEEK_ABBREVIATIONS.keys())
 
+    @staticmethod
+    def _get_exclusion_macros():
+        return '|'.join(re.escape(str(x)) for x in EXCLUSION_MAP.keys())
+
     def parse_command(self, command_string):
         class Operator(str):
             grammar = self.operator_re
@@ -90,20 +98,35 @@ class DateParser:
         class Format(str):
             grammar = optional(self.format_re)
 
+        class ExclusionKeyword(str):
+            grammar = self.exclusion_keyword_re
+
+        class ExclusionType(List):
+            grammar = [attr("exclusionDateTime", DateTime), attr("exclusionMacro", self.exclusion_macro_re)]
+
+        class ExclusionList(List):
+            grammar = some(ExclusionType)
+
+        class ExclusionCommands(str):
+            grammar = attr("exclusionKeyword", ExclusionKeyword), attr("exclusionList", ExclusionList)
+
         class Commands(str):
             grammar = [
 
                 (attr("dateTime1", DateTime), attr("operandList1", OperandList), "-", attr("dateTime2", DateTime),
                  attr("operandList2", OperandList),
+                 attr("exclusionCommands", ExclusionCommands),
                  attr("format", Format)),
 
                 (attr("dateTime", DateTime), attr("operandList", OperandList),
                  attr("dateFormat", DateFormat)),
 
                 (attr("dateTime", DateTime), attr("operandList", OperandList),
+                 attr("exclusionCommands", ExclusionCommands),
                  attr("dateFormat", DateFormat)),
 
-                (attr("dateTime", DateTime), attr("operandList", OperandList)),
+                (attr("dateTime", DateTime), attr("operandList", OperandList),
+                 attr("exclusionCommands", ExclusionCommands)),
 
                 (attr("dateTime", DateTime), attr("dateFormat", DateFormat)),
 
