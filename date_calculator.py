@@ -133,19 +133,22 @@ def exclusion_check(original_date_time, date_time, command, settings):
     if len(exclusion_day_set) >= 7:
         raise ExclusionNoDaysFoundError
 
-    extra_days = calculate_rrule_exclusions(original_date_time, date_time, command.exclusionCommands, settings)
-
-    lookahead_date = date_time + timedelta(days=extra_days)
-
+    starting_date_time = original_date_time
+    lookahead_date = date_time
     lookahead_count = 0
 
-    while calculate_rrule_exclusions(lookahead_date - timedelta(days=1), lookahead_date, command.exclusionCommands, settings) > 0:
+    extra_days = calculate_rrule_exclusions(starting_date_time, lookahead_date, command.exclusionCommands, settings)
 
-        lookahead_date = lookahead_date + timedelta(days=1)
+    while extra_days > 0:
+
+        starting_date_time = lookahead_date
+        lookahead_date = lookahead_date + timedelta(days=extra_days)
         lookahead_count = lookahead_count + 1
 
         if lookahead_count >= MAX_LOOKAHEAD_IN_DAYS:
             raise ExclusionTooFarAheadError
+
+        extra_days = calculate_rrule_exclusions(starting_date_time, lookahead_date, command.exclusionCommands, settings)
 
     return lookahead_date
 
