@@ -2,8 +2,7 @@ import calendar
 from collections import Counter
 from datetime import timedelta
 
-from dateutil.rrule import rruleset, rrule, DAILY
-
+import arrow
 from arrow.arrow import datetime
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     TIME_CALCULATION, VALID_FORMAT_OPTIONS, MAX_LOOKAHEAD_IN_DAYS
@@ -11,11 +10,11 @@ from date_formatters import DATE_FORMATTERS_MAP
 from date_functions import EXCLUSION_MAP, DATE_EXCLUSION_RULES_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
+from dateutil.rrule import rruleset, rrule, DAILY
+from humanfriendly import *
 from utils import convert_date_time
 from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
-from humanfriendly import *
-import arrow
 
 
 class FormatError(Exception):
@@ -123,7 +122,6 @@ def do_subtraction(command, settings):
 
 
 def exclusion_check(original_date_time, date_time, command, settings):
-
     if not hasattr(command, "exclusionCommands"):
         return date_time
 
@@ -157,7 +155,6 @@ def exclusion_check(original_date_time, date_time, command, settings):
 
 
 def build_exclusion_day_set(exclusion_commands):
-
     excluded_days = set()
 
     exclusion_types = exclusion_commands.exclusionList
@@ -197,7 +194,6 @@ def build_exclusion_range_set(exclusion_commands, settings):
             to_date, _ = convert_date_time(exclusionType.exclusionRange.toDateTime, settings)
 
             while from_date <= to_date:
-
                 exclusion_range_set.add(from_date)
                 from_date = from_date + timedelta(days=1)
 
@@ -224,6 +220,10 @@ def calculate_rrule_exclusions(start_date, end_date, exclusion_commands, setting
             macro_value = exclusion_type.exclusionMacro
             exclusion_rule = DATE_EXCLUSION_RULES_MAP[macro_value](start=start_date, end=end_date)
             exclusion_ruleset.rrule(exclusion_rule)
+        else:
+            # in that case, I have no idea what this is (the parser should have caught it) so just
+            # raise an error or something
+            raise UnknownExclusionTypeError
 
     matched_dates = list(exclusion_ruleset.between(after=start_date, before=end_date, inc=True))
 
@@ -307,7 +307,6 @@ def normalised_days(command, date_time_1, date_time_2):
         raise FormatError
 
     if command.format == "long":
-
         difference = relativedelta(date_time_1, date_time_2)
 
         return "{years}, {months}, {days}, {hours}, {minutes}, {seconds}".format(
@@ -359,7 +358,7 @@ def normalised_days(command, date_time_1, date_time_2):
         # useless and prone to error.
         if (show_zero_items or count > 0) and TIME_CALCULATION[x]['interval'] != 'second':
             normalised_elements.append(pluralize(round_number(count), TIME_CALCULATION[x]['singular'],
-                                       TIME_CALCULATION[x]['plural']))
+                                                 TIME_CALCULATION[x]['plural']))
 
     # We put each part of the calculation in a list
     # so that Python can handle comma-separating them later on
@@ -418,6 +417,7 @@ def main(wf):
         wf.add_item(title=output, subtitle="Copy to clipboard", valid=True, arg=output)
 
     wf.send_feedback()
+
 
 # ## Python calling routine. Will only run this app if it is the main program
 # ## Otherwise it won't run because it is an included module -- clever!
