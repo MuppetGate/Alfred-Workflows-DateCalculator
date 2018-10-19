@@ -125,10 +125,6 @@ def exclusion_check(original_date_time, date_time, command, settings):
     if not hasattr(command, "exclusionCommands"):
         return date_time
 
-    extra_days = calculate_rrule_exclusions(original_date_time, date_time, command.exclusionCommands, settings)
-
-    lookahead_date = date_time + timedelta(days=extra_days)
-
     exclusion_day_set = build_exclusion_day_set(command.exclusionCommands)
 
     # if there are seven elements in the exclusion day set then there is no way
@@ -137,13 +133,13 @@ def exclusion_check(original_date_time, date_time, command, settings):
     if len(exclusion_day_set) >= 7:
         raise ExclusionNoDaysFoundError
 
-    exclusion_dates = build_exclusion_date_set(command.exclusionCommands, settings)
-    exclusion_dates.update(build_exclusion_range_set(command.exclusionCommands, settings))
+    extra_days = calculate_rrule_exclusions(original_date_time, date_time, command.exclusionCommands, settings)
+
+    lookahead_date = date_time + timedelta(days=extra_days)
 
     lookahead_count = 0
 
-    while (calendar.day_name[lookahead_date.weekday()] in exclusion_day_set
-           or lookahead_date in exclusion_dates):
+    while calculate_rrule_exclusions(lookahead_date - timedelta(days=1), lookahead_date, command.exclusionCommands, settings) > 0:
 
         lookahead_date = lookahead_date + timedelta(days=1)
         lookahead_count = lookahead_count + 1
@@ -165,39 +161,6 @@ def build_exclusion_day_set(exclusion_commands):
             excluded_days.update(EXCLUSION_MAP[exclusionType.exclusionMacro])
 
     return excluded_days
-
-
-def build_exclusion_date_set(exclusion_commands, settings):
-    excluded_dates = set()
-
-    exclusion_types = exclusion_commands.exclusionList
-
-    for exclusionType in exclusion_types:
-
-        if hasattr(exclusionType, "exclusionDateTime"):
-            real_date, _ = convert_date_time(exclusionType.exclusionDateTime, settings)
-            excluded_dates.add(real_date)
-
-    return excluded_dates
-
-
-def build_exclusion_range_set(exclusion_commands, settings):
-    exclusion_range_set = set()
-
-    exclusion_types = exclusion_commands.exclusionList
-
-    for exclusionType in exclusion_types:
-
-        if hasattr(exclusionType, "exclusionRange"):
-
-            from_date, _ = convert_date_time(exclusionType.exclusionRange.fromDateTime, settings)
-            to_date, _ = convert_date_time(exclusionType.exclusionRange.toDateTime, settings)
-
-            while from_date <= to_date:
-                exclusion_range_set.add(from_date)
-                from_date = from_date + timedelta(days=1)
-
-    return exclusion_range_set
 
 
 def calculate_rrule_exclusions(start_date, end_date, exclusion_commands, settings):
