@@ -2,11 +2,13 @@ import calendar
 from collections import Counter
 from datetime import timedelta
 
+from dateutil.rrule import rruleset, rrule, DAILY
+
 from arrow.arrow import datetime
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
     TIME_CALCULATION, VALID_FORMAT_OPTIONS, MAX_LOOKAHEAD_IN_DAYS
 from date_formatters import DATE_FORMATTERS_MAP
-from date_functions import EXCLUSION_MAP
+from date_functions import EXCLUSION_MAP, DATE_EXCLUSION_RULES_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
 from utils import convert_date_time
@@ -92,12 +94,13 @@ def delta_arithmetic(date_time, operand):
 
 def do_timespans(command, settings):
     date_time, output_format = convert_date_time(command.dateTime, settings)
+    original_date_time = date_time
 
     for operand in command.operandList:
         date_time = delta_arithmetic(date_time, operand)
 
     # TODO this is where you're going to slot in the exclusion check
-    date_time = exclusion_check(date_time, command, settings)
+    date_time = exclusion_check(original_date_time, date_time, command, settings)
 
     return date_time.strftime(output_format)
 
@@ -119,10 +122,14 @@ def do_subtraction(command, settings):
     return normalised_days(command, date_time_1, date_time_2)
 
 
-def exclusion_check(date_time, command, settings):
+def exclusion_check(original_date_time, date_time, command, settings):
 
     if not hasattr(command, "exclusionCommands"):
         return date_time
+
+    extra_days = calculate_rrule_exclusions(original_date_time, date_time, command.exclusionCommands, settings)
+
+    lookahead_date = date_time + timedelta(days=extra_days)
 
     exclusion_day_set = build_exclusion_day_set(command.exclusionCommands)
 
@@ -136,8 +143,6 @@ def exclusion_check(date_time, command, settings):
     exclusion_dates.update(build_exclusion_range_set(command.exclusionCommands, settings))
 
     lookahead_count = 0
-
-    lookahead_date = date_time
 
     while (calendar.day_name[lookahead_date.weekday()] in exclusion_day_set
            or lookahead_date in exclusion_dates):
@@ -197,6 +202,32 @@ def build_exclusion_range_set(exclusion_commands, settings):
                 from_date = from_date + timedelta(days=1)
 
     return exclusion_range_set
+
+
+def calculate_rrule_exclusions(start_date, end_date, exclusion_commands, settings):
+    exclusion_ruleset = rruleset()
+
+    exclusion_types = exclusion_commands.exclusionList
+
+    for exclusion_type in exclusion_types:
+
+        if hasattr(exclusion_type, "exclusionRange"):
+            from_date, _ = convert_date_time(exclusion_type.exclusionRange.fromDateTime, settings)
+            to_date, _ = convert_date_time(exclusion_type.exclusionRange.toDateTime, settings)
+            exclusion_ruleset.rrule(rrule(freq=DAILY, dtstart=from_date, until=to_date))
+
+        elif hasattr(exclusion_type, "exclusionDateTime"):
+            real_date, _ = convert_date_time(exclusion_type.exclusionDateTime, settings)
+            exclusion_ruleset.rrule(rrule(freq=DAILY, dtstart=real_date, until=real_date))
+
+        elif hasattr(exclusion_type, "exclusionMacro"):
+            macro_value = exclusion_type.exclusionMacro
+            exclusion_rule = DATE_EXCLUSION_RULES_MAP[macro_value](start=start_date, end=end_date)
+            exclusion_ruleset.rrule(exclusion_rule)
+
+    matched_dates = list(exclusion_ruleset.between(after=start_date, before=end_date, inc=True))
+
+    return len(matched_dates)
 
 
 def valid_command_format(command_format):
