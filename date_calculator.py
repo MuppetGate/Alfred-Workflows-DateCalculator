@@ -97,7 +97,6 @@ def do_timespans(command, settings):
     for operand in command.operandList:
         date_time = delta_arithmetic(date_time, operand)
 
-    # TODO this is where you're going to slot in the exclusion check
     date_time = exclusion_check(original_date_time, date_time, command, settings)
 
     return date_time.strftime(output_format)
