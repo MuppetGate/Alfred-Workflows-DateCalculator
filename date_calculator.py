@@ -1,4 +1,3 @@
-import calendar
 from collections import Counter
 from datetime import timedelta
 

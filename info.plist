@@ -476,7 +476,7 @@
 			<key>config</key>
 			<dict>
 				<key>autopaste</key>
-				<false/>
+				<true/>
 				<key>clipboardtext</key>
 				<string>{query}</string>
 				<key>transient</key>
@@ -495,9 +495,9 @@
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>127</integer>
+				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalc {query}"</string>
+				<string>tell application "Alfred 3" to search "dcalc {query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -585,7 +585,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalcset list delete {query}"</string>
+				<string>tell application "Alfred 3" to search "dcalcset list delete {query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -655,7 +655,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalcset list edit {query}"</string>
+				<string>tell application "Alfred 3" to search "dcalcset list edit {query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -678,7 +678,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalc {query}"</string>
+				<string>tell application "Alfred 3" to search "dcalc {query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -701,7 +701,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalc ^{query}"</string>
+				<string>tell application "Alfred 3" to search "dcalc ^{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -724,7 +724,7 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalcshow list {query}"</string>
+				<string>tell application "Alfred 3" to search "dcalcshow list {query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -747,7 +747,7 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>tell application "Alfred 2" to search "dcalc date"</string>
+				<string>tell application "Alfred 3" to search "dcalc date"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
