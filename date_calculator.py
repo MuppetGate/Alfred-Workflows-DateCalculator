@@ -4,9 +4,9 @@ from datetime import timedelta
 import arrow
 from arrow.arrow import datetime
 from date_format_mappings import DEFAULT_WORKFLOW_SETTINGS, \
-    TIME_CALCULATION, VALID_FORMAT_OPTIONS, MAX_LOOKAHEAD_IN_DAYS
+    TIME_CALCULATION, VALID_FORMAT_OPTIONS, MAX_LOOKAHEAD_ATTEMPTS
 from date_formatters import DATE_FORMATTERS_MAP
-from date_functions import EXCLUSION_MAP, DATE_EXCLUSION_RULES_MAP
+from date_functions import EXCLUSION_MAP
 from date_parser import DateParser
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rruleset, rrule, DAILY
@@ -143,7 +143,7 @@ def exclusion_check(original_date_time, date_time, command, settings):
         lookahead_date = lookahead_date + timedelta(days=extra_days)
         lookahead_count = lookahead_count + 1
 
-        if lookahead_count >= MAX_LOOKAHEAD_IN_DAYS:
+        if lookahead_count >= MAX_LOOKAHEAD_ATTEMPTS:
             raise ExclusionTooFarAheadError
 
         extra_days = calculate_rrule_exclusions(starting_date_time, lookahead_date, command.exclusionCommands, settings)
@@ -159,7 +159,7 @@ def build_exclusion_day_set(exclusion_commands):
     for exclusionType in exclusion_types:
 
         if hasattr(exclusionType, "exclusionMacro"):
-            excluded_days.update(EXCLUSION_MAP[exclusionType.exclusionMacro])
+            excluded_days.update(EXCLUSION_MAP[exclusionType.exclusionMacro]['days'])
 
     return excluded_days
 
@@ -182,7 +182,7 @@ def calculate_rrule_exclusions(start_date, end_date, exclusion_commands, setting
 
         elif hasattr(exclusion_type, "exclusionMacro"):
             macro_value = exclusion_type.exclusionMacro
-            exclusion_rule = DATE_EXCLUSION_RULES_MAP[macro_value](start=start_date, end=end_date)
+            exclusion_rule = EXCLUSION_MAP[macro_value]['rule'](start=start_date, end=end_date)
             exclusion_ruleset.rrule(exclusion_rule)
         else:
             # in that case, I have no idea what this is (the parser should have caught it) so just
