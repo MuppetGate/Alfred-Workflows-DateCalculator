@@ -281,7 +281,16 @@ EXCLUSION_MAP = {
         {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR))},
 
+    "wkdy":
+
+        {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR))},
+
     "weekends":
+        {'days': {'Saturday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(SA, SU))},
+
+    "wknd":
         {'days': {'Saturday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(SA, SU))},
 
@@ -289,11 +298,23 @@ EXCLUSION_MAP = {
         {'days': {'Monday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=MO)},
 
+    "mon":
+        {'days': {'Monday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=MO)},
+
     "tuesdays":
-        {'days':{'Tuesday'},
+        {'days': {'Tuesday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=TU)},
+
+    "tue":
+        {'days': {'Tuesday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=TU)},
 
     "wednesdays":
+        {'days': {'Wednesday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=WE)},
+
+    "wed":
         {'days': {'Wednesday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=WE)},
 
@@ -301,7 +322,15 @@ EXCLUSION_MAP = {
         {'days': {'Thursday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=TH)},
 
+    "thu":
+        {'days': {'Thursday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=TH)},
+
     "fridays":
+        {'days': {'Friday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=FR)},
+
+    "fri":
         {'days': {'Friday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=FR)},
 
@@ -309,7 +338,15 @@ EXCLUSION_MAP = {
         {'days': {'Saturday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=SA)},
 
+    "sat":
+        {'days': {'Saturday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=SA)},
+
     "sundays":
+        {'days': {'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=SU)},
+
+    "sun":
         {'days': {'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=SU)},
 
@@ -317,7 +354,15 @@ EXCLUSION_MAP = {
         {'days': {'Saturday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(SA, SU))},
 
+    "xwkdy":
+        {'days': {'Saturday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(SA, SU))},
+
     "all except weekends":
+        {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR))},
+
+    "xwknd":
         {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR))},
 
@@ -325,7 +370,15 @@ EXCLUSION_MAP = {
         {'days': {'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(TU, WE, TH, FR, SA, SU))},
 
+    "xmon":
+        {'days': {'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(TU, WE, TH, FR, SA, SU))},
+
     "all except tuesdays":
+        {'days': {'Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, WE, TH, FR, SA, SU))},
+
+    "xtue":
         {'days': {'Monday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, WE, TH, FR, SA, SU))},
 
@@ -333,7 +386,15 @@ EXCLUSION_MAP = {
         {'days': {'Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, TH, FR, SA, SU))},
 
+    "xwed":
+        {'days': {'Monday', 'Tuesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, TH, FR, SA, SU))},
+
     "all except thursdays":
+        {'days': {'Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, FR, SA, SU))},
+
+    "xthu":
         {'days': {'Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, FR, SA, SU))},
 
@@ -341,11 +402,23 @@ EXCLUSION_MAP = {
         {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, SA, SU))},
 
+    "xfri":
+        {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Saturday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, SA, SU))},
+
     "all except saturdays":
         {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR, SU))},
 
+    "exsat":
+        {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR, SU))},
+
     "all except sundays":
+        {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'},
+         'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR, SA))},
+
+    "exsun":
         {'days': {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Sunday'},
          'rule': lambda start, end: rrule(freq=DAILY, dtstart=start, until=end, byweekday=(MO, TU, WE, TH, FR, SA))}
 }
