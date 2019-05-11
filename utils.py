@@ -126,6 +126,7 @@ def convert_date_time(date_time, settings):
         return DATE_FUNCTION_MAP[date_time_str.lower()](settings)
 
     anniversary_date = process_macros(date_time_str.lower(), settings['anniversaries'])
+
     if anniversary_date is not None:
         return datetime.combine(anniversary_date, datetime.max.time()), date_format
 
