@@ -7,6 +7,11 @@ from date_functions import DATE_FUNCTION_MAP, get_date_format, get_time_format, 
 from dateutil.rrule import rrule, YEARLY
 import dateutil.parser
 
+import sys
+def log(s, *args):
+    if args:
+        s = s % args
+    print(s, file=sys.stderr)
 
 # package for general utility stuff
 from isoweek import Week
@@ -111,6 +116,13 @@ def convert_date_time(date_time, settings):
     date_format = get_date_format(settings)
     time_format = get_time_format(settings)
     full_format = get_full_format(settings)
+    log ('========================DATE FORMAT ==============')
+    log (date_format)
+    log ('========================FULL FORMAT ==============')
+    
+    log (full_format)
+    if date_format == '%-d.%-m.%Y':
+        date_format = '%d.%m.%Y'
 
     # Okay, Does the date command start with a " symbol?
     if date_time[0] == "\"":
@@ -147,8 +159,13 @@ def convert_date_time(date_time, settings):
     except ValueError:
 
         try:
+            log ('========================DATE STRING ==============')
+            log (date_time_str)
 
             process_date = datetime.strptime(date_time_str.upper(), date_format)
+            log ('========================PROCESS DATE ==============')
+            log (process_date)
+
             date_and_time = datetime.combine(process_date, datetime.max.time())
             return date_and_time, date_format
 
