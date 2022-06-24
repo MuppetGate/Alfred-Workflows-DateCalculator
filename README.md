@@ -5,7 +5,7 @@ Right, so this is a date calculator – kind of. It won’t tell you when you wi
 
 ![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)
 
-(Download from [Packal.org](http://www.packal.org/workflow/date-calculator))
+
 
 For example, if you enter
 
