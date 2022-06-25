@@ -104,12 +104,18 @@ def do_timespans(command, settings):
         date_time = delta_arithmetic(date_time, operand)
 
     date_time = exclusion_check(original_date_time, date_time, command, settings)
+<<<<<<< Updated upstream
     log ('========================DATE TIME OUTPUT ==============')
     log (date_time)
     log ('========================OUTPUT FORMAT ==============')
     log (output_format)
     if settings['date-format'] == 'd.m.yyyy':
         output_format =  '%-d.%-m.%Y'
+=======
+    if settings['date-format'] == 'd.m.yyyy':
+        output_format =  '%-d.%-m.%Y'
+    
+>>>>>>> Stashed changes
     return date_time.strftime(output_format)
 
 
