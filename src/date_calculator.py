@@ -16,11 +16,6 @@ from versioning import update_settings
 from workflow import Workflow, ICON_ERROR
 
 
-def log(s, *args):
-    if args:
-        s = s % args
-    print(s, file=sys.stderr)
-
 class FormatError(Exception):
     """
     Throw this when there are
@@ -98,18 +93,12 @@ def delta_arithmetic(date_time, operand):
 def do_timespans(command, settings):
     date_time, output_format = convert_date_time(command.dateTime, settings)
     original_date_time = date_time
-    #log ('========================ORIGINAL ==============')
-    #log (original_date_time)
+
     for operand in command.operandList:
         date_time = delta_arithmetic(date_time, operand)
 
     date_time = exclusion_check(original_date_time, date_time, command, settings)
-    #log ('========================DATE TIME OUTPUT ==============')
-    #log (date_time)
-    #log ('========================OUTPUT FORMAT ==============')
-    #log (output_format)
-    if settings['date-format'] == 'd.m.yyyy':
-        output_format =  '%-d.%-m.%Y'
+
     return date_time.strftime(output_format)
 
 
@@ -352,12 +341,10 @@ def main(wf):
     try:
 
         command = command_parser.parse_command(args[0])
-        #log ('========================TESTING ==============')
-        #log ("////////--" + command.dateTime + "--//////////")
+
         if hasattr(command, "dateTime"):
-            #log ('========================HAS DATE ==============')
             output = do_timespans(command, wf.settings)
-            #log ("////////--" + output + "--//////////")
+
             if hasattr(command, "dateFormat"):
                 setattr(command, "dateTime", output)
                 # and run it through the functions function

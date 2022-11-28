@@ -116,11 +116,14 @@ def convert_date_time(date_time, settings):
     date_format = get_date_format(settings)
     time_format = get_time_format(settings)
     full_format = get_full_format(settings)
+<<<<<<< Updated upstream
     log ('========================DATE FORMAT ==============')
     log (date_format)
     log ('========================FULL FORMAT ==============')
     
     log (full_format)
+=======
+>>>>>>> Stashed changes
     if date_format == '%-d.%-m.%Y':
         date_format = '%d.%m.%Y'
 
