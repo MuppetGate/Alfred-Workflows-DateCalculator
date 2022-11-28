@@ -112,16 +112,6 @@
 			</dict>
 			<dict>
 				<key>destinationuid</key>
-				<string>AFFA66D0-2238-482F-85D4-97FCFDDDEA93</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
 				<string>AC56E0A1-82E8-4C9C-B6CF-2B53EBD02ABF</string>
 				<key>modifiers</key>
 				<integer>0</integer>
@@ -473,7 +463,7 @@ python3 show_date_format.py</string>
 				<key>escaping</key>
 				<integer>126</integer>
 				<key>keyword</key>
-				<string>dcalc</string>
+				<string>{var:mainkeyword}</string>
 				<key>queuedelaycustom</key>
 				<integer>1</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -507,103 +497,6 @@ python3 date_calculator.py "{query}"</string>
 			<string>6A04F044-39CB-4830-8CAF-6E471F570AE8</string>
 			<key>version</key>
 			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string># THESE VARIABLES MUST BE SET. SEE THE ONEUPDATER README FOR AN EXPLANATION OF EACH.
-readonly remote_info_plist='https://raw.githubusercontent.com/giovannicoppola/alfred-DateCalculator/master/src/info.plist'
-readonly workflow_url='https://github.com/giovannicoppola/alfred-DateCalculator'
-readonly download_type='github_release'
-readonly frequency_check='7'
-
-# FROM HERE ON, CODE SHOULD BE LEFT UNTOUCHED!
-function abort {
-  echo "${1}" &gt;&amp;2
-  exit 1
-}
-
-function url_exists {
-  curl --silent --location --output /dev/null --fail --range 0-0 "${1}"
-}
-
-function notification {
-  local -r notificator="$(find . -type f -name 'notificator')"
-
-  if [[ -f "${notificator}" &amp;&amp; "$(/usr/bin/file --brief --mime-type "${notificator}")" == 'text/x-shellscript' ]]; then
-    "${notificator}" --message "${1}" --title "${alfred_workflow_name}" --subtitle 'A new version is available'
-    return
-  fi
-
-  osascript -e "display notification \"${1}\" with title \"${alfred_workflow_name}\" subtitle \"A new version is available\""
-}
-
-# Local sanity checks
-readonly local_info_plist='info.plist'
-readonly local_version="$(/usr/libexec/PlistBuddy -c 'print version' "${local_info_plist}")"
-
-[[ -n "${local_version}" ]] || abort 'You need to set a workflow version in the configuration sheet.'
-[[ "${download_type}" =~ ^(direct|page|github_release)$ ]] || abort "'download_type' (${download_type}) needs to be one of 'direct', 'page', or 'github_release'."
-[[ "${frequency_check}" =~ ^[0-9]+$ ]] || abort "'frequency_check' (${frequency_check}) needs to be a number."
-
-# Check for updates
-if [[ $(find "${local_info_plist}" -mtime +"${frequency_check}"d) ]]; then
-  # Remote sanity check
-  if ! url_exists "${remote_info_plist}"; then
-    abort "'remote_info_plist' (${remote_info_plist}) appears to not be reachable."
-  fi
-
-  readonly tmp_file="$(mktemp)"
-  curl --silent --location --output "${tmp_file}" "${remote_info_plist}"
-  readonly remote_version="$(/usr/libexec/PlistBuddy -c 'print version' "${tmp_file}")"
-  rm "${tmp_file}"
-
-  if [[ "${local_version}" == "${remote_version}" ]]; then
-    touch "${local_info_plist}" # Reset timer by touching local file
-    exit 0
-  fi
-
-  if [[ "${download_type}" == 'page' ]]; then
-    notification 'Opening download page…'
-    open "${workflow_url}"
-    exit 0
-  fi
-
-  readonly download_url="$(
-    if [[ "${download_type}" == 'github_release' ]]; then
-      osascript -l JavaScript -e 'function run(argv) { return JSON.parse(argv[0])["assets"].find(asset =&gt; asset["browser_download_url"].endsWith(".alfredworkflow"))["browser_download_url"] }' "$(curl --silent "https://api.github.com/repos/${workflow_url}/releases/latest")"
-    else
-      echo "${workflow_url}"
-    fi
-  )"
-
-  if url_exists "${download_url}"; then
-    notification 'Downloading and installing…'
-    readonly download_name="$(basename "${download_url}")"
-    curl --silent --location --output "${HOME}/Downloads/${download_name}" "${download_url}"
-    open "${HOME}/Downloads/${download_name}"
-  else
-    abort "'workflow_url' (${download_url}) appears to not be reachable."
-  fi
-fi</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>AFFA66D0-2238-482F-85D4-97FCFDDDEA93</string>
-			<key>version</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -1198,6 +1091,10 @@ python3 date_time_format_list.py</string>
 			<dict>
 				<key>browser</key>
 				<string></string>
+				<key>skipqueryencode</key>
+				<false/>
+				<key>skipvarencode</key>
+				<false/>
 				<key>spaces</key>
 				<string></string>
 				<key>url</key>
@@ -1234,19 +1131,13 @@ python3 date_time_format_list.py</string>
 	</array>
 	<key>readme</key>
 	<string>## Date Calculator
-Hello there!
-I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
-Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
+Original by [@MuppetGate](https://github.com/MuppetGate)
 
-![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)
-
-For example, if you enter
+https://github.com/giovannicoppola/alfred-DateCalculator
 
 **dcalc 25.12.14 - 18.01.14**
 
-then it will tell you the number of days between those dates. Note that the workflow parses the command as you enter it, so you’ll see _invalid command_, _invalid expression_ and _invalid format_ errors as you type. Once you’ve completed the command then you’ll be given the result.
-
-You could also try
+then it will tell you the number of days between those dates. 
 
 **dcalc 25.12.14 - now**
 
@@ -1283,7 +1174,7 @@ or combine ‘em
 **dcalc 18.12.12 + 5y 9d 3w - 2d + 1d 1w**
 
 What does that mess do?
-- Take the date 18.12.12
+- Take the date 18.12.12 
 - Add 5 years
 - Add another 9 days
 - Add another 3 weeks
@@ -1298,6 +1189,27 @@ If you want to know what week number you’re in, then try this:
 Or for a specific date:
 
 **dcalc 25.12.14 wn**
+
+The **wn** function also works in reverse, finding dates from week numbers:
+
+**dcalc wn 2015 5**
+
+will give you the date for the fifth week inside for 2015. The expression will give you the date on Monday of that week, but you can also supply your own day adjustment if you want to.
+
+**dcalc wn 2015 5 sun**
+
+And of course, you can do some basic calculations, if you can stand the syntax!
+
+**dcalc wn 2015 6 tue +1d wd**
+
+Should give you the Tuesday for week 6 in the year 2015, then add 1 day to that and give back the day of week.
+Which is Wednesday, obviously :-)
+
+I've included defaults so that the workflow will fill in missing parameters:
+
+**dcalc wn 7**
+
+will return the date of the current day of week (Monday, as I'm writing this) for the seventh week of the current year.
 
 You can also use the _today_ thing in other places too:
 
@@ -1324,7 +1236,7 @@ Probably not all that useful, but some of this other stuff might be. You know al
 
 **dcalc now**
 
-For giving you the current time and date. While you can use
+For giving you the current time and date. While you can use 
 
 **dcalc tomorrow**
 
@@ -1350,7 +1262,7 @@ That about covers it, I think. I haven’t done anything clever with locales, bu
 
 **dcalcset date format**
 
-And we also support both 12-hour and 24-hour time formats.
+And we also support both 12-hour and 24-hour time formats. 
 
 **dcalcset time format**
 
@@ -1387,7 +1299,7 @@ or
 
 **dcalc "1 day after tomorrow"**
 
-Yup! A natural date language parser!
+Yup! A natural date language parser! 
 
 You can even combine it with the existing parser:
 
@@ -1395,97 +1307,32 @@ You can even combine it with the existing parser:
 
 This is a little bit experimental (I might drop it later if it proves to be problematic), but I thought I'd throw it in for a bit of a fun.
 
-## Exclusions
-Added at the request of a friend, though I'm not sure there's a lot of call for it. Okay, say you need to know how long you have to complete a project:
 
-**dcalc today - christmas**
-
-Not a problem, but hang on a mo – you don't like to work on weekends, so you'd better exclude them:
-
-**dcalc today - christmas exclude weekends**
-
-That'll exclude weekends from the calculations. Fantastic! But hang on, the wife's birthday! You won't be working on that day if you know what's good for you:
-
-**dcalc today - christmas exclude weekends 26.09.2014**
-
-Nicely saved, my friend; but there is still that small break you were planning in October:
-
-**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014**
-
-Crap! You're also having a wisdom tooth removed next wednesday
-
-**dcalc today - christmas exclude weekends 26.09.2014 05.10.2014 to 10.10.2014 next wed**
-
-Though I think you'll need more than a day to get over that. The _exclude_ keyword is a little verbose for the lightning typists, so you can also use _x_ instead:
-
-**dcalc today - christmas x weekends tuesdays**
-
-As you might have guessed, this will work out the number of days between now and Christmas, not counting weekends and Tuesdays. We also have a very wordy variation which excludes every day except the one specified:
-
-** dcalc today - easter x all except tuesdays**
+## Abbreviations
+To speed up entering calculations, there are a couple of function abbreviations you can use within expressions:
 
 
-### Credits
-A list of things that made my first attempt at Python programming possible:
-- Dean Jackson for his more-than-slightly awesome [Alfred Workflow framework](http://www.deanishe.net/alfred-workflow/), and for his ‘parse-as-you-type’ idea.
-- The folk at [Jetbrains](http://www.jetbrains.com/pycharm/), for making programming, in any language, bearable.
-- Peter Odding for writing [HumanFriendly](https://humanfriendly.readthedocs.org/en/latest/).
-- Gustavo Niemeyer for [Python-DateUtil](https://labix.org/python-dateutil).
-- Volker Birk for [PyPEG](http://fdik.org/pyPEG/).
-- Mike Taylor for [ParseDateTime](https://github.com/bear/parsedatetime).
-- [Programming Praxis](http://programmingpraxis.com) for the Passover calculation.
+**&lt;** yesterday
 
-- And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
+**\*** today
 
-### Version History
-(Version 2.3) - Bug fixes. Reworked the auto formatting. You can now apply exclusions to date calculations as well as timespan calculations.
-Added function to return the date when given a year, a week number and an optional day of the week
-(Version 2.1) - Bug fixes. Made the default formatting a little bit more intelligent.
-Latest release (Version 2.0). Refactoring. Added a natural date language parser. Added support for 12-hour clock. Added function to get date of the next passover
-Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
-Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
+**\&gt;** tomorrow
 
-Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic.
-Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
+**&amp;** time
 
-Last release (Version 1.4) Fixed bug that caused inaccuracies when calculating anniversaries.
-Refactored code to make it easier to add new date functions and date formatters. General tidy-up
+**\#** now
 
-Last release (Version 1.3) Adds extra formatting functions (day of week) and bug fixes.
+So now
 
-Last release (Version 1.2) was an improvement to add user-defined macros.
+**dcalc \*** 
 
-Last release (Version 1.1) was on the 01.07.2014. This included a new anniversary list function,
-and the addition of the international date format (yyyy-mm-dd).
+will give you the current date.
 
-Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser,
-added macros (days of week, christmas and easter) and a general tidy up.
-The symbol for getting the week number for a particular date has changed
-from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
+And
 
-### License
-Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
+**dcalc \*+6d**
 
-The MIT License (MIT)
-Copyright (c) 2014 MuppetGate Media
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.</string>
+will give you the date six days from now.</string>
 	<key>uidata</key>
 	<dict>
 		<key>0B14F62B-EEC4-460E-A1B4-6DFF6705E5FA</key>
@@ -1635,17 +1482,6 @@ THE SOFTWARE.</string>
 			<key>ypos</key>
 			<real>410</real>
 		</dict>
-		<key>AFFA66D0-2238-482F-85D4-97FCFDDDEA93</key>
-		<dict>
-			<key>colorindex</key>
-			<integer>12</integer>
-			<key>note</key>
-			<string>OneUpdater</string>
-			<key>xpos</key>
-			<real>950</real>
-			<key>ypos</key>
-			<real>320</real>
-		</dict>
 		<key>B222BD5C-5A0E-4EC1-9D9E-E308621BC7C8</key>
 		<dict>
 			<key>xpos</key>
@@ -1718,12 +1554,34 @@ THE SOFTWARE.</string>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
-	<array/>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>dcalc</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<false/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>mainkeyword</string>
+		</dict>
+	</array>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>4.0.1</string>
+	<string>4.1</string>
 	<key>webaddress</key>
-	<string>http://muppetgate.github.io/pages/date-calculator-help-page.html</string>
+	<string>https://github.com/giovannicoppola/alfred-DateCalculator</string>
 </dict>
 </plist>
