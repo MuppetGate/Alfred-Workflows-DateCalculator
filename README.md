@@ -3,6 +3,7 @@
 Does simple stuff with dates! 🗓️
 
 Original by [@MuppetGate](https://github.com/MuppetGate)
+
 Ported to Python 3 and Alfred 5
 
 ![](images/DateCalc.png)
@@ -231,17 +232,17 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
-4.1 Alfred 5 version
-4.0.1 added new date format (`d.m.yyyy`)
-4.0 ported to Python 3
+- 4.1 Alfred 5 version
+- 4.0.1 added new date format (`d.m.yyyy`)
+- 4.0 ported to Python 3
 
 
 ### License
 Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
 
-The MIT License (MIT)
-Copyright (c) 2014 MuppetGate Media
-Copyright (c) 2022 Giovanni Coppola
+#### The MIT License (MIT)
+- Copyright (c) 2014 MuppetGate Media
+- Copyright (c) 2022 Giovanni Coppola
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
