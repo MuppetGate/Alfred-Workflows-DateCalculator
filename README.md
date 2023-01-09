@@ -1,13 +1,20 @@
 ## Date Calculator
-Hello there!
-I needed a bit of motivation to learn Python and Alfred workflows, so I thought I’d kill two horses with one bullet, so to speak.
-Right, so this is a date calculator – kind of. It won’t tell you when you will the lottery, or how long you’ve got to hide your ‘arty videos’ before  your wife gets home, but it will answer one or two _very simple_ questions about dates.
 
-![](http://www.packal.org/sites/default/files/public/workflow-files/muppetgatenetdatecalculator/screenshots/screenshot2014-06-21at084104.png)
+Does simple stuff with dates! 🗓️
 
-(Download from [Packal.org](http://www.packal.org/workflow/date-calculator))
+Original by [@MuppetGate](https://github.com/MuppetGate)
 
-For example, if you enter
+Ported to Python 3 and Alfred 5
+
+![](images/DateCalc.png)
+
+<a href="https://github.com/giovannicoppola/alfred-DateCalculator/releases/latest/">
+<img alt="Downloads"
+src="https://img.shields.io/github/downloads/giovannicoppola/alfred-DateCalculator/total?color=purple&label=Downloads"><br/>
+</a>
+
+
+For example, if you enter:
 
 **dcalc 25.12.14 - 18.01.14**
 
@@ -225,43 +232,17 @@ A list of things that made my first attempt at Python programming possible:
 - And finally, and by no means least – Mr Smirnoff for discovering how to bottle patience.
 
 ### Version History
-(Version 2.7) - Removed the exclude stuff. It wasn't very reliable and was very hard to explain. Also fixed a problem which caused incorrect date calculuations if the input phrase was right at the end of  the month.
+- 4.1 Alfred 5 version
+- 4.0.1 added new date format (`d.m.yyyy`)
+- 4.0 ported to Python 3
 
-(Version 2.4) - Bugt fixes. Added abbreviations. Added functions for Pancake Day, Lent and Martin Luther King Day
-
-(Version 2.3) - Bug fixes. Reworked the auto formatting. You can now apply exclusions to date calculations as well as timespan calculations. 
-Added function to return the date when given a year, a week number and an optional day of the week.
-
-(Version 2.1) - Bug fixes. Made the default formatting a little bit more intelligent.
-
-Latest release (Version 2.0). Refactoring. Added a natural date language parser. Added support for 12-hour clock. Added function to get date of the next passover
-
-Latest release (Version 1.6). Refactoring. Added exclusion functionality, and macros for _year start_ and _year end_. Changed the calls for days of the week: You now need to enter _next mon_ to get the date for next Monday, but you can also now type _prev mon_ to get the date for last Monday. Huzzah!
-Increased the accuracy of the date intervals. If you select _y_ for the date format then you will get _11.5 years_. But if you select _ym_ then you get _11 years, 6 months_. Trust me, it’s better this way.
-
-Latest release (Version 1.5). Refactoring. Rewrote the code for date subtraction arithmetic. 
-Now it’s a lot more accurate, even when working with uneven months and weeks. Minor bug fixes.
-
-Last release (Version 1.4) Fixed bug that caused inaccuracies when calculating anniversaries. 
-Refactored code to make it easier to add new date functions and date formatters. General tidy-up
-
-Last release (Version 1.3) Adds extra formatting functions (day of week) and bug fixes.
-
-Last release (Version 1.2) was an improvement to add user-defined macros.
-
-Last release (Version 1.1) was on the 01.07.2014. This included a new anniversary list function, 
-and the addition of the international date format (yyyy-mm-dd).
-
-Last release (Version 1.0) was on the 27.06.2014. This included an improved date parser, 
-added macros (days of week, christmas and easter) and a general tidy up. 
-The symbol for getting the week number for a particular date has changed 
-from ‘^’ to ‘!’ or ‘wn’. Why? Because I seemed to be struggling to find ‘^’ on the keyboard.
 
 ### License
 Well, I guess the [MIT](http://opensource.org/licenses/MIT) one will do. :-)
 
-The MIT License (MIT)
-Copyright (c) 2014 MuppetGate Media
+#### The MIT License (MIT)
+- Copyright (c) 2014 MuppetGate Media
+- Copyright (c) 2022 Giovanni Coppola
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
